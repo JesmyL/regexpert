@@ -260,7 +260,6 @@ export class TransformProcess {
         groupInfo.isOpt ||= this.checkIsOptionalQuantifier(
           groupInfo.groupStr.slice(groupInfo.groupStr.lastIndexOf(')') + 1),
         );
-        console.log([groupInfo, groupInfo.groupStr.slice(groupInfo.groupStr.lastIndexOf(')') + 1)]);
 
         groupInfo.isOptAsChild ||= this.someOfGroupParents(
           groupInfo,
