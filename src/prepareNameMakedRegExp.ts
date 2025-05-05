@@ -1,6 +1,6 @@
 import { StrRegExp } from '../types/model';
 import { makeRegExp } from './makeRegExp';
-import { TransformProcess } from './TransformProcess';
+import { checkIs4xSlashes } from './utils';
 
 const numbersSet = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']);
 const findNamedGroupsReg = makeRegExp(`/(\\\\*)\\((?:\\?(?:<([\\w$_]+)>|<()>|([=!:ims])))?/g`);
@@ -22,7 +22,7 @@ export const prepareNameMakedRegExp = (reg: StrRegExp, errorsStore?: string[]) =
       index: number,
       restContent: string,
     ) => {
-      if (TransformProcess.checkIs4xSlashes(slashes)) return all;
+      if (checkIs4xSlashes(slashes)) return all;
       if (key !== undefined && key.match(makeRegExp(`/^[=!<:ims]/`))) return all;
 
       openPosition++;

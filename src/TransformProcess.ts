@@ -2,6 +2,7 @@ import { PluginOptions, StrRegExpFlag } from '../types/model';
 import { makeRegExp } from './makeRegExp';
 import { testMaker } from './test.maker';
 import { GroupInfo, GroupName, GroupStubSymbol, StubSymbol } from './types';
+import { checkIs2xSlashes, checkIs4xSlashes } from './utils';
 
 setTimeout(testMaker, 500);
 
@@ -67,7 +68,7 @@ export class TransformProcess {
     const groupStubSymbols: GroupStubSymbol[] = [];
 
     userWritedRegStr.replace(/\(/g, (all, slashes) => {
-      if (this.checkIs4xSlashes(slashes)) return all;
+      if (checkIs4xSlashes(slashes)) return all;
 
       do stubCharCode++;
       while (userWritedRegStr.includes(String.fromCharCode(stubCharCode)));
@@ -385,10 +386,10 @@ export class TransformProcess {
             : this.numberStubSymbol;
 
           if (numberSlashes !== undefined) {
-            return this.checkIs2xSlashes(numberSlashes) ? returnNumber : all;
+            return checkIs2xSlashes(numberSlashes) ? returnNumber : all;
           }
 
-          return this.checkIs4xSlashes(enumSlashes) ? all : returnNumber;
+          return checkIs4xSlashes(enumSlashes) ? all : returnNumber;
         }
 
         return this.stringStubSymbol;
@@ -568,11 +569,6 @@ export class TransformProcess {
 
   checkIsGroupOptional = (groupStr: string) => !!groupStr.match(makeRegExp('/(?:[*?]|{(?:|0),\\d*})\\??$/'));
 
-  static checkIs4xSlashes = (slashes: string | undefined | null) => !!slashes?.length && slashes.length % 4 === 0;
-  static checkIs2xSlashes = (slashes: string | undefined | null) => !!slashes?.length && slashes.length % 2 === 0;
-  checkIs4xSlashes = TransformProcess.checkIs4xSlashes;
-  checkIs2xSlashes = TransformProcess.checkIs2xSlashes;
-
   cutFileComments = (content: string) => content.replace(/(?:^|\n) *\/{2,}.*/g, '');
 
   replaceStringTemplateInserts = (regStr: string) => {
@@ -599,13 +595,13 @@ export class TransformProcess {
 
   replaceEscapeds = (regStr: string) => {
     regStr = regStr.replace(makeRegExp('/(\\\\+?)([bB])/g'), (all, slashes: string, text: string) => {
-      return this.checkIs4xSlashes(slashes)
+      return checkIs4xSlashes(slashes)
         ? all
         : this.repeatWithoutNegatives('\\', slashes.length - 2) + this.escapeStubSymbol.repeat(2) + text;
     });
 
     regStr = regStr.replace(makeRegExp('/(\\\\+?)[|]/g'), (all, slashes: string) => {
-      return this.checkIs4xSlashes(slashes)
+      return checkIs4xSlashes(slashes)
         ? all
         : `${this.repeatWithoutNegatives(this.slashStubSymbol, slashes.length - 2)}${this.unionStubSymbol.repeat(3)}`;
     });
@@ -613,7 +609,7 @@ export class TransformProcess {
     regStr = regStr
       .replace(makeRegExp(`/(\\\\+?)(\\$\\\\?{|[-[\\]|?^$+*{}:().])/g`), (_all, slashes: string, chars: string) => {
         if (chars === '${' || chars === '$\\{') {
-          if (this.checkIs2xSlashes(slashes)) {
+          if (checkIs2xSlashes(slashes)) {
             if (chars === '${') return this.slashStubSymbol.repeat(slashes.length) + chars;
             return this.slashStubSymbol.repeat(slashes.length) + this.untemplatedStubSymbol;
           } else {
@@ -621,26 +617,26 @@ export class TransformProcess {
           }
         }
 
-        if (this.checkIs4xSlashes(slashes)) {
+        if (checkIs4xSlashes(slashes)) {
           return this.slashStubSymbol.repeat(slashes.length) + chars;
         }
 
-        if (!this.checkIs2xSlashes(slashes)) {
+        if (!checkIs2xSlashes(slashes)) {
           return this.repeatWithoutNegatives(this.slashStubSymbol, slashes.length - 1) + chars;
         }
 
         return this.escapeStubSymbol.repeat(slashes.length) + chars;
       })
       .replace(makeRegExp(`/(\\\\+?)(\\w)/g`), (all, slashes: string, chars: string) => {
-        if (this.checkIs4xSlashes(slashes)) {
+        if (checkIs4xSlashes(slashes)) {
           return this.slashStubSymbol.repeat(slashes.length) + chars;
         }
 
-        if (this.checkIs2xSlashes(slashes)) {
+        if (checkIs2xSlashes(slashes)) {
           return this.repeatWithoutNegatives(this.slashStubSymbol, slashes.length - 2) + '\\\\' + chars;
         }
 
-        if (!this.checkIs2xSlashes(slashes)) {
+        if (!checkIs2xSlashes(slashes)) {
           return this.repeatWithoutNegatives(this.slashStubSymbol, slashes.length - 3) + '\\\\' + chars;
         }
 
@@ -653,7 +649,7 @@ export class TransformProcess {
           return this.repeatWithoutNegatives(this.slashStubSymbol, slashes.length - 2) + '\\\\' + chars;
         }
 
-        if (this.checkIs2xSlashes(slashes)) {
+        if (checkIs2xSlashes(slashes)) {
           return this.slashStubSymbol.repeat(slashes.length) + chars;
         }
 
@@ -664,13 +660,13 @@ export class TransformProcess {
       /(\\+?)\(|(\\+?)\)/g,
       (all, openSlashes: string | undefined, closeSlashes: string | undefined) => {
         if (openSlashes !== undefined) {
-          return this.checkIs4xSlashes(openSlashes)
+          return checkIs4xSlashes(openSlashes)
             ? `${openSlashes.slice(2)}${this.openParenthesisStubSymbol.repeat(3)}`
             : all;
         }
 
         if (closeSlashes !== undefined) {
-          return this.checkIs4xSlashes(closeSlashes)
+          return checkIs4xSlashes(closeSlashes)
             ? `${closeSlashes.slice(2)}${this.closeParenthesisStubSymbol.repeat(3)}`
             : all;
         }

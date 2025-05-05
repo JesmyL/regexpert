@@ -1,7 +1,7 @@
 import { NamedRegExpRegulars, makeNamedRegExp as maker } from '../types/model';
 import { makeRegExp } from './makeRegExp';
 import { prepareNameMakedRegExp } from './prepareNameMakedRegExp';
-import { TransformProcess } from './TransformProcess';
+import { checkIs2xSlashes } from './utils';
 
 const regReps: Record<string, NamedRegExpRegulars<object>> = {};
 
@@ -16,7 +16,7 @@ export const makeNamedRegExp: typeof maker = (stringRegExp, setLastIndexTo) => {
         Object.entries(positionedNames).forEach(([key, value]) => (namesToPositions![value] = +key));
       }
 
-      if (TransformProcess.checkIs2xSlashes(slashes)) return all;
+      if (checkIs2xSlashes(slashes)) return all;
 
       return `${slashes}${namesToPositions[name]}`;
     });
