@@ -1,0 +1,54 @@
+{
+  "name": "regexpert",
+  "description": "Make types for your RegExp",
+  "version": "0.0.72",
+  "type": "module",
+  "main": "./build/regexpert.umd.cjs",
+  "module": "./build/regexpert.js",
+  "types": "./types/model.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/model.d.ts",
+      "require": "./build/regexpert.umd.cjs",
+      "import": "./build/regexpert.js"
+    }
+  },
+  "files": [
+    "build",
+    "types"
+  ],
+  "keywords": [
+    "safe",
+    "match",
+    "replace",
+    "exec",
+    "regular",
+    "regular expressions",
+    "expressions",
+    "regexp",
+    "regex",
+    "typified",
+    "typescript",
+    "types",
+    "type",
+    "with",
+    "vite",
+    "vite plugin",
+    "vite-plugin"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/md5": "^2.3.5",
+    "@types/node": "^22.15.1",
+    "vite": "^6.3.1",
+    "vite-plugin-eslint": "^1.8.1"
+  },
+  "dependencies": {
+    "md5": "^2.3.0",
+    "typescript": "~5.7.2"
+  }
+}
