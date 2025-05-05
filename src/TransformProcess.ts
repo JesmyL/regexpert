@@ -156,13 +156,15 @@ export class TransformProcess {
 
       const groupSymbolToInfoDict: Record<GroupStubSymbol, GroupInfo> = {
         [GroupStubSymbol.zero]: {
+          isRoot: true,
+          isOpt: false,
+          isOptChildren: isEachGroupIsOptional,
+          isOptAsChild: false,
           groupName: GroupName.zero,
           groupSymbol: GroupStubSymbol.zero,
           groupStr: regStr,
           groupContent: regStr,
           groupKey: '',
-          isOpt: false,
-          isOptChildren: isEachGroupIsOptional,
           isHasSubTypes: this.checkIsHasSubTypes(regStr, groupSymbols),
           isCountable: true,
           parent: null,
@@ -188,7 +190,7 @@ export class TransformProcess {
 
         const isUncountable = isNoname && groupNameMatch[1] !== undefined;
 
-        const isOpt =
+        const isOptAsChild =
           isEachGroupIsOptional ||
           this.checkIsGroupOptional(groupStr) ||
           Object.values(groupSymbolToInfoDict).some(({ groupStr, isOpt, isOptChildren }) => {
@@ -201,14 +203,16 @@ export class TransformProcess {
           const groupName = `${++uncountableGroupi}` as GroupName;
 
           uncountableGroupSymbolToInfoDict[groupSymbol] = {
+            isRoot: false,
+            isOpt: false,
+            isOptChildren: groupKey.includes('!') || groupContent.includes('|'),
+            isOptAsChild,
             groupContent,
             groupKey,
             groupName,
             groupStr,
             groupSymbol,
             isHasSubTypes: false,
-            isOpt,
-            isOptChildren: groupKey.includes('!') || groupContent.includes('|'),
             isCountable: false,
             parent: null,
             isNever: false,
@@ -225,8 +229,10 @@ export class TransformProcess {
         groupNameToSymbolDict[groupName] = groupSymbol;
 
         groupSymbolToInfoDict[groupSymbol] = {
-          isOpt,
+          isRoot: false,
+          isOpt: false,
           isOptChildren,
+          isOptAsChild,
           groupStr,
           groupSymbol,
           groupName,
@@ -247,10 +253,19 @@ export class TransformProcess {
       this.setGroupInfoParents(wholeGroupSymbolToInfoDict);
 
       Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
+        if (groupInfo.isRoot) return;
+
         groupInfo.isNever = this.checkIsGroupNever(groupInfo);
-        groupInfo.isOpt =
-          groupInfo.isOpt ||
-          this.someOfGroupParents(groupInfo, parentInfo => parentInfo.isOpt || parentInfo.isOptChildren);
+
+        groupInfo.isOpt ||= this.checkIsOptionalQuantifier(
+          groupInfo.groupStr.slice(groupInfo.groupStr.lastIndexOf(')') + 1),
+        );
+        console.log([groupInfo, groupInfo.groupStr.slice(groupInfo.groupStr.lastIndexOf(')') + 1)]);
+
+        groupInfo.isOptAsChild ||= this.someOfGroupParents(
+          groupInfo,
+          parentInfo => parentInfo.isOpt || parentInfo.isOptChildren,
+        );
       });
 
       Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
@@ -274,7 +289,9 @@ export class TransformProcess {
           const typeName = this.makeGroupTypeName(groupInfo.groupName);
 
           recordFieldsTypes.push(
-            `${groupInfo.groupName}${groupInfo.isOpt || groupInfo.isNever ? '?' : ''}: ${typeName}`,
+            `${groupInfo.groupName}${
+              groupInfo.isOpt || groupInfo.isOptAsChild || groupInfo.isNever ? '?' : ''
+            }: ${typeName}`,
           );
           groupTypeParts.push(`type ${typeName} = ${typeContent};`);
         } else {
@@ -317,8 +334,9 @@ export class TransformProcess {
     };
   };
 
-  makeGroupTypeName = (groupName: GroupName) =>
-    groupName.match(makeRegExp('/^[a-z_$]/i')) ? groupName : `T${groupName}`;
+  makeGroupTypeName = (groupName: GroupName) => {
+    return groupName.startsWith('$') ? groupName : `T${groupName}`;
+  };
   makeUncountableGroupTypeName = (groupName: GroupName) => `U${groupName}`;
 
   makeNamespaceTypeName = (_text: string, index: number) => `N${this.fileMD5}_${index + 1}`;
@@ -446,35 +464,37 @@ export class TransformProcess {
 
         let linkTypeName: string | null = null;
         let linkGroupName = groupInfo.groupName;
-
-        const isOptionalLink =
-          this.checkIsOptionalQuantifier(quantifier) ||
-          groupInfo.isOpt ||
-          groupInfo.isOptChildren ||
-          this.someOfGroupParents(groupInfo, info => info.isOpt || info.isOptChildren);
+        let linkTargetGroupInfo: GroupInfo | null = null;
 
         if (linkNumber) {
           if (`$${linkNumber}` in groupNameToSymbolDict) {
             const linkTargetGroupSymbol = groupNameToSymbolDict[`$${linkNumber}` as GroupName];
-            const linkTargetGroupInfo = wholeGroupSymbolToInfoDict[linkTargetGroupSymbol];
+            linkTargetGroupInfo = wholeGroupSymbolToInfoDict[linkTargetGroupSymbol];
 
             linkGroupName = linkTargetGroupInfo.groupName;
           } else {
             const linkTargetGroupSymbol = countableGroupSymbols[+linkNumber - 1];
 
             if (linkTargetGroupSymbol !== undefined) {
-              const linkGroupInfo = wholeGroupSymbolToInfoDict[linkTargetGroupSymbol];
+              linkTargetGroupInfo = wholeGroupSymbolToInfoDict[linkTargetGroupSymbol];
 
-              linkTypeName = this.makeGroupTypeName(linkGroupInfo.groupName);
+              linkTypeName = this.makeGroupTypeName(linkTargetGroupInfo.groupName);
             } else return `\\x${linkNumber.padStart(2, '0')}`;
           }
         } else if (linkName) {
           const linkTargetGroupSymbol = groupNameToSymbolDict[linkName as GroupName];
-
-          linkGroupName = wholeGroupSymbolToInfoDict[linkTargetGroupSymbol].groupName;
+          linkTargetGroupInfo = wholeGroupSymbolToInfoDict[linkTargetGroupSymbol];
+          linkGroupName = linkTargetGroupInfo.groupName;
         }
 
         linkTypeName ??= this.makeGroupTypeName(linkGroupName);
+
+        const isOptionalLink =
+          this.checkIsOptionalQuantifier(quantifier) ||
+          (linkTargetGroupInfo &&
+            (linkTargetGroupInfo.isOpt ||
+              linkTargetGroupInfo.isOptAsChild ||
+              this.someOfGroupParents(linkTargetGroupInfo, info => info.isOpt || info.isOptChildren)));
 
         return `\${${linkTypeName}${isOptionalLink ? this.optionalStubSymbol : ''}}`;
       },
@@ -485,13 +505,6 @@ export class TransformProcess {
       if (currentGroupInfo === undefined) continue;
 
       content = content.replace(makeRegExp(`/${currentGroupSymbol}+/g`), () => {
-        // if (
-        //   !currentGroupInfo.isCountable &&
-        //   (currentGroupInfo.groupKey === '<=' || currentGroupInfo.groupKey === '=')
-        // ) {
-        //   return "${''}";
-        // }
-
         const typeText = currentGroupInfo.isCountable
           ? this.makeGroupTypeName(currentGroupInfo.groupName)
           : this.makeUncountableGroupTypeName(currentGroupInfo.groupName);
@@ -502,42 +515,42 @@ export class TransformProcess {
       });
     }
 
-    const contentWithUnions = `\`${
-      content
-        .replace(makeRegExp(`/${this.openParenthesisStubSymbol}{3}/g`), '(')
-        .replace(makeRegExp(`/${this.closeParenthesisStubSymbol}{3}/g`), ')')
-        .replace(makeRegExp(`/(?<!${this.escapeStubSymbol})\\.+/g`), this.stringStubSymbol)
-        .replace(makeRegExp(`/\\\\{2}(\\w)(${this.quantifierRegStr}|)/g`), (_all, char, quantifier) => {
-          if (char === 'n') {
-            return this.insertOptionalChar(quantifier, `\`\\n\``);
-          }
+    content = content
+      .replace(makeRegExp(`/${this.openParenthesisStubSymbol}{3}/g`), '(')
+      .replace(makeRegExp(`/${this.closeParenthesisStubSymbol}{3}/g`), ')')
+      .replace(makeRegExp(`/(?<!${this.escapeStubSymbol})\\.+/g`), this.stringStubSymbol)
+      .replace(makeRegExp(`/\\\\{2}(\\w)(${this.quantifierRegStr}|)/g`), (_all, char, quantifier) => {
+        if (char === 'n') {
+          return this.insertOptionalChar(quantifier, '`\\n`');
+        }
 
-          return this.insertOptionalChar(quantifier, 'string', this.stringStubSymbol);
-        })
-        .replace(makeRegExp(`/${this.slashStubSymbol}/g`), '\\')
-        .replace(makeRegExp(`/${this.escapeStubSymbol}{2}([bB])/g`), '')
-        .replace(makeRegExp(`/${this.escapeStubSymbol}+/g`), '')
-        .replace(makeRegExp(`/((?:\\\\\\\\)?[^\\\`])(${this.quantifierRegStr})/g`), (all, char, quantifier) =>
-          this.insertOptionalChar(quantifier, `\`${char}\``, all),
-        )
-        .replace(makeRegExp(`/([^\\\\])(${this.quantifierRegStr})/g`), (_all, char, quantifier) =>
-          this.insertOptionalChar(quantifier, `\`${char}\``),
-        )
-        .replace(makeRegExp(`/[${this.slashStubSymbol}${this.escapeStubSymbol}]/g`), '\\')
-        .replace(makeRegExp(`/${this.untemplatedStubSymbol}/g`), '\\${')
-        .split('|')
-        .join('` | `')
-        .replace(makeRegExp(`/${this.unionStubSymbol}{3}/g`), '|')
-        .replace(makeRegExp(`/${this.optionalStubSymbol}/g`), " | ''")
-        .replace(makeRegExp(`/${this.escapeStubSymbol}{2}[bB]/g`), '')
-        .replace(makeRegExp(`/${this.stringStubSymbol}+/g`), '${string}')
-        .replace(makeRegExp(`/${this.optionalNumberStubSymbol}/g`), `\${number | ''}`)
-        .replace(makeRegExp(`/${this.numberStubSymbol}/g`), `\${number}`)
-        .replace(makeRegExp('/`\\${string}`/g'), 'string')
-      //
-    }\``;
+        return this.insertOptionalChar(quantifier, 'string', this.stringStubSymbol);
+      })
+      .replace(makeRegExp(`/${this.slashStubSymbol}/g`), '\\')
+      .replace(makeRegExp(`/${this.escapeStubSymbol}{2}([bB])/g`), '')
+      .replace(makeRegExp(`/${this.escapeStubSymbol}+/g`), '')
+      .replace(makeRegExp(`/((?:\\\\\\\\)?[^\\\`])(${this.quantifierRegStr})/g`), (all, char, quantifier) =>
+        this.insertOptionalChar(quantifier, `\`${char}\``, all),
+      )
+      .replace(makeRegExp(`/([^\\\\])(${this.quantifierRegStr})/g`), (_all, char, quantifier) =>
+        this.insertOptionalChar(quantifier, `\`${char}\``),
+      )
+      .replace(makeRegExp(`/[${this.slashStubSymbol}${this.escapeStubSymbol}]/g`), '\\')
+      .replace(makeRegExp(`/${this.untemplatedStubSymbol}/g`), '\\${')
+      .split('|')
+      .join('` | `')
+      .replace(makeRegExp(`/${this.unionStubSymbol}{3}/g`), '|')
+      .replace(makeRegExp(`/${this.optionalStubSymbol}/g`), " | ''")
+      .replace(makeRegExp(`/${this.escapeStubSymbol}{2}[bB]/g`), '')
+      .replace(makeRegExp(`/${this.stringStubSymbol}+/g`), '${string}');
 
-    return contentWithUnions;
+    content = `\`${content}\``
+      .replace(makeRegExp('/\\`\\${([^}`]+)}\\`/g'), '$1')
+      .replace(makeRegExp('/\\${`([^}`]+)`}/g'), '$1')
+      .replace(makeRegExp(`/${this.optionalNumberStubSymbol}/g`), `\${number | ''}`)
+      .replace(makeRegExp(`/${this.numberStubSymbol}/g`), `\${number}`);
+
+    return content;
   };
 
   checkIsOptionalQuantifier = (quantifier: string | undefined) => {

@@ -221,7 +221,9 @@ getValue<{ $0: 'WORD' }>(makeNamedRegExp(`/\\bWORD\\B/`).transform(arg));
 getValue<`${`${`a`}${string}` | ''}b${`a`}${string}`>(makeNamedRegExp(`/(?=(a+))a*b\\1/`).transform(arg).$0);
 getValue<`b`>(makeNamedRegExp(`/(?=a)?b/`).transform(arg).$0);
 getValue<{ $0: ''; $1: string }>(makeNamedRegExp(`/(?<=([ab]+)([bc]+))$/`).transform(arg));
-getValue<{ $0: `${number}${`.${number}` | ''}` }>(makeNamedRegExp(`/(?<=\\$)\\d+(?:\\.\\d+)?/`).transform(arg));
+getValue<{ $0: `${'-' | ''}${number}${`.${number}` | ''}` }>(
+  makeNamedRegExp(`/(?<=\\$)(?<sign>-?)\\d+(?:\\.(\\d+))?/`).transform(arg),
+);
 getValue<{ $0: `.${'png' | 'gif' | 'jpeg' | 'jpg' | 'PNG' | 'GIF' | 'JPEG' | 'JPG'}` }>(
   makeNamedRegExp(`/\\.(?:png|jpe?g|gif)$/i`).transform(arg),
 );

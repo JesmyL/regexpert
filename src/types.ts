@@ -3,7 +3,9 @@ import { regExpertVitePlugin } from '../types/model';
 export type Options = Parameters<typeof regExpertVitePlugin>[0];
 
 export type GroupInfo = {
+  isRoot: boolean;
   isOpt: boolean;
+  isOptAsChild: boolean;
   isOptChildren: boolean;
   groupStr: string;
   groupSymbol: GroupStubSymbol;

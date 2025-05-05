@@ -35,10 +35,10 @@ export const testMaker = () => {
     regs.transform(arg).$0;
 
     // OK
-    printMatch(regs, 'ac');
-    printMatch(regs, 'aac');
-    printMatch(regs, 'bac');
-    printMatch(regs, 'bbc');
+    printMatch(regs, 'ac'); // ac
+    printMatch(regs, 'aac'); // ac
+    printMatch(regs, 'bac'); // ac
+    printMatch(regs, 'bbc'); // bbc
 
     // NULL
     printMatch(regs, 'a\x01c');

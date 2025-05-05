@@ -1,534 +1,534 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_1 {
-  type $0 = `${str}`;
-  type str = `${string}${string}`;
+  type $0 = Tstr;
+  type Tstr = `${string}${string}`;
 
   export interface I extends Record<
     `/(?<str>\\w+)/`,
     {
       $0: $0;
-      str: str
+      str: Tstr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_2 {
-  type $0 = `${str}`;
-  type str = `${string | ''}`;
+  type $0 = Tstr;
+  type Tstr = string | '';
 
   export interface I extends Record<
     `/(?<str>\\w?)/`,
     {
       $0: $0;
-      str: str
+      str: Tstr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_3 {
-  type $0 = `${str}`;
-  type str = `${`a` | ''}`;
+  type $0 = Tstr;
+  type Tstr = `${`a` | ''}`;
 
   export interface I extends Record<
     `/(?<str>a?)/`,
     {
       $0: $0;
-      str: str
+      str: Tstr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_4 {
-  type $0 = `${val}`;
-  type val = `text`;
+  type $0 = Tval;
+  type Tval = `text`;
 
   export interface I extends Record<
     `/(?<val>text)/`,
     {
       $0: $0;
-      val: val
+      val: Tval
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_5 {
-  type $0 = `${val}`;
-  type val = `text ${number}`;
+  type $0 = Tval;
+  type Tval = `text ${number}`;
 
   export interface I extends Record<
     `/(?<val>text \\d+)/`,
     {
       $0: $0;
-      val: val
+      val: Tval
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_6 {
-  type $0 = `${val}`;
-  type val = `text ${number | ''}`;
+  type $0 = Tval;
+  type Tval = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<val>text \\d*)/`,
     {
       $0: $0;
-      val: val
+      val: Tval
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_7 {
-  type $0 = `${val}`;
-  type val = `text ${number | ''}`;
+  type $0 = Tval;
+  type Tval = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<val>text \\d?)/`,
     {
       $0: $0;
-      val: val
+      val: Tval
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_8 {
-  type $0 = `${val}`;
-  type val = `tex${`t`}${string}`;
+  type $0 = Tval;
+  type Tval = `text${string}`;
 
   export interface I extends Record<
     `/(?<val>text{1,3})/`,
     {
       $0: $0;
-      val: val
+      val: Tval
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_9 {
-  type $0 = `${val}`;
-  type val = `tex${''|`${`t`}${string}`}`;
+  type $0 = Tval;
+  type Tval = `tex${''|`t${string}`}`;
 
   export interface I extends Record<
     `/(?<val>text{0,3})/`,
     {
       $0: $0;
-      val: val
+      val: Tval
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_10 {
-  type $0 = `${val}`;
-  type val = `tex${''|`${`t`}${string}`}`;
+  type $0 = Tval;
+  type Tval = `tex${''|`t${string}`}`;
 
   export interface I extends Record<
     `/(?<val>text{0,})/`,
     {
       $0: $0;
-      val: val
+      val: Tval
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_11 {
-  type $0 = `${val}`;
-  type val = `tex${''|`${`t`}${string}`}`;
+  type $0 = Tval;
+  type Tval = `tex${''|`t${string}`}`;
 
   export interface I extends Record<
     `/(?<val>text{,3})/`,
     {
       $0: $0;
-      val: val
+      val: Tval
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_12 {
-  type $0 = `${num}`;
-  type num = `${number}`;
+  type $0 = Tnum;
+  type Tnum = `${number}`;
 
   export interface I extends Record<
     `/(?<num>\\d)/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_13 {
-  type $0 = `${num}`;
-  type num = `${number}`;
+  type $0 = Tnum;
+  type Tnum = `${number}`;
 
   export interface I extends Record<
     `/(?<num>\\d{1,3})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_14 {
-  type $0 = `${num}`;
-  type num = `${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>\\d{,3})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_15 {
-  type $0 = `${num}`;
-  type num = `${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>\\d{0,3})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_16 {
-  type $0 = `${num}`;
-  type num = `${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>\\d{0,})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_17 {
-  type $0 = `${num}`;
-  type num = `${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>\\d*)/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_18 {
-  type $0 = `${num}`;
-  type num = `${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>\\d?)/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_19 {
-  type $0 = `${numStr}${string}${''|`${`\n`}${string}`}`;
-  type numStr = `${number}${string}${string}`;
+  type $0 = `${TnumStr}${string}${''|`\n${string}`}`;
+  type TnumStr = `${number}${string}${string}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d+[amn]+)\\s\\n*/`,
     {
       $0: $0;
-      numStr: numStr
+      numStr: TnumStr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_20 {
-  type $0 = `${numStr}${string}${''|`${`\n`}${string}`}`;
-  type numStr = `${number}${string}${string}`;
+  type $0 = `${TnumStr}${string}${''|`\n${string}`}`;
+  type TnumStr = `${number}${string}${string}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d{1,3}[amn]+)\\s\\n*/`,
     {
       $0: $0;
-      numStr: numStr
+      numStr: TnumStr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_21 {
-  type $0 = `${numStr}${string}${''|`${`\n`}${string}`}`;
-  type numStr = `${number}${string}${string}`;
+  type $0 = `${TnumStr}${string}${''|`\n${string}`}`;
+  type TnumStr = `${number}${string}${string}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d{1,}[amn]+)\\s\\n*/`,
     {
       $0: $0;
-      numStr: numStr
+      numStr: TnumStr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_22 {
-  type $0 = `${numStr}${string}${''|`${`\n`}${string}`}`;
-  type numStr = `${number | ''}${string}${string}`;
+  type $0 = `${TnumStr}${string}${''|`\n${string}`}`;
+  type TnumStr = `${number | ''}${string}${string}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d{0,3}[amn]+)\\s\\n*/`,
     {
       $0: $0;
-      numStr: numStr
+      numStr: TnumStr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_23 {
-  type $0 = `${numStr}${string}${''|`${`\n`}${string}`}`;
-  type numStr = `${number | ''}${string}${string}`;
+  type $0 = `${TnumStr}${string}${''|`\n${string}`}`;
+  type TnumStr = `${number | ''}${string}${string}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d{,3}[amn]+)\\s\\n*/`,
     {
       $0: $0;
-      numStr: numStr
+      numStr: TnumStr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_24 {
-  type $0 = `${numStr}${string}${''|`${`\n`}${string}`}`;
-  type numStr = `${number | ''}${string}${string}`;
+  type $0 = `${TnumStr}${string}${''|`\n${string}`}`;
+  type TnumStr = `${number | ''}${string}${string}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d?[amn]+)\\s\\n*/`,
     {
       $0: $0;
-      numStr: numStr
+      numStr: TnumStr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_25 {
-  type $0 = `${numStr}${string}${''|`${`\n`}${string}`}`;
-  type numStr = `${number | ''}${string}${string}`;
+  type $0 = `${TnumStr}${string}${''|`\n${string}`}`;
+  type TnumStr = `${number | ''}${string}${string}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d*[amn]+)\\s\\n*/`,
     {
       $0: $0;
-      numStr: numStr
+      numStr: TnumStr
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_26 {
-  type $0 = `${conNum}`;
-  type conNum = `text ${number}${''|`${`\n`}${string}`}`;
+  type $0 = TconNum;
+  type TconNum = `text ${number}${''|`\n${string}`}`;
 
   export interface I extends Record<
     `/(?<conNum>text \\d\\n*)/`,
     {
       $0: $0;
-      conNum: conNum
+      conNum: TconNum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_27 {
-  type $0 = `${conNum}`;
-  type conNum = `text ${number}`;
+  type $0 = TconNum;
+  type TconNum = `text ${number}`;
 
   export interface I extends Record<
     `/(?<conNum>text \\d)/`,
     {
       $0: $0;
-      conNum: conNum
+      conNum: TconNum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_28 {
-  type $0 = `${num}`;
-  type num = `text ${number}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{2,3})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_29 {
-  type $0 = `${num}`;
-  type num = `text ${number}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{1,})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_30 {
-  type $0 = `${num}`;
-  type num = `text ${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{0,3})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_31 {
-  type $0 = `${num}`;
-  type num = `text ${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{0,})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_32 {
-  type $0 = `${num}`;
-  type num = `text ${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{0})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_33 {
-  type $0 = `${num}`;
-  type num = `text ${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{,3})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_34 {
-  type $0 = `${conNum}`;
-  type conNum = `text ${number}`;
+  type $0 = TconNum;
+  type TconNum = `text ${number}`;
 
   export interface I extends Record<
     `/(?<conNum>text [1-3])/`,
     {
       $0: $0;
-      conNum: conNum
+      conNum: TconNum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_35 {
-  type $0 = `${conNum}`;
-  type conNum = `text ${number}`;
+  type $0 = TconNum;
+  type TconNum = `text ${number}`;
 
   export interface I extends Record<
     `/(?<conNum>text [1-3]+)/`,
     {
       $0: $0;
-      conNum: conNum
+      conNum: TconNum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_36 {
-  type $0 = `${num}`;
-  type num = `text ${number}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number}`;
 
   export interface I extends Record<
     `/(?<num>text [1-3]{1,3})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_37 {
-  type $0 = `${num}`;
-  type num = `text ${number}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number}`;
 
   export interface I extends Record<
     `/(?<num>text [1-3]{1,})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_38 {
-  type $0 = `${num}`;
-  type num = `text ${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>text [1-3]{0,3})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_39 {
-  type $0 = `${num}`;
-  type num = `text ${number | ''}`;
+  type $0 = Tnum;
+  type Tnum = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<num>text [1-3]{,3})/`,
     {
       $0: $0;
-      num: num
+      num: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_40 {
-  type $0 = `${conNum}`;
-  type conNum = `text ${number | ''}`;
+  type $0 = TconNum;
+  type TconNum = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<conNum>text [1-3]?)/`,
     {
       $0: $0;
-      conNum: conNum
+      conNum: TconNum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_41 {
-  type $0 = `${conNum}`;
-  type conNum = `text ${number | ''}`;
+  type $0 = TconNum;
+  type TconNum = `text ${number | ''}`;
 
   export interface I extends Record<
     `/(?<conNum>text [1-3]*)/`,
     {
       $0: $0;
-      conNum: conNum
+      conNum: TconNum
     }
   > { '': '' }
 }
@@ -545,7 +545,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_42 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_43 {
-  type $0 = `${`t`}${string}`;
+  type $0 = `t${string}`;
 
   export interface I extends Record<
     `/t+/`,
@@ -556,7 +556,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_43 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_44 {
-  type $0 = `${''|`${`t`}${string}`}${number}`;
+  type $0 = `${''|`t${string}`}${number}`;
 
   export interface I extends Record<
     `/t*\\d/`,
@@ -567,7 +567,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_44 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_45 {
-  type $0 = `${`t`}${string}`;
+  type $0 = `t${string}`;
 
   export interface I extends Record<
     `/t{1,3}/`,
@@ -578,132 +578,132 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_45 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_46 {
-  type $0 = `${num | ''}${bum}`;
-  type num = `${number}`;
-  type bum = `aa`;
+  type $0 = `${Tnum | ''}${Tbum}`;
+  type Tnum = `${number}`;
+  type Tbum = `aa`;
 
   export interface I extends Record<
     `/(?<num>[1-3]+)?(?<bum>aa)/`,
     {
       $0: $0;
-      num?: num;
-      bum: bum
+      num?: Tnum;
+      bum: Tbum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_47 {
-  type $0 = `${txt | ''}`;
-  type txt = `5` | `${number}`;
+  type $0 = Ttxt | '';
+  type Ttxt = `5` | `${number}`;
 
   export interface I extends Record<
     `/(?<txt>5|\\d)?/`,
     {
       $0: $0;
-      txt?: txt
+      txt?: Ttxt
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_48 {
-  type $0 = `${txt}`;
-  type txt = `a\\\\\\\\|b` | `c` | `${`d` | ''}`;
+  type $0 = Ttxt;
+  type Ttxt = `a\\\\\\\\|b` | `c` | `${`d` | ''}`;
 
   export interface I extends Record<
     `/(?<txt>a\\\\\\\\\\|b|c|d?)/`,
     {
       $0: $0;
-      txt: txt
+      txt: Ttxt
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_49 {
-  type $0 = `${txt}`;
-  type txt = `a` | `s` | `f\\\\\\\\` | `b` | `c${number}` | `d` | `${string}`;
+  type $0 = Ttxt;
+  type Ttxt = `a` | `s` | `f\\\\\\\\` | `b` | `c${number}` | `d` | string;
 
   export interface I extends Record<
     `/(?<txt>a|s|f\\\\\\\\|b|c\\d|d|[-adf ])/`,
     {
       $0: $0;
-      txt: txt
+      txt: Ttxt
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_50 {
-  type $0 = `${optional1 | ''}` | `${optional2 | ''}${req | ''}`;
-  type optional1 = `opt1` | `opt`;
-  type optional2 = `opt2`;
-  type req = `req`;
+  type $0 = Toptional1 | `${Toptional2}${Treq}`;
+  type Toptional1 = `opt1` | `opt`;
+  type Toptional2 = `opt2`;
+  type Treq = `req`;
 
   export interface I extends Record<
     `/(?<optional1>opt1|opt)|(?<optional2>opt2)(?<req>req)/`,
     {
       $0: $0;
-      optional1?: optional1;
-      optional2?: optional2;
-      req?: req
+      optional1?: Toptional1;
+      optional2?: Toptional2;
+      req?: Treq
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_51 {
-  type $0 = `${num | ''}`;
-  type num = `${number}`;
+  type $0 = Tnum | '';
+  type Tnum = `${number}`;
 
   export interface I extends Record<
     `/(?<num>[1-3]+)?/`,
     {
       $0: $0;
-      num?: num
+      num?: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_52 {
-  type $0 = `${num | ''}`;
-  type num = `1` | `2`;
+  type $0 = Tnum | '';
+  type Tnum = `1` | `2`;
 
   export interface I extends Record<
     `/(?<num>1|2)?/`,
     {
       $0: $0;
-      num?: num
+      num?: Tnum
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_53 {
-  type $0 = `${r}`;
-  type r = `12${opt | ''}` | `${opt1 | ''}`;
-  type opt = ``;
-  type opt1 = ``;
+  type $0 = Tr;
+  type Tr = `12${Topt}` | Topt1;
+  type Topt = ``;
+  type Topt1 = ``;
 
   export interface I extends Record<
     `/(?<r>12(?<opt>)|(?<opt1>))/`,
     {
       $0: $0;
-      r: r;
-      opt?: opt;
-      opt1?: opt1
+      r: Tr;
+      opt?: Topt;
+      opt1?: Topt1
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_54 {
-  type $0 = `\\\\${str}${$2 | ''}${$3}`;
-  type str = `${string}${string}\${`;
+  type $0 = `\\\\${Tstr}${$2 | ''}${$3}`;
+  type Tstr = `${string}${string}\${`;
   type $2 = `\\\\ ${number}${string}`;
-  type $3 = `${$4 | ''}` | `${$5 | ''}`;
+  type $3 = $4 | $5;
   type $4 = `${number}{3,\${txt}\\${string}`;
-  type $5 = `\\\${txt}\\\\\${txt1}\\\\\\\${txt2}\\\\\\\\\${txt3}${string}` | `${string}`;
+  type $5 = `\\\${txt}\\\\\${txt1}\\\\\\\${txt2}\\\\\\\\\${txt3}${string}` | string;
 
   export interface I extends Record<
     `/\\\\(?<str>\\w+\${)(\\\\ \\d[1,2])?((\\d{3,\${txt}\\${string})|(\\\${txt}\\\\\${txt1}\\\\\\\${txt2}\\\\\\\\\${txt3}${string}|${string}))/`,
     {
       $0: $0;
-      str: str;
+      str: Tstr;
       $2?: $2;
       $3: $3;
       $4?: $4;
@@ -713,15 +713,15 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_54 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
-  type $0 = `${`(` | ''}<!>${string}${string}\${)${$1 | ''}${string}${$2}${name1}${string}`;
+  type $0 = `${`(` | ''}<!>${string}${string}\${)${$1 | ''}${string}${$2}${Tname1}${string}`;
   type $1 = `${string} ${number}${string}`;
-  type $2 = `${$3 | ''}` | `${$4 | ''}`;
+  type $2 = $3 | $4;
   type $3 = `${number}{3,\${txt}\\${string}`;
-  type $4 = `\${str}` | string | `${name | ''}${number}`;
-  type name = ``;
-  type name1 = `${opt1 | ''}` | `${opt2 | ''}` | ``;
-  type opt1 = ` (  `;
-  type opt2 = ` `;
+  type $4 = `\${str}` | string | `${Tname}${number}`;
+  type Tname = ``;
+  type Tname1 = Topt1 | Topt2 | ``;
+  type Topt1 = ` (  `;
+  type Topt2 = ` `;
 
   export interface I extends Record<
     `/\\(?<!>\\w+\${)(${string} \\d[1,2])?${string}((\\d{3,\${txt}\\${string})|(\${str}|${string}|(?<name>)[1479]))(?<name1>(?<opt1> \\\\\\(  )|(?<opt2> )|)${string}/`,
@@ -731,10 +731,10 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
       $2: $2;
       $3?: $3;
       $4?: $4;
-      name?: name;
-      name1: name1;
-      opt1?: opt1;
-      opt2?: opt2
+      name?: Tname;
+      name1: Tname1;
+      opt1?: Topt1;
+      opt2?: Topt2
     }
   > { '': '' }
 }
@@ -742,13 +742,13 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
 namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
   type $0 = `${$0th} ${string}in zero`;
   type $0th = `${$1th}${$4}${$3th}\\\\\\\\\\\\|\\\${ ${`(` | ''}<4>${$5th})`;
-  type $1th = `${$2nd | ''}`;
+  type $1th = $2nd | '';
   type $2nd = ``;
   type $4 = `nonamϭϰe` | ` `;
   type $3th = `${number}`;
-  type $5th = `${` `}${string}${$6th}Ϩ`;
+  type $5th = ` ${string}${$6th}Ϩ`;
   type $6th = `${$7th}${$10}{${number | ''}}${$11}{,}`;
-  type $7th = `${$8th}`;
+  type $7th = $8th;
   type $8th = ``;
   type $10 = ``;
   type $11 = ``;
@@ -788,54 +788,54 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_57 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_58 {
-  type $0 = `${before}${beforeSpaces}${hashes}${blockHashPosition}${associations | ''}${''|`${` `}${string}`}${info | ''}${beforeCommentSpaces}${comment}${U1}`;
-  type before = `` | `${`\n`}`;
-  type beforeSpaces = `${''|`${` `}${string}`}`;
-  type hashes = `${`#`}${string}`;
-  type blockHashPosition = `${string}`;
-  type associations = `${`_` | ''}${secretWidStr | ''}${modificators | ''}`;
-  type secretWidStr = `${''|`${string}${string}`}`;
-  type modificators = `${`!` | ''}`;
-  type info = `[${blockHeader | ''}]`;
-  type blockHeader = `${string}${string}`;
-  type beforeCommentSpaces = `${''|`${` `}${string}`}`;
-  type comment = `${string}${string}`;
+  type $0 = `${Tbefore}${TbeforeSpaces}${Thashes}${TblockHashPosition}${Tassociations | ''}${''|` ${string}`}${Tinfo | ''}${TbeforeCommentSpaces}${Tcomment}${U1}`;
+  type Tbefore = `` | `\n`;
+  type TbeforeSpaces = `${''|` ${string}`}`;
+  type Thashes = `#${string}`;
+  type TblockHashPosition = string;
+  type Tassociations = `${`_` | ''}${TsecretWidStr}${Tmodificators}`;
+  type TsecretWidStr = `${''|`${string}${string}`}`;
+  type Tmodificators = `${`!` | ''}`;
+  type Tinfo = `[${TblockHeader}]`;
+  type TblockHeader = `${string}${string}`;
+  type TbeforeCommentSpaces = `${''|` ${string}`}`;
+  type Tcomment = `${string}${string}`;
   
-  type U1 = ''; // `${`\n`}${''|`${` `}${string}`}#` | ``;
+  type U1 = ''; // `\n${''|` ${string}`}#` | ``;
 
   export interface I extends Record<
     `/(?<before>^|\\n)(?<beforeSpaces> *)(?<hashes>#{1,2})(?<blockHashPosition>${string})(?<associations>_?(?<secretWidStr>[${string}]*)(?<modificators>!?))? *(?<info>\\[(?<blockHeader>.+?)\\])?(?<beforeCommentSpaces> *)(?<comment>[\\w\\W]+?)(?=\\n *#|$)/g`,
     {
       $0: $0;
-      before: before;
-      beforeSpaces: beforeSpaces;
-      hashes: hashes;
-      blockHashPosition: blockHashPosition;
-      associations?: associations;
-      secretWidStr?: secretWidStr;
-      modificators?: modificators;
-      info?: info;
-      blockHeader?: blockHeader;
-      beforeCommentSpaces: beforeCommentSpaces;
-      comment: comment
+      before: Tbefore;
+      beforeSpaces: TbeforeSpaces;
+      hashes: Thashes;
+      blockHashPosition: TblockHashPosition;
+      associations?: Tassociations;
+      secretWidStr?: TsecretWidStr;
+      modificators?: Tmodificators;
+      info?: Tinfo;
+      blockHeader?: TblockHeader;
+      beforeCommentSpaces: TbeforeCommentSpaces;
+      comment: Tcomment
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
-  type $0 = `${bookn}${''|`${string}${string}`}${$4 | ''}`;
-  type bookn = `${number | ''}${U1}`;
-  type $2 = `${''|`${string}${string}`}${$3 | ''}`;
+  type $0 = `${Tbookn}${''|`${string}${string}`}${$4 | ''}`;
+  type Tbookn = `${number | ''}${U1}`;
+  type $2 = `${''|`${string}${string}`}${$3}`;
   type $3 = `${string}${string}`;
-  type $4 = `${chapterStr | ''}${$6 | ''}`;
-  type chapterStr = `${number}`;
-  type $6 = `${$7 | ''}${verseStr | ''}${$9 | ''}${U3 | ''}`;
+  type $4 = `${TchapterStr}${$6 | ''}`;
+  type TchapterStr = `${number}`;
+  type $6 = `${$7}${TverseStr}${$9}${U3 | ''}`;
   type $7 = `:` | `${string}${string}`;
-  type verseStr = `${U2 | ''}`;
-  type $9 = `${''|`${string}${string}`}${verseSeparator | ''}${''|`${string}${string}`}`;
-  type verseSeparator = `${string | ''}`;
+  type TverseStr = U2;
+  type $9 = `${''|`${string}${string}`}${TverseSeparator}${''|`${string}${string}`}`;
+  type TverseSeparator = `${string | ''}`;
   
-  type U1 = ''; // undefined & `${$2 | ''}`;
+  type U1 = ''; // undefined & $2;
   type U2 = ''; // undefined & `${number}`;
   type U3 = ''; // undefined & `finishVerseStr>${number}`;
 
@@ -843,16 +843,16 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
     `/(?<bookn>\\d?(?!(\\s*([а-яё]+))))\\s*((?<chapterStr>\\d{1,3})((:|\\s+)(?<verseStr>(?!\\d{1,3}))(\\s*(?<verseSeparator>[-,]?)\\s*)(?<!finishVerseStr>\\d{1,3})?)?)?/i`,
     {
       $0: $0;
-      bookn: bookn;
+      bookn: Tbookn;
       $2?: $2;
       $3?: $3;
       $4?: $4;
-      chapterStr?: chapterStr;
+      chapterStr?: TchapterStr;
       $6?: $6;
       $7?: $7;
-      verseStr?: verseStr;
+      verseStr?: TverseStr;
       $9?: $9;
-      verseSeparator?: verseSeparator
+      verseSeparator?: TverseSeparator
     }
   > { '': '' }
 }
@@ -860,11 +860,11 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
 namespace Nc1e1ffc130aead13aa199b62448b178c_60 {
   type $0 = `${U1}${$3} `;
   type $1 = `${U2} `;
-  type $2 = `abab${`a`}${string}`;
+  type $2 = `ababa${string}`;
   type $3 = `jaja`;
   
-  type U1 = `${$1}`;
-  type U2 = ''; // undefined & `${$2 | ''}`;
+  type U1 = $1;
+  type U2 = ''; // undefined & $2;
 
   export interface I extends Record<
     `/(?:((?!(ababa+?)) ))(jaja) /`,
@@ -880,11 +880,11 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_60 {
 namespace Nc1e1ffc130aead13aa199b62448b178c_61 {
   type $0 = `${U1}${string}${$3} `;
   type $1 = `${U2} `;
-  type $2 = `abab${`a`}${string}`;
+  type $2 = `ababa${string}`;
   type $3 = `job`;
   
-  type U1 = `${$1}`;
-  type U2 = ''; // undefined & `${$2 | ''}`;
+  type U1 = $1;
+  type U2 = ''; // undefined & $2;
 
   export interface I extends Record<
     `/(?:((?!(ababa+?)) ))[|](job) /`,
@@ -898,10 +898,10 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_61 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_62 {
-  type $0 = `${name}${U1}${$2}${U2 | ''}${name1}${U3}${$4}${U4}`;
-  type name = `n`;
+  type $0 = `${Tname}${U1}${$2}${U2 | ''}${Tname1}${U3}${$4}${U4}`;
+  type Tname = `n`;
   type $2 = `2`;
-  type name1 = `n1`;
+  type Tname1 = `n1`;
   type $4 = `4`;
   
   type U1 = `just 1`;
@@ -913,9 +913,9 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_62 {
     `/(?<name>n)(?:just 1)(2)(?im-s:just 2)?(?<name1>n1)(?<=just 3)(4)(?<!just 4)/i`,
     {
       $0: $0;
-      name: name;
+      name: Tname;
       $2: $2;
-      name1: name1;
+      name1: Tname1;
       $4: $4
     }
   > { '': '' }
@@ -961,11 +961,11 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_65 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_66 {
-  type $0 = `${U1}${$1th}${U2}${a}${string}${U3}${$3}${U4}{}${$4}`;
+  type $0 = `${U1}${$1th}${U2}${Ta}${string}${U3}${$3}${U4}{}${$4}`;
   type $1th = `first`;
-  type a = ` `;
+  type Ta = ` `;
   type $3 = `888`;
-  type $4 = `${$3}`;
+  type $4 = $3;
   
   type U1 = `&&`;
   type U2 = ` %%%`;
@@ -977,7 +977,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_66 {
     {
       $0: $0;
       $1th: $1th;
-      a: a;
+      a: Ta;
       $3: $3;
       $4: $4
     }
@@ -985,10 +985,10 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_66 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_67 {
-  type $0 = `${U1}${$1}${avva}${string}${U2} {}${avvva}`;
+  type $0 = `${U1}${$1}${Tavva}${string}${U2} {}${Tavvva}`;
   type $1 = `FF`;
-  type avva = ` JJJ`;
-  type avvva = `${avva}`;
+  type Tavva = ` JJJ`;
+  type Tavvva = Tavva;
   
   type U1 = `uN`;
   type U2 = `888`;
@@ -998,18 +998,18 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_67 {
     {
       $0: $0;
       $1: $1;
-      avva: avva;
-      avvva: avvva
+      avva: Tavva;
+      avvva: Tavvva
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_68 {
-  type $0 = `${U1}${$1}${U2}${a}${string}${U3}${$3}${U4}{}${$4}`;
+  type $0 = `${U1}${$1}${U2}${Ta}${string}${U3}${$3}${U4}{}${$4}`;
   type $1 = ``;
-  type a = ` `;
+  type Ta = ` `;
   type $3 = `888=BBB`;
-  type $4 = `${a}`;
+  type $4 = Ta;
   
   type U1 = ''; // undefined & `&&`;
   type U2 = ''; // undefined & ` %%%`;
@@ -1021,7 +1021,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_68 {
     {
       $0: $0;
       $1: $1;
-      a: a;
+      a: Ta;
       $3: $3;
       $4: $4
     }
@@ -1108,7 +1108,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_74 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_75 {
   type $0 = `${$1}\\\\${$1}`;
-  type $1 = `${string}`;
+  type $1 = string;
 
   export interface I extends Record<
     `/(${string})\\\\\\1/g`,
@@ -1133,27 +1133,27 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_76 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_77 {
-  type $0 = `${nnn}\\\\${nnn | ''} \\<nnn> `;
-  type nnn = `\\\${n}`;
+  type $0 = `${Tnnn}\\\\${Tnnn | ''} \\<nnn> `;
+  type Tnnn = `\\\${n}`;
 
   export interface I extends Record<
     `/(?<nnn>\\\${n})\\\\\\k<nnn>? \\<nnn> /g`,
     {
       $0: $0;
-      nnn: nnn
+      nnn: Tnnn
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_78 {
-  type $0 = `${a}${a}`;
-  type a = `\\\${2}`;
+  type $0 = `${Ta}${Ta}`;
+  type Ta = `\\\${2}`;
 
   export interface I extends Record<
     `/(?<a>\\\${2})\\k<a>/g`,
     {
       $0: $0;
-      a: a
+      a: Ta
     }
   > { '': '' }
 }
@@ -1173,7 +1173,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_79 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_80 {
   type $0 = `${$1}${string}\\${string}\\${string}`;
-  type $1 = `[\\${''|`${`\\ `}${string}`}`;
+  type $1 = `[\\${''|`\\ ${string}`}`;
 
   export interface I extends Record<
     `/(\\[^\\\\ *)\\W\\\\s\\S\\\\S/g`,
@@ -1222,7 +1222,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_83 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_84 {
-  type $0 = `${`\n`}`;
+  type $0 = `\n`;
 
   export interface I extends Record<
     `/\\n/g`,
@@ -1246,7 +1246,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_85 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_86 {
-  type $0 = `${string}`;
+  type $0 = string;
 
   export interface I extends Record<
     `/\\u/g`,
@@ -1257,11 +1257,11 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_86 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_87 {
-  type $0 = `${U1}${$1}c${$2}`;
+  type $0 = `${U1}${$1 | ''}c${$2}`;
   type $1 = `b`;
   type $2 = ``;
   
-  type U1 = `a` | `${$1 | ''}`;
+  type U1 = `a` | $1;
 
   export interface I extends Record<
     `/(?:a|(b))\\1c()/`,
@@ -1287,27 +1287,27 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_88 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_89 {
-  type $0 = `${self}${self}`;
-  type self = `s`;
+  type $0 = `${Tself}${Tself}`;
+  type Tself = `s`;
 
   export interface I extends Record<
     `/\\k<self>(?<self>s)/`,
     {
       $0: $0;
-      self: self
+      self: Tself
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_90 {
-  type $0 = `${self}`;
-  type self = ``;
+  type $0 = Tself;
+  type Tself = ``;
 
   export interface I extends Record<
     `/(?<self>)/`,
     {
       $0: $0;
-      self: self
+      self: Tself
     }
   > { '': '' }
 }
@@ -1331,9 +1331,9 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_91 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_92 {
   type $0 = `${U1}c`;
-  type $1 = `${string}`;
+  type $1 = string;
   
-  type U1 = ''; // `${$1}`;
+  type U1 = ''; // $1;
 
   export interface I extends Record<
     `/(?<=([ab])+)c/`,
@@ -1348,7 +1348,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_93 {
   type $0 = `c${U1}`;
   type $1 = `ab`;
   
-  type U1 = ''; // `${$1}`;
+  type U1 = ''; // $1;
 
   export interface I extends Record<
     `/c(?=(ab))/`,
@@ -1366,8 +1366,8 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_94 {
   type $3 = `c`;
   type $4 = `bc`;
   
-  type U1 = `${$1 | ''}` | `${$2 | ''}`;
-  type U2 = `${$3 | ''}` | `${$4 | ''}`;
+  type U1 = $1 | $2;
+  type U2 = $3 | $4;
 
   export interface I extends Record<
     `/(?:(a)|(ab))(?:(c)|(bc))/`,
@@ -1393,10 +1393,10 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_95 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_96 {
-  type $0 = `${U1}${''|`${`a`}${string}`}b${$1}`;
-  type $1 = `${`a`}${string}`;
+  type $0 = `${U1}${''|`a${string}`}b${$1}`;
+  type $1 = `a${string}`;
   
-  type U1 = ''; // `${$1}`;
+  type U1 = ''; // $1;
 
   export interface I extends Record<
     `/(?=(a+))a*b\\1/`,
@@ -1421,7 +1421,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_97 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_98 {
-  type $0 = `${U1}`;
+  type $0 = U1;
   type $1 = `${string}${string}`;
   type $2 = `${string}${string}`;
   
@@ -1438,15 +1438,19 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_98 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_99 {
-  type $0 = `${U1}${number}${U2 | ''}`;
+  type $0 = `${U1}${Tsign}${number}${U2 | ''}`;
+  type Tsign = `${`-` | ''}`;
+  type $2 = `${number}`;
   
   type U1 = ''; // `$`;
-  type U2 = `.${number}`;
+  type U2 = `.${$2}`;
 
   export interface I extends Record<
-    `/(?<=\\$)\\d+(?:\\.\\d+)?/`,
+    `/(?<=\\$)(?<sign>-?)\\d+(?:\\.(\\d+))?/`,
     {
-      $0: $0
+      $0: $0;
+      sign: Tsign;
+      $2: $2
     }
   > { '': '' }
 }
@@ -1466,7 +1470,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_100 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_101 {
   type $0 = `${U1}=${$1}${$2}${$1}`;
-  type $1 = `${string}`;
+  type $1 = string;
   type $2 = `${string | ''}`;
   
   type U1 = `title` | `name`;
@@ -1493,9 +1497,9 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_102 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_103 {
-  type $0 = `${$1}${string | ''}text between${string}${groupName | ''}${$3 | ''}`;
+  type $0 = `${$1}${string | ''}text between${string}${TgroupName | ''}${$3 | ''}`;
   type $1 = `1`;
-  type groupName = `named group`;
+  type TgroupName = `named group`;
   type $3 = ` `;
 
   export interface I extends Record<
@@ -1503,7 +1507,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_103 {
     {
       $0: $0;
       $1: $1;
-      groupName?: groupName;
+      groupName?: TgroupName;
       $3?: $3
     }
   > { '': '' }
