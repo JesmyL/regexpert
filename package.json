@@ -1,7 +1,7 @@
 {
   "name": "regexpert",
   "description": "Make types for your RegExp",
-  "version": "0.0.73",
+  "version": "0.0.74",
   "type": "module",
   "main": "./build/regexpert.umd.cjs",
   "module": "./build/regexpert.js",
