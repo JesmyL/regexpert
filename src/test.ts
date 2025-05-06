@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { makeNamedRegExp } from '../types/model';
 
 const getValue = <Value>(_: Value) => {};
@@ -87,21 +89,25 @@ getKeys<`str` | `$3` | `$0`, `$2` | `$4` | `$5`>(
 
 const veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString = `str`;
 
-makeNamedRegExp(
-  `/\\(?<!>\\w+\${)(${
-    //
-    veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString
-    //
-    //
-  } \\d[1,2])?${str}((\\d{3,\${txt}\\${str})|(\${str}|${
-    a.b
-  }|(?<name>)[1479]))(?<name1>(?<opt1> \\\\\\(  )|(?<opt2> )|)${veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString}/`,
-).transform(arg).name1;
+getValue(
+  makeNamedRegExp(
+    `/\\(?<!>\\w+\${)(${
+      //
+      veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString
+      //
+      //
+    } \\d[1,2])?${str}((\\d{3,\${txt}\\${str})|(\${str}|${
+      a.b
+    }|(?<name>)[1479]))(?<name1>(?<opt1> \\\\\\(  )|(?<opt2> )|)${veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString}/`,
+  ).transform(arg).name1,
+);
 
-makeNamedRegExp(
-  // ``,
-  `/(?<$0th>(?<$1th>(?<$2nd>){,3})(nonamϭϰe| )+(?<$3th>\\d{2,3}){2,3}\\\\\\\\\\\\\\|\\\${ \\(?<$4>(?<$5th> {3,5}(?<$6th>(?<$7th>(?<$8th>))(){[234]?}(){,})Ϩ)\\)) ${str}in zero/gim`,
-).transform(arg).$0;
+getValue(
+  makeNamedRegExp(
+    // ``,
+    `/(?<$0th>(?<$1th>(?<$2nd>){,3})(nonamϭϰe| )+(?<$3th>\\d{2,3}){2,3}\\\\\\\\\\\\\\|\\\${ \\(?<$4>(?<$5th> {3,5}(?<$6th>(?<$7th>(?<$8th>))(){[234]?}(){,})Ϩ)\\)) ${str}in zero/gim`,
+  ).transform(arg).$0,
+);
 
 getKeys<`$0` | `$0th` | `$2`>(makeNamedRegExp(`/(?<$0th> |sds )(noname|)/gim`).transform(arg));
 
@@ -236,6 +242,20 @@ getValue<{ $0: `${string} ${string} ${string} ${string}  ` }>(
 getValue<{ $0: `1${string | ''}text between${string}${`named group` | ''}${' ' | ''}` }>(
   makeNamedRegExp(`/(1)\\s?text between\\s(?<groupName>named group)?( )?/`).transform(arg),
 );
+
+const avvas = `(NI)`;
+const justStr = `AI${avvas}N`;
+const sym = `R${justStr}`;
+const uniqueConstString = `(T${sym}G)`;
+
+getValue<{
+  $0: `text TRAINING \\\${with} inserts ${'3' | ''} TRAINING`;
+  $1: 'TRAINING';
+  $2: 'NI';
+  $3?: '3';
+  $4: 'TRAINING';
+  $5: 'NI';
+}>(makeNamedRegExp(`/text ${uniqueConstString} \\\${with} inserts (3)? ${uniqueConstString}/`).transform(arg));
 
 // // todo:
 // // \P{Script_Extensions=Latin}

@@ -9,8 +9,8 @@ export type GroupInfo = {
   isOptChildren: boolean;
   groupStr: string;
   groupSymbol: GroupStubSymbol;
-  groupContent: string;
-  groupKey: string;
+  content: string;
+  key: string;
   name: GroupName;
   isNumName: boolean;
   parent: GroupInfo | null;

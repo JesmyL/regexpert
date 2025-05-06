@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-constant-condition */
 import { makeNamedRegExp } from './makeNamedRegExp';
 
 const printMatch = (
@@ -32,7 +34,7 @@ export const testMaker = () => {
   if (0) {
     const regs = makeNamedRegExp(`/(?:a|(b))\\1c/`);
 
-    regs.transform(arg).$0;
+    console.info(regs.transform(arg).$0);
 
     // OK
     printMatch(regs, 'ac'); // ac

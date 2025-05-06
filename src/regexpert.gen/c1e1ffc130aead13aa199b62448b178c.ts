@@ -718,10 +718,10 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
   type $2 = `\\\\ ${number}${string}`;
   type $3 = $4 | $5;
   type $4 = `${number}{3,\${txt}\\${string}`;
-  type $5 = `\\\${txt}\\\\\${txt1}\\\\\\\${txt2}\\\\\\\\\${txt3}${string}` | string;
+  type $5 = `\\\${txt}\\\\\${txt1}\\\\\\\${txt2}\\\\\\\\\${txt3}123` | string;
 
   export interface I extends Record<
-    `/\\\\(?<str>\\w+\${)(\\\\ \\d[1,2])?((\\d{3,\${txt}\\${string})|(\\\${txt}\\\\\${txt1}\\\\\\\${txt2}\\\\\\\\\${txt3}${string}|${string}))/`,
+    `/\\\\(?<str>\\w+\${)(\\\\ \\d[1,2])?((\\d{3,\${txt}\\${string})|(\\\${txt}\\\\\${txt1}\\\\\\\${txt2}\\\\\\\\\${txt3}123|${string}))/`,
     {
       $0: $0;
       str: $str;
@@ -734,7 +734,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
-  type $0 = `${`(` | ''}<!>${string}${string}\${)${$1 | ''}${string}${$2}${$name1}${string}`;
+  type $0 = `${`(` | ''}<!>${string}${string}\${)${$1 | ''}123${$2}${$name1}str`;
   type $1 = `${string} ${number}${string}`;
   type $2 = $3 | $4;
   type $3 = `${number}{3,\${txt}\\${string}`;
@@ -745,7 +745,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
   type $opt2 = ` `;
 
   export interface I extends Record<
-    `/\\(?<!>\\w+\${)(${string} \\d[1,2])?${string}((\\d{3,\${txt}\\${string})|(\${str}|${string}|(?<name>)[1479]))(?<name1>(?<opt1> \\\\\\(  )|(?<opt2> )|)${string}/`,
+    `/\\(?<!>\\w+\${)(${string} \\d[1,2])?123((\\d{3,\${txt}\\${string})|(\${str}|${string}|(?<name>)[1479]))(?<name1>(?<opt1> \\\\\\(  )|(?<opt2> )|)str/`,
     {
       $0: $0;
       $1?: $1;
@@ -761,7 +761,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_57 {
-  type $0 = `${$0th} ${string}in zero`;
+  type $0 = `${$0th} 123in zero`;
   type $0th = `${$1th}${$4}${$3th}\\\\\\\\\\\\|\\\${ ${`(` | ''}<4>${$5th})`;
   type $1th = $2nd | '';
   type $2nd = ``;
@@ -775,7 +775,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_57 {
   type $11 = ``;
 
   export interface I extends Record<
-    `/(?<$0th>(?<$1th>(?<$2nd>){,3})(nonamϭϰe| )+(?<$3th>\\d{2,3}){2,3}\\\\\\\\\\\\\\|\\\${ \\(?<$4>(?<$5th> {3,5}(?<$6th>(?<$7th>(?<$8th>))(){[234]?}(){,})Ϩ)\\)) ${string}in zero/gim`,
+    `/(?<$0th>(?<$1th>(?<$2nd>){,3})(nonamϭϰe| )+(?<$3th>\\d{2,3}){2,3}\\\\\\\\\\\\\\|\\\${ \\(?<$4>(?<$5th> {3,5}(?<$6th>(?<$7th>(?<$8th>))(){[234]?}(){,})Ϩ)\\)) 123in zero/gim`,
     {
       $0: $0;
       $0th: $0th;
@@ -819,7 +819,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
   type $modificators = `${`!` | ''}`;
   type $info = `[${$blockHeader}]`;
   type $blockHeader = `${string}${string}`;
-  type $beforeCommentSpaces = `${''|` ${string}`}`;
+  type $beforeCommentSpaces = $beforeSpaces;
   type $comment = `${string}${string}`;
   
   type U1 = ''; // `\n${''|` ${string}`}#` | ``;
@@ -1444,7 +1444,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_98 {
 namespace Nc1e1ffc130aead13aa199b62448b178c_99 {
   type $0 = U1;
   type $1 = `${string}${string}`;
-  type $2 = `${string}${string}`;
+  type $2 = $1;
   
   type U1 = ''; // `${$1}${$2}`;
 
@@ -1530,6 +1530,27 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_104 {
       $1: $1;
       groupName?: $groupName;
       $3?: $3
+    }
+  > { '': '' }
+}
+
+namespace Nc1e1ffc130aead13aa199b62448b178c_105 {
+  type $0 = `text ${$1} \\\${with} inserts ${$3 | ''} ${$4}`;
+  type $1 = `TRAI${$2}NG`;
+  type $2 = `NI`;
+  type $3 = `3`;
+  type $4 = `TRAI${$5}NG`;
+  type $5 = $2;
+
+  export interface I extends Record<
+    `/text (TRAI(NI)NG) \\\${with} inserts (3)? (TRAI(NI)NG)/`,
+    {
+      $0: $0;
+      $1: $1;
+      $2: $2;
+      $3?: $3;
+      $4: $4;
+      $5: $5
     }
   > { '': '' }
 }
@@ -1638,6 +1659,7 @@ interface _GlobalScopedNamedRegExpMakerGeneratedTypes
     Nc1e1ffc130aead13aa199b62448b178c_101.I,
     Nc1e1ffc130aead13aa199b62448b178c_102.I,
     Nc1e1ffc130aead13aa199b62448b178c_103.I,
-    Nc1e1ffc130aead13aa199b62448b178c_104.I {
+    Nc1e1ffc130aead13aa199b62448b178c_104.I,
+    Nc1e1ffc130aead13aa199b62448b178c_105.I {
     '': ''
 }
