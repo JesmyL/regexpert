@@ -248,8 +248,6 @@ export class TransformProcess {
             parent: null,
             isNever: false,
           };
-
-          console.log(groupSymbolToInfoDict[groupSymbol]);
         }
 
         const groupTypeParts: string[] = [];
