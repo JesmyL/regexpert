@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import eslint from 'vite-plugin-eslint';
 import { regExpertVitePlugin } from './src/plugin';
 
 export default defineConfig(() => {
@@ -15,6 +16,12 @@ export default defineConfig(() => {
         external: ['node:fs'],
       },
     },
-    plugins: [regExpertVitePlugin()],
+    plugins: [
+      regExpertVitePlugin(),
+      eslint({
+        emitWarning: false,
+        failOnError: true,
+      }),
+    ],
   };
 });

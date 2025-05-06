@@ -19,7 +19,7 @@ export const regExpertVitePlugin: typeof pluginMaker = pluginOptions => {
         return;
       }
 
-      let content = await pluginUtils.readFileAsync(src);
+      const content = await pluginUtils.readFileAsync(src);
       const importNameMatch = pluginUtils.matchImport(content);
 
       if (importNameMatch === null) {
