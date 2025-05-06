@@ -11,7 +11,8 @@ export type GroupInfo = {
   groupSymbol: GroupStubSymbol;
   groupContent: string;
   groupKey: string;
-  groupName: GroupName;
+  name: GroupName;
+  isNumName: boolean;
   parent: GroupInfo | null;
   isNever: boolean;
   isHasSubTypes: boolean;
@@ -23,7 +24,7 @@ export const enum StubSymbol {
 }
 
 export const enum GroupStubSymbol {
-  zero = '*0',
+  zero = '****',
 }
 
 export const enum GroupName {

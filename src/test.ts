@@ -10,6 +10,7 @@ const arg: [``] = [``];
 getValue<string>(makeNamedRegExp(`/(?<str>\\w+)/`).transform(arg).str);
 getValue<string>(makeNamedRegExp(`/(?<str>\\w?)/`).transform(arg).str);
 getValue<string>(makeNamedRegExp(`/(?<str>a?)/`).transform(arg).str);
+getValue<string>(makeNamedRegExp(`/(?<str>\\w+)()(?<$stri> )(?<$str>   (?<$$str>))/`).transform(arg).str);
 
 getValue<`text`>(makeNamedRegExp(`/(?<val>text)/`).transform(arg).val);
 getValue<`text ${number}${string}`>(makeNamedRegExp(`/(?<val>text \\d+)/`).transform(arg).val);

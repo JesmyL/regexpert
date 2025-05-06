@@ -27,6 +27,7 @@ export class TransformProcess {
   closeParenthesisStubSymbol = StubSymbol.def;
 
   flags = {} as Record<StrRegExpFlag, boolean>;
+  groupNameToSymbolDict = {} as Record<GroupName, GroupStubSymbol>;
 
   constructor(
     private pluginOptions: PluginOptions = {
@@ -110,7 +111,7 @@ export class TransformProcess {
 
       let countableGroupi = 0;
       let uncountableGroupi = 0;
-      const groupNameToSymbolDict = {} as Record<GroupName, GroupStubSymbol>;
+      this.groupNameToSymbolDict = {} as Record<GroupName, GroupStubSymbol>;
       const groupStubSymbols = this.setStubSymbols(userWritedRegStr);
 
       const groups: Record<number, string> = {};
@@ -141,185 +142,203 @@ export class TransformProcess {
         symbolGroupsDict,
       });
 
-      const groupSymbols = Object.values(groupSymbolsDict);
-      const countableGroupSymbols = Object.values(countableGroupSymbolsDict);
+      try {
+        const groupSymbols = Object.values(groupSymbolsDict);
+        const countableGroupSymbols = Object.values(countableGroupSymbolsDict);
 
-      const groupIndexes = Object.keys(groups).map(Number).sort(this.sortGroupIndexes);
-      const uncountableGroupSymbolToInfoDict: Partial<Record<GroupStubSymbol, GroupInfo>> = {};
+        const groupIndexes = Object.keys(groups).map(Number).sort(this.sortGroupIndexes);
+        const uncountableGroupSymbolToInfoDict: Partial<Record<GroupStubSymbol, GroupInfo>> = {};
 
-      const isEachGroupIsOptional = regStr
-        .replace(
-          makeRegExp(`/\\[([^${this.stringStubSymbol}]+?)\\](${this.quantifierRegStr}|)/g`),
-          this.stringStubSymbol,
-        )
-        .includes('|');
+        const isEachGroupIsOptional = regStr
+          .replace(
+            makeRegExp(`/\\[([^${this.stringStubSymbol}]+?)\\](${this.quantifierRegStr}|)/g`),
+            this.stringStubSymbol,
+          )
+          .includes('|');
 
-      const groupSymbolToInfoDict: Record<GroupStubSymbol, GroupInfo> = {
-        [GroupStubSymbol.zero]: {
-          isRoot: true,
-          isOpt: false,
-          isOptChildren: isEachGroupIsOptional,
-          isOptAsChild: false,
-          groupName: GroupName.zero,
-          groupSymbol: GroupStubSymbol.zero,
-          groupStr: regStr,
-          groupContent: regStr,
-          groupKey: '',
-          isHasSubTypes: this.checkIsHasSubTypes(regStr, groupSymbols),
-          isCountable: true,
-          parent: null,
-          isNever: false,
-        },
-      };
+        const groupSymbolToInfoDict: Record<GroupStubSymbol, GroupInfo> = {
+          [GroupStubSymbol.zero]: {
+            isRoot: true,
+            isOpt: false,
+            isOptChildren: isEachGroupIsOptional,
+            isOptAsChild: false,
+            name: GroupName.zero,
+            groupSymbol: GroupStubSymbol.zero,
+            groupStr: regStr,
+            groupContent: regStr,
+            groupKey: '',
+            isHasSubTypes: this.checkIsHasSubTypes(regStr, groupSymbols),
+            isCountable: true,
+            parent: null,
+            isNever: false,
+            isNumName: true,
+          },
+        };
 
-      for (const groupIndex of groupIndexes) {
-        const groupStr = groups[groupIndex];
-        const groupNameMatch = groupStr.match(makeRegExp('/\\((\\?(?:<[!=]|<([^>]*?)>|))?/'));
+        for (const groupIndex of groupIndexes) {
+          const groupStr = groups[groupIndex];
+          const groupNameMatch = groupStr.match(makeRegExp('/\\((\\?(?:<[!=]|<([^>]*?)>|))?/'));
 
-        if (groupNameMatch === null) throw 'Incorrect RegExp group';
-        const matchedGroupName = groupNameMatch[2] as GroupName | undefined;
-        const isNoname = matchedGroupName === undefined;
+          if (groupNameMatch === null) throw '#Incorrect RegExp group';
+          const matchedGroupName = groupNameMatch[2] as GroupName | undefined;
+          const isNoname = matchedGroupName === undefined;
 
-        if (!isNoname) {
-          if (matchedGroupName === GroupName.empty) throw 'Group name can not be empty - <>';
-          if (matchedGroupName.match(makeRegExp('/^\\d|[^$_\\w]/')))
-            throw `Incorrect group name - <${matchedGroupName}>`;
-        }
+          if (!isNoname) {
+            if (matchedGroupName === GroupName.empty) throw '#Group name can not be empty - <>';
+            if (matchedGroupName.match(makeRegExp('/^\\d|[^$_\\w]/')))
+              throw `#Incorrect group name - <${matchedGroupName}>`;
+          }
 
-        const groupSymbol = groupSymbolsDict[groupIndex];
+          const groupSymbol = groupSymbolsDict[groupIndex];
 
-        const isUncountable = isNoname && groupNameMatch[1] !== undefined;
+          const isUncountable = isNoname && groupNameMatch[1] !== undefined;
 
-        const isOptAsChild =
-          isEachGroupIsOptional ||
-          this.checkIsGroupOptional(groupStr) ||
-          Object.values(groupSymbolToInfoDict).some(({ groupStr, isOpt, isOptChildren }) => {
-            if (!groupStr.includes(groupSymbol)) return false;
-            return isOpt || isOptChildren;
-          });
+          const isOptAsChild =
+            isEachGroupIsOptional ||
+            this.checkIsGroupOptional(groupStr) ||
+            Object.values(groupSymbolToInfoDict).some(({ groupStr, isOpt, isOptChildren }) => {
+              if (!groupStr.includes(groupSymbol)) return false;
+              return isOpt || isOptChildren;
+            });
 
-        if (isUncountable) {
-          const { groupContent, groupKey } = this.extractGroupKeyAndContent(groupStr);
-          const groupName = `${++uncountableGroupi}` as GroupName;
+          if (isUncountable) {
+            const { groupContent, groupKey } = this.extractGroupKeyAndContent(groupStr);
+            const groupName = `${++uncountableGroupi}` as GroupName;
 
-          uncountableGroupSymbolToInfoDict[groupSymbol] = {
+            uncountableGroupSymbolToInfoDict[groupSymbol] = {
+              isRoot: false,
+              isOpt: false,
+              isOptChildren: groupKey.includes('!') || groupContent.includes('|'),
+              isOptAsChild,
+              groupContent,
+              groupKey,
+              name: groupName,
+              groupStr,
+              groupSymbol,
+              isHasSubTypes: false,
+              isCountable: false,
+              parent: null,
+              isNever: false,
+              isNumName: false,
+            };
+
+            continue;
+          }
+
+          const groupContent = groupStr.slice(isNoname ? 1 : matchedGroupName.length + 4, groupStr.lastIndexOf(')'));
+          const isOptChildren = isEachGroupIsOptional || groupContent.includes('|');
+
+          countableGroupi++;
+          const groupName = matchedGroupName ?? (`$${countableGroupi}` as GroupName);
+          this.groupNameToSymbolDict[groupName] = groupSymbol;
+
+          groupSymbolToInfoDict[groupSymbol] = {
             isRoot: false,
             isOpt: false,
-            isOptChildren: groupKey.includes('!') || groupContent.includes('|'),
+            isOptChildren,
             isOptAsChild,
-            groupContent,
-            groupKey,
-            groupName,
             groupStr,
             groupSymbol,
-            isHasSubTypes: false,
-            isCountable: false,
+            name: groupName,
+            isNumName: matchedGroupName == null,
+            groupContent,
+            groupKey: '',
+            isHasSubTypes: this.checkIsHasSubTypes(groupStr, groupSymbols),
+            isCountable: true,
             parent: null,
             isNever: false,
           };
 
-          continue;
+          console.log(groupSymbolToInfoDict[groupSymbol]);
         }
 
-        const groupContent = groupStr.slice(isNoname ? 1 : matchedGroupName.length + 4, groupStr.lastIndexOf(')'));
-        const isOptChildren = isEachGroupIsOptional || groupContent.includes('|');
+        const groupTypeParts: string[] = [];
+        const groupTypeContentsDict = {} as Record<GroupName, string>;
+        const uncountableGroupPartTypes: string[] = [];
+        const recordFieldsTypes: string[] = [];
+        const wholeGroupSymbolToInfoDict = { ...groupSymbolToInfoDict, ...uncountableGroupSymbolToInfoDict };
+        this.setGroupInfoParents(wholeGroupSymbolToInfoDict);
 
-        countableGroupi++;
-        const groupName = matchedGroupName ?? (`$${countableGroupi}` as GroupName);
-        groupNameToSymbolDict[groupName] = groupSymbol;
+        Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
+          if (groupInfo.isRoot) return;
 
-        groupSymbolToInfoDict[groupSymbol] = {
-          isRoot: false,
-          isOpt: false,
-          isOptChildren,
-          isOptAsChild,
-          groupStr,
-          groupSymbol,
-          groupName,
-          groupContent,
-          groupKey: '',
-          isHasSubTypes: this.checkIsHasSubTypes(groupStr, groupSymbols),
-          isCountable: true,
-          parent: null,
-          isNever: false,
-        };
-      }
+          groupInfo.isNever = this.checkIsGroupNever(groupInfo);
 
-      const groupTypeParts: string[] = [];
-      const groupTypeContentsDict = {} as Record<GroupName, string>;
-      const uncountableGroupPartTypes: string[] = [];
-      const recordFieldsTypes: string[] = [];
-      const wholeGroupSymbolToInfoDict = { ...groupSymbolToInfoDict, ...uncountableGroupSymbolToInfoDict };
-      this.setGroupInfoParents(wholeGroupSymbolToInfoDict);
-
-      Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
-        if (groupInfo.isRoot) return;
-
-        groupInfo.isNever = this.checkIsGroupNever(groupInfo);
-
-        groupInfo.isOpt ||= this.checkIsOptionalQuantifier(
-          groupInfo.groupStr.slice(groupInfo.groupStr.lastIndexOf(')') + 1),
-        );
-
-        groupInfo.isOptAsChild ||= this.someOfGroupParents(
-          groupInfo,
-          parentInfo => parentInfo.isOpt || parentInfo.isOptChildren,
-        );
-      });
-
-      Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
-        if (groupTypeContentsDict[groupInfo.groupName] !== undefined)
-          throw `Inclusive group name - <${groupInfo.groupName}>`;
-        groupTypeContentsDict[groupInfo.groupName] = this.makeGroupTypeFromGroupContent({
-          wholeGroupSymbolToInfoDict,
-          groupStubSymbols,
-          groupInfo,
-          groupNameToSymbolDict,
-          countableGroupSymbols,
-        });
-      });
-
-      Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
-        const typeContent = `${groupInfo.isNever && !groupInfo.isCountable ? 'undefined & ' : ''}${
-          groupTypeContentsDict[groupInfo.groupName]
-        }`;
-
-        if (groupInfo.isCountable) {
-          const typeName = this.makeGroupTypeName(groupInfo.groupName);
-
-          recordFieldsTypes.push(
-            `${groupInfo.groupName}${
-              groupInfo.isOpt || groupInfo.isOptAsChild || groupInfo.isNever ? '?' : ''
-            }: ${typeName}`,
+          groupInfo.isOpt ||= this.checkIsOptionalQuantifier(
+            groupInfo.groupStr.slice(groupInfo.groupStr.lastIndexOf(')') + 1),
           );
-          groupTypeParts.push(`type ${typeName} = ${typeContent};`);
-        } else {
-          const typeName = this.makeUncountableGroupTypeName(groupInfo.groupName);
 
-          if (!groupInfo.isCountable && groupInfo.groupKey !== ':') {
-            uncountableGroupPartTypes.push(`type ${typeName} = ''; // ${typeContent};`);
-          } else uncountableGroupPartTypes.push(`type ${typeName} = ${typeContent};`);
-        }
-      });
+          groupInfo.isOptAsChild ||= this.someOfGroupParents(
+            groupInfo,
+            parentInfo => parentInfo.isOpt || parentInfo.isOptChildren,
+          );
+        });
 
-      const typeKey = this.makeRegTypeKey(regStrForTypeKey, regFlags);
+        Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
+          if (groupTypeContentsDict[groupInfo.name] !== undefined) throw `#Inclusive group name - <${groupInfo.name}>`;
+          groupTypeContentsDict[groupInfo.name] = this.makeGroupTypeFromGroupContent({
+            wholeGroupSymbolToInfoDict,
+            groupStubSymbols,
+            groupInfo,
+            countableGroupSymbols,
+          });
+        });
 
-      if (registeredTypeKeysSet.has(typeKey)) continue;
-      registeredTypeKeysSet.add(typeKey);
+        Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
+          if (groupInfo.isCountable) {
+            const typeName = this.makeGroupTypeName(groupInfo);
 
-      if (uncountableGroupPartTypes.length) uncountableGroupPartTypes.unshift('');
+            recordFieldsTypes.push(
+              `${groupInfo.name}${
+                groupInfo.isOpt || groupInfo.isOptAsChild || groupInfo.isNever ? '?' : ''
+              }: ${typeName}`,
+            );
 
-      namespaces.push(
-        `namespace ${this.makeNamespaceTypeName('', namespaces.length)} {\n  ${
-          //
-          groupTypeParts.concat(uncountableGroupPartTypes).join('\n  ')
-        }\n\n  export interface I extends Record<\n    ${typeKey},\n    ${
-          this.flags.i ? 'IgnoreCaseRecord<' : ''
-        }{\n      ${
-          //
-          recordFieldsTypes.join(';\n      ')
-        }\n    }${this.flags.i ? '>' : ''}\n  > { '': '' }\n}`,
-      );
+            groupTypeParts.push(`type ${typeName} = ${groupTypeContentsDict[groupInfo.name]};`);
+          } else {
+            uncountableGroupPartTypes.push(
+              `type ${this.makeUncountableGroupTypeName(groupInfo.name)} = ${
+                //
+                groupInfo.groupKey !== ':' ? "''; // " : ''
+              }${groupInfo.isNever ? 'undefined & ' : ''}${
+                //
+                groupTypeContentsDict[groupInfo.name]
+              };`,
+            );
+          }
+        });
+
+        const typeKey = this.makeRegTypeKey(regStrForTypeKey, regFlags);
+
+        if (registeredTypeKeysSet.has(typeKey)) continue;
+        registeredTypeKeysSet.add(typeKey);
+
+        if (uncountableGroupPartTypes.length) uncountableGroupPartTypes.unshift('');
+
+        namespaces.push(
+          `namespace ${this.makeNamespaceTypeName('', namespaces.length)} {\n  ${
+            //
+            groupTypeParts.concat(uncountableGroupPartTypes).join('\n  ')
+          }\n\n  export interface I extends Record<\n    ${typeKey},\n    ${
+            this.flags.i ? 'IgnoreCaseRecord<' : ''
+          }{\n      ${
+            //
+            recordFieldsTypes.join(';\n      ')
+          }\n    }${this.flags.i ? '>' : ''}\n  > { '': '' }\n}`,
+        );
+      } catch (error) {
+        const typeKey = this.makeRegTypeKey(regStrForTypeKey, regFlags);
+        if (!`${error}`.startsWith('#')) throw error;
+
+        namespaces.push(
+          `namespace ${this.makeNamespaceTypeName(
+            '',
+            namespaces.length,
+          )} {\n  export interface I extends Record<\n    ${typeKey},\n    \`${`${error}`
+            .slice(1)
+            .replace(makeRegExp('/`/g'), '\\`')}\`> { '': '' }\n}`,
+        );
+      }
     }
 
     if (!namespaces.length) return null;
@@ -333,8 +352,11 @@ export class TransformProcess {
     };
   };
 
-  makeGroupTypeName = (groupName: GroupName) => {
-    return groupName.startsWith('$') ? groupName : `T${groupName}`;
+  makeGroupTypeName = (groupInfo: GroupInfo) => {
+    return groupInfo.isNumName ||
+      (groupInfo.name.startsWith('$') && !(groupInfo.name.slice(1) in this.groupNameToSymbolDict))
+      ? groupInfo.name
+      : `$${groupInfo.name}`;
   };
   makeUncountableGroupTypeName = (groupName: GroupName) => `U${groupName}`;
 
@@ -433,7 +455,7 @@ export class TransformProcess {
       for (const currentGroupInfoSymbol in wholeGroupSymbolToInfoDict) {
         const currentGroupInfo = wholeGroupSymbolToInfoDict[currentGroupInfoSymbol as GroupStubSymbol];
 
-        if (currentGroupInfo === undefined || currentGroupInfo === groupInfo) continue;
+        if (currentGroupInfo === undefined || currentGroupInfo === groupInfo || currentGroupInfo.isRoot) continue;
         if (groupInfo.groupContent.includes(currentGroupInfo.groupSymbol)) currentGroupInfo.parent = groupInfo;
       }
     }
@@ -444,13 +466,11 @@ export class TransformProcess {
     wholeGroupSymbolToInfoDict,
     groupStubSymbols,
     countableGroupSymbols,
-    groupNameToSymbolDict,
   }: {
     wholeGroupSymbolToInfoDict: Record<GroupStubSymbol, GroupInfo>;
     groupStubSymbols: GroupStubSymbol[];
     countableGroupSymbols: GroupStubSymbol[];
     groupInfo: GroupInfo;
-    groupNameToSymbolDict: Record<GroupName, GroupStubSymbol>;
   }) => {
     if (!groupInfo.groupContent) return '``';
 
@@ -462,28 +482,28 @@ export class TransformProcess {
         if (!linkNumber && !linkName) return all;
 
         let linkTypeName: string | null = null;
-        let linkGroupName = groupInfo.groupName;
+        let linkGroupName = groupInfo;
         let linkTargetGroupInfo: GroupInfo | null = null;
 
         if (linkNumber) {
-          if (`$${linkNumber}` in groupNameToSymbolDict) {
-            const linkTargetGroupSymbol = groupNameToSymbolDict[`$${linkNumber}` as GroupName];
+          if (`$${linkNumber}` in this.groupNameToSymbolDict) {
+            const linkTargetGroupSymbol = this.groupNameToSymbolDict[`$${linkNumber}` as GroupName];
             linkTargetGroupInfo = wholeGroupSymbolToInfoDict[linkTargetGroupSymbol];
 
-            linkGroupName = linkTargetGroupInfo.groupName;
+            linkGroupName = linkTargetGroupInfo;
           } else {
             const linkTargetGroupSymbol = countableGroupSymbols[+linkNumber - 1];
 
             if (linkTargetGroupSymbol !== undefined) {
               linkTargetGroupInfo = wholeGroupSymbolToInfoDict[linkTargetGroupSymbol];
 
-              linkTypeName = this.makeGroupTypeName(linkTargetGroupInfo.groupName);
+              linkTypeName = this.makeGroupTypeName(linkTargetGroupInfo);
             } else return `\\x${linkNumber.padStart(2, '0')}`;
           }
         } else if (linkName) {
-          const linkTargetGroupSymbol = groupNameToSymbolDict[linkName as GroupName];
+          const linkTargetGroupSymbol = this.groupNameToSymbolDict[linkName as GroupName];
           linkTargetGroupInfo = wholeGroupSymbolToInfoDict[linkTargetGroupSymbol];
-          linkGroupName = linkTargetGroupInfo.groupName;
+          linkGroupName = linkTargetGroupInfo;
         }
 
         linkTypeName ??= this.makeGroupTypeName(linkGroupName);
@@ -505,8 +525,8 @@ export class TransformProcess {
 
       content = content.replace(makeRegExp(`/${currentGroupSymbol}+/g`), () => {
         const typeText = currentGroupInfo.isCountable
-          ? this.makeGroupTypeName(currentGroupInfo.groupName)
-          : this.makeUncountableGroupTypeName(currentGroupInfo.groupName);
+          ? this.makeGroupTypeName(currentGroupInfo)
+          : this.makeUncountableGroupTypeName(currentGroupInfo.name);
 
         const optionalSign = currentGroupInfo.isOpt ? this.optionalStubSymbol : '';
 
