@@ -638,16 +638,22 @@ export class TransformProcess {
     while (isConstantsFound) {
       isConstantsFound = false;
 
-      regStr = regStr.replace(makeRegExp(`/(?=(?<!\\\\)(?=(?:\\\\{4})*|))\\\${([\\w$_]+)}/g`), (_all, constantName) => {
-        if (foundConstants[constantName] !== undefined) return foundConstants[constantName];
-        isConstantsFound = true;
+      regStr = regStr.replace(
+        makeRegExp(`/((?<!\\\\)(?:(?:\\\\{4})*|))\\\${([\\w$_]+)}/g`),
+        (_all, before, constantName) => {
+          if (foundConstants[constantName] !== undefined) return foundConstants[constantName];
+          isConstantsFound = true;
 
-        const matches = Array.from(this.content.matchAll(makeRegExp(`/const ${constantName}\\s*=\\s*\`([^\`]*)\`/g`)));
+          const matches = Array.from(
+            this.content.matchAll(makeRegExp(`/const ${constantName}\\s*=\\s*\`([^\`]*)\`/g`)),
+          );
 
-        if (matches.length > 1 || matches.length < 1) return this.stubs.string;
+          if (matches.length > 1 || matches.length < 1) return this.stubs.string;
+          foundConstants[constantName] = matches[0][1];
 
-        return (foundConstants[constantName] = matches[0][1]);
-      });
+          return `${before}${foundConstants[constantName]}`;
+        },
+      );
     }
 
     return regStr;
