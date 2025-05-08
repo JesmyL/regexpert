@@ -49,13 +49,13 @@ export class TransformProcess {
 
   stubCharCode = 999;
   makeStub = (regStr: string) => {
-    do this.stubCharCode++;
+    do this.stubCharCode += 5;
     while (regStr.includes(String.fromCharCode(this.stubCharCode)));
     return String.fromCharCode(this.stubCharCode) as StubSymbol;
   };
 
   setStubSymbols = (regStr: string) => {
-    this.stubCharCode = 999;
+    this.stubCharCode = 9999;
 
     for (const name in this.stubs) {
       this.stubs[name as 'string'] = this.makeStub(regStr);
@@ -556,9 +556,14 @@ export class TransformProcess {
       })
       .replace(makeRegExp(`/${this.stubs.slash}/g`), '\\')
       .replace(makeRegExp(`/${this.stubs.escape}{2}([bB])/g`), '')
-      .replace(makeRegExp(`/${this.stubs.escape}+/g`), '')
-      .replace(makeRegExp(`/((?:\\\\\\\\)?[^\\\`])(${this.quantifierRegStr})/g`), (all, char, quantifier) =>
-        this.insertOptionalChar(quantifier, `\`${char}\``, all),
+      .replace(makeRegExp(`/${this.stubs.escape}+/g`), '');
+
+    content = content
+      .replace(
+        makeRegExp(`/((?:\\\\\\\\)?(?:\\\\[$]|[^\\\\\`]))(${this.quantifierRegStr})/g`),
+        (all, char, quantifier) => {
+          return this.insertOptionalChar(quantifier, `\`${char}\``, all);
+        },
       )
       .replace(makeRegExp(`/([^\\\\])(${this.quantifierRegStr})/g`), (_all, char, quantifier) =>
         this.insertOptionalChar(quantifier, `\`${char}\``),
@@ -596,6 +601,9 @@ export class TransformProcess {
     if (!quantifier || quantifier === '{1}') {
       return orRequired ?? `\${${char}}`;
     }
+
+    if (quantifier === '{2}') return orRequired ?? `\${${char}}`.repeat(2);
+    if (quantifier === '{3}') return orRequired ?? `\${${char}}`.repeat(3);
 
     if (quantifier.startsWith('+')) return `\${${char}}\${string}`;
     if (quantifier.endsWith('?')) return `\${${char}${this.stubs.optional}}`;
@@ -672,17 +680,17 @@ export class TransformProcess {
         : `${this.repeatWithoutNegatives(this.stubs.slash, slashes.length - 2)}${this.stubs.union.repeat(3)}`;
     });
 
-    regStr = regStr
-      .replace(makeRegExp(`/(\\\\+?)(\\$\\\\?{|[-[\\]|?^$+*{}:().])/g`), (_all, slashes: string, chars: string) => {
-        if (chars === '${' || chars === '$\\{') {
-          if (checkIs2xSlashes(slashes)) {
-            if (chars === '${') return this.stubs.slash.repeat(slashes.length) + chars;
-            return this.stubs.slash.repeat(slashes.length) + this.stubs.untemplated;
-          } else {
-            return this.repeatWithoutNegatives(this.stubs.slash, slashes.length - 1) + this.stubs.untemplated;
-          }
-        }
+    regStr = regStr.replace(makeRegExp(`/(\\\\+?)(\\$\\\\?{)/g`), (_all, slashes: string, chars: string) => {
+      if (checkIs2xSlashes(slashes)) {
+        if (chars === '${') return this.stubs.slash.repeat(slashes.length) + chars;
+        return this.stubs.slash.repeat(slashes.length) + this.stubs.untemplated;
+      }
 
+      return this.repeatWithoutNegatives(this.stubs.slash, slashes.length - 1) + this.stubs.untemplated;
+    });
+
+    regStr = regStr
+      .replace(makeRegExp(`/(\\\\+?)([-[\\]|?^$+*{}:().])/g`), (_all, slashes: string, chars: string) => {
         if (checkIs4xSlashes(slashes)) {
           return this.stubs.slash.repeat(slashes.length) + chars;
         }
