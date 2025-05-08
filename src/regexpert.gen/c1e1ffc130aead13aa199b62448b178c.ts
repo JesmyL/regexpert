@@ -1103,10 +1103,10 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_73 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_74 {
   type $0 = `${$1}\\\\${$1}`;
-  type $1 = `\\\\${string}`;
+  type $1 = `\\\\abc`;
 
   export interface I extends Record<
-    `/(\\\\${string})\\\\\\1/g`,
+    `/(\\\\abc)\\\\\\1/g`,
     {
       $0: $0;
       $1: $1
