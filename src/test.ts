@@ -9,73 +9,75 @@ const getKeys = <ReqKeys extends string, OptKeys extends string = string>(
 
 const arg: [``] = [``];
 
-getValue<string>(makeNamedRegExp(`/(?<str>\\w+)/`).transform(arg).str);
-getValue<string>(makeNamedRegExp(`/(?<str>\\w?)/`).transform(arg).str);
-getValue<string>(makeNamedRegExp(`/(?<str>a?)/`).transform(arg).str);
-getValue<string>(makeNamedRegExp(`/(?<str>\\w+)()(?<$stri> )(?<$str>   (?<$$str>))/`).transform(arg).str);
+getValue<{ str: string }>(makeNamedRegExp(`/(?<str>\\w+)/`).transform(arg));
+getValue<{ str: string }>(makeNamedRegExp(`/(?<str>\\w?)/`).transform(arg));
+getValue<{ str: string }>(makeNamedRegExp(`/(?<str>a?)/`).transform(arg));
+getValue<{ str: string }>(makeNamedRegExp(`/(?<str>\\w+)()(?<$stri> )(?<$str>   (?<$$str>))/`).transform(arg));
 
-getValue<`text`>(makeNamedRegExp(`/(?<val>text)/`).transform(arg).val);
-getValue<`text ${number}${string}`>(makeNamedRegExp(`/(?<val>text \\d+)/`).transform(arg).val);
-getValue<`text ${number | ``}${string}`>(makeNamedRegExp(`/(?<val>text \\d*)/`).transform(arg).val);
-getValue<`text ${number | ``}${string}`>(makeNamedRegExp(`/(?<val>text \\d?)/`).transform(arg).val);
-getValue<`text${string}`>(makeNamedRegExp(`/(?<val>text{1,3})/`).transform(arg).val);
-getValue<`tex${string}`>(makeNamedRegExp(`/(?<val>text{0,3})/`).transform(arg).val);
-getValue<`tex${string}`>(makeNamedRegExp(`/(?<val>text{0,})/`).transform(arg).val);
-getValue<`tex${string}`>(makeNamedRegExp(`/(?<val>text{,3})/`).transform(arg).val);
+getValue<{ val: `text` }>(makeNamedRegExp(`/(?<val>text)/`).transform(arg));
+getValue<{ val: `text ${number}${string}` }>(makeNamedRegExp(`/(?<val>text \\d+)/`).transform(arg));
+getValue<{ val: `text ${number | ``}${string}` }>(makeNamedRegExp(`/(?<val>text \\d*)/`).transform(arg));
+getValue<{ val: `text ${number | ``}${string}` }>(makeNamedRegExp(`/(?<val>text \\d?)/`).transform(arg));
+getValue<{ val: `text${string}` }>(makeNamedRegExp(`/(?<val>text{1,3})/`).transform(arg));
+getValue<{ val: `tex${string}` }>(makeNamedRegExp(`/(?<val>text{0,3})/`).transform(arg));
+getValue<{ val: `tex${string}` }>(makeNamedRegExp(`/(?<val>text{0,})/`).transform(arg));
+getValue<{ val: `tex${string}` }>(makeNamedRegExp(`/(?<val>text{,3})/`).transform(arg));
 
-getValue<`${number}`>(makeNamedRegExp(`/(?<num>\\d)/`).transform(arg).num);
-getValue<`${number}`>(makeNamedRegExp(`/(?<num>\\d{1,3})/`).transform(arg).num);
-getValue<`${number}` | ``>(makeNamedRegExp(`/(?<num>\\d{,3})/`).transform(arg).num);
-getValue<`${number}` | ``>(makeNamedRegExp(`/(?<num>\\d{0,3})/`).transform(arg).num);
-getValue<`${number}` | ``>(makeNamedRegExp(`/(?<num>\\d{0,})/`).transform(arg).num);
-getValue<`${number}` | ``>(makeNamedRegExp(`/(?<num>\\d*)/`).transform(arg).num);
-getValue<`${number}` | ``>(makeNamedRegExp(`/(?<num>\\d?)/`).transform(arg).num);
+getValue<{ num: `${number}` }>(makeNamedRegExp(`/(?<num>\\d)/`).transform(arg));
+getValue<{ num: `${number}` }>(makeNamedRegExp(`/(?<num>\\d{1,3})/`).transform(arg));
+getValue<{ num: `${number}` | `` }>(makeNamedRegExp(`/(?<num>\\d{,3})/`).transform(arg));
+getValue<{ num: `${number}` | `` }>(makeNamedRegExp(`/(?<num>\\d{0,3})/`).transform(arg));
+getValue<{ num: `${number}` | `` }>(makeNamedRegExp(`/(?<num>\\d{0,})/`).transform(arg));
+getValue<{ num: `${number}` | `` }>(makeNamedRegExp(`/(?<num>\\d*)/`).transform(arg));
+getValue<{ num: `${number}` | `` }>(makeNamedRegExp(`/(?<num>\\d?)/`).transform(arg));
 
-getValue<`${number}${string}`>(makeNamedRegExp(`/(?<numStr>\\d+[amn]+)\\s\\n*/`).transform(arg).numStr);
-getValue<`${number}${string}`>(makeNamedRegExp(`/(?<numStr>\\d{1,3}[amn]+)\\s\\n*/`).transform(arg).numStr);
-getValue<`${number}${string}`>(makeNamedRegExp(`/(?<numStr>\\d{1,}[amn]+)\\s\\n*/`).transform(arg).numStr);
-getValue<string>(makeNamedRegExp(`/(?<numStr>\\d{0,3}[amn]+)\\s\\n*/`).transform(arg).numStr);
-getValue<string>(makeNamedRegExp(`/(?<numStr>\\d{,3}[amn]+)\\s\\n*/`).transform(arg).numStr);
-getValue<string>(makeNamedRegExp(`/(?<numStr>\\d?[amn]+)\\s\\n*/`).transform(arg).numStr);
-getValue<string>(makeNamedRegExp(`/(?<numStr>\\d*[amn]+)\\s\\n*/`).transform(arg).numStr);
+getValue<{ numStr: `${number}${string}` }>(makeNamedRegExp(`/(?<numStr>\\d+[amn]+)\\s\\n*/`).transform(arg));
+getValue<{ numStr: `${number}${string}` }>(makeNamedRegExp(`/(?<numStr>\\d{1,3}[amn]+)\\s\\n*/`).transform(arg));
+getValue<{ numStr: `${number}${string}` }>(makeNamedRegExp(`/(?<numStr>\\d{1,}[amn]+)\\s\\n*/`).transform(arg));
+getValue<{ numStr: string }>(makeNamedRegExp(`/(?<numStr>\\d{0,3}[amn]+)\\s\\n*/`).transform(arg));
+getValue<{ numStr: string }>(makeNamedRegExp(`/(?<numStr>\\d{,3}[amn]+)\\s\\n*/`).transform(arg));
+getValue<{ numStr: string }>(makeNamedRegExp(`/(?<numStr>\\d?[amn]+)\\s\\n*/`).transform(arg));
+getValue<{ numStr: string }>(makeNamedRegExp(`/(?<numStr>\\d*[amn]+)\\s\\n*/`).transform(arg));
 
-getValue<`text ${number}${`\n${string}` | ``}`>(makeNamedRegExp(`/(?<conNum>text \\d\\n*)/`).transform(arg).conNum);
-getValue<`text ${number}`>(makeNamedRegExp(`/(?<conNum>text \\d)/`).transform(arg).conNum);
-getValue<`text ${number}`>(makeNamedRegExp(`/(?<num>text \\d{2,3})/`).transform(arg).num);
-getValue<`text ${number}`>(makeNamedRegExp(`/(?<num>text \\d{1,})/`).transform(arg).num);
-getValue<`text ${number | ``}`>(makeNamedRegExp(`/(?<num>text \\d{0,3})/`).transform(arg).num);
-getValue<`text ${number | ``}`>(makeNamedRegExp(`/(?<num>text \\d{0,})/`).transform(arg).num);
-getValue<`text ${number | ``}`>(makeNamedRegExp(`/(?<num>text \\d{0})/`).transform(arg).num);
-getValue<`text ${number | ``}`>(makeNamedRegExp(`/(?<num>text \\d{,3})/`).transform(arg).num);
+getValue<{ conNum: `text ${number}${`\n${string}` | ``}` }>(
+  makeNamedRegExp(`/(?<conNum>text \\d\\n*)/`).transform(arg),
+);
+getValue<{ conNum: `text ${number}` }>(makeNamedRegExp(`/(?<conNum>text \\d)/`).transform(arg));
+getValue<{ num: `text ${number}` }>(makeNamedRegExp(`/(?<num>text \\d{2,3})/`).transform(arg));
+getValue<{ num: `text ${number}` }>(makeNamedRegExp(`/(?<num>text \\d{1,})/`).transform(arg));
+getValue<{ num: `text ${number | ``}` }>(makeNamedRegExp(`/(?<num>text \\d{0,3})/`).transform(arg));
+getValue<{ num: `text ${number | ``}` }>(makeNamedRegExp(`/(?<num>text \\d{0,})/`).transform(arg));
+getValue<{ num: `text ${number | ``}` }>(makeNamedRegExp(`/(?<num>text \\d{0})/`).transform(arg));
+getValue<{ num: `text ${number | ``}` }>(makeNamedRegExp(`/(?<num>text \\d{,3})/`).transform(arg));
 
-getValue<`text ${number}`>(makeNamedRegExp(`/(?<conNum>text [1-3])/`).transform(arg).conNum);
-getValue<`text ${number}`>(makeNamedRegExp(`/(?<conNum>text [1-3]+)/`).transform(arg).conNum);
-getValue<`text ${number}`>(makeNamedRegExp(`/(?<num>text [1-3]{1,3})/`).transform(arg).num);
-getValue<`text ${number}`>(makeNamedRegExp(`/(?<num>text [1-3]{1,})/`).transform(arg).num);
-getValue<`text ${number | ``}`>(makeNamedRegExp(`/(?<num>text [1-3]{0,3})/`).transform(arg).num);
-getValue<`text ${number | ``}`>(makeNamedRegExp(`/(?<num>text [1-3]{,3})/`).transform(arg).num);
-getValue<`text ${number | ``}`>(makeNamedRegExp(`/(?<conNum>text [1-3]?)/`).transform(arg).conNum);
-getValue<`text ${number | ``}`>(makeNamedRegExp(`/(?<conNum>text [1-3]*)/`).transform(arg).conNum);
+getValue<{ conNum: `text ${number}` }>(makeNamedRegExp(`/(?<conNum>text [1-3])/`).transform(arg));
+getValue<{ conNum: `text ${number}` }>(makeNamedRegExp(`/(?<conNum>text [1-3]+)/`).transform(arg));
+getValue<{ num: `text ${number}` }>(makeNamedRegExp(`/(?<num>text [1-3]{1,3})/`).transform(arg));
+getValue<{ num: `text ${number}` }>(makeNamedRegExp(`/(?<num>text [1-3]{1,})/`).transform(arg));
+getValue<{ num: `text ${number | ``}` }>(makeNamedRegExp(`/(?<num>text [1-3]{0,3})/`).transform(arg));
+getValue<{ num: `text ${number | ``}` }>(makeNamedRegExp(`/(?<num>text [1-3]{,3})/`).transform(arg));
+getValue<{ conNum: `text ${number | ``}` }>(makeNamedRegExp(`/(?<conNum>text [1-3]?)/`).transform(arg));
+getValue<{ conNum: `text ${number | ``}` }>(makeNamedRegExp(`/(?<conNum>text [1-3]*)/`).transform(arg));
 
-getValue<'' | 't'>(makeNamedRegExp(`/t?/`).transform(arg).$0);
-getValue<`t${string}`>(makeNamedRegExp(`/t+/`).transform(arg).$0);
-getValue<`${`t${string}` | ''}${number}`>(makeNamedRegExp(`/t*\\d/`).transform(arg).$0);
-getValue<`t${string}`>(makeNamedRegExp(`/t{1,3}/`).transform(arg).$0);
+getValue<{ $0: '' | 't' }>(makeNamedRegExp(`/t?/`).transform(arg));
+getValue<{ $0: `t${string}` }>(makeNamedRegExp(`/t+/`).transform(arg));
+getValue<{ $0: `${`t${string}` | ''}${number}` }>(makeNamedRegExp(`/t*\\d/`).transform(arg));
+getValue<{ $0: `t${string}` }>(makeNamedRegExp(`/t{1,3}/`).transform(arg));
 
 getValue<{ num?: `${number}`; bum: `aa` }>(makeNamedRegExp(`/(?<num>[1-3]+)?(?<bum>aa)/`).transform(arg));
 
-getValue<`5` | `${number}` | undefined>(makeNamedRegExp(`/(?<txt>5|\\d)?/`).transform(arg).txt);
-getValue<`a\\\\|b` | `c` | `${`d` | ``}`>(makeNamedRegExp(`/(?<txt>a\\\\\\\\\\|b|c|d?)/`).transform(arg).txt);
+getValue<{ txt?: `5` | `${number}` }>(makeNamedRegExp(`/(?<txt>5|\\d)?/`).transform(arg));
+getValue<{ txt: `a\\\\|b` | `c` | `${`d` | ``}` }>(makeNamedRegExp(`/(?<txt>a\\\\\\\\\\|b|c|d?)/`).transform(arg));
 
-getValue<`a` | `s` | `f\\\\` | `b` | `c${number}` | `d` | string>(
-  makeNamedRegExp(`/(?<txt>a|s|f\\\\\\\\|b|c\\d|d|[-adf ])/`).transform(arg).txt,
+getValue<{ txt: `a` | `s` | `f\\\\` | `b` | `c${number}` | `d` | string }>(
+  makeNamedRegExp(`/(?<txt>a|s|f\\\\\\\\|b|c\\d|d|[-adf ])/`).transform(arg),
 );
 
 getValue<{ optional1?: `opt1` | `opt` | undefined }>(
   makeNamedRegExp(`/(?<optional1>opt1|opt)|(?<optional2>opt2)(?<req>req)/`).transform(arg),
 );
-getValue<`${number}` | undefined>(makeNamedRegExp(`/(?<num>[1-3]+)?/`).transform(arg).num);
-getValue<`${number}` | undefined>(makeNamedRegExp(`/(?<num>1|2)?/`).transform(arg).num);
+getValue<{ num?: `${number}` }>(makeNamedRegExp(`/(?<num>[1-3]+)?/`).transform(arg));
+getValue<{ num?: `${number}` }>(makeNamedRegExp(`/(?<num>1|2)?/`).transform(arg));
 getValue<{ opt?: ``; opt1?: ``; r: `12` | `` }>(makeNamedRegExp(`/(?<r>12(?<opt>)|(?<opt1>))/`).transform(arg));
 
 const str = `123`;
@@ -99,19 +101,19 @@ getValue(
     } \\d[1,2])?${str}((\\d{3,\${txt}\\${str})|(\${str}|${
       a.b
     }|(?<name>)[1479]))(?<name1>(?<opt1> \\\\\\(  )|(?<opt2> )|)${veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString}/`,
-  ).transform(arg).name1,
+  ).transform(arg),
 );
 
 getValue(
   makeNamedRegExp(
     // ``,
     `/(?<$0th>(?<$1th>(?<$2nd>){,3})(nonamϭϰe| )+(?<$3th>\\d{2,3}){2,3}\\\\\\\\\\\\\\|\\\${ \\(?<$4>(?<$5th> {3,5}(?<$6th>(?<$7th>(?<$8th>))(){[234]?}(){,})Ϩ)\\)) ${str}in zero/gim`,
-  ).transform(arg).$0,
+  ).transform(arg),
 );
 
 getKeys<`$0` | `$0th` | `$2`>(makeNamedRegExp(`/(?<$0th> |sds )(noname|)/gim`).transform(arg));
 
-getValue<`[${string}]` | undefined>(
+getValue<{ info?: `[${string}]` }>(
   makeNamedRegExp(
     `/(?<before>^|\\n)(?<beforeSpaces> *)(?<hashes>#{1,2})(?<blockHashPosition>${
       //
@@ -120,13 +122,13 @@ getValue<`[${string}]` | undefined>(
       //
       a.b
     }]*)(?<modificators>!?))? *(?<info>\\[(?<blockHeader>.+?)\\])?(?<beforeCommentSpaces> *)(?<comment>[\\w\\W]+?)(?=\\n *#|$)/g`,
-  ).transform(arg).info,
+  ).transform(arg),
 );
 
-getValue<string | undefined>(
+getValue<{ verseSeparator?: string }>(
   makeNamedRegExp(
     `/(?<bookn>\\d?(?!(\\s*([а-яё]+))))\\s*((?<chapterStr>\\d{1,3})((:|\\s+)(?<verseStr>(?!\\d{1,3}))(\\s*(?<verseSeparator>[-,]?)\\s*)(?<!finishVerseStr>\\d{1,3})?)?)?/i`,
-  ).transform(arg).verseSeparator,
+  ).transform(arg),
 );
 
 getValue<{ $2?: `ababa${string}` }>(makeNamedRegExp(`/(?:((?!(ababa+?)) ))(jaja) /`).transform(arg));
@@ -155,11 +157,11 @@ getValue<{ avvva: ' JJJ' }>(
   ).transform(arg),
 );
 
-getValue<` ${string}888=BBB {} `>(
+getValue<{ $0: ` ${string}888=BBB {} ` }>(
   makeNamedRegExp(
     // X    1 X        2         X   3        X      4
     `/(?!&&)()(?<! %%%)(?<a> )[|](?:)(888=BBB)(?: ){}(\\2)/`,
-  ).transform(arg).$0,
+  ).transform(arg),
 );
 
 getValue<{ $0: '\\' }>(makeNamedRegExp(`/\\\\/`).transform(arg));
@@ -177,7 +179,7 @@ getValue<{ $0: `\\$$` }>(makeNamedRegExp(`/(\\\\\${2})/g`).transform(arg));
 getValue<{ $0: `\\$$` }>(makeNamedRegExp(`/(\\\\\\\${2})/g`).transform(arg));
 
 // @ts-expect-error
-getValue<{ $0: `\${2}\\\\\${2}` }>(makeNamedRegExp(`/($\{2})\\\\\\1 be/g`).transform(arg).$0);
+getValue<{ $0: `\${2}\\\\\${2}` }>(makeNamedRegExp(`/($\{2})\\\\\\1 be/g`).transform(arg));
 
 getValue<{ $0: `$$\\${'$$' | ''}` }>(makeNamedRegExp(`/(\\\$\{2})\\\\\\1?/g`).transform(arg));
 getValue<{ $0: `\${n}\\${`\${n}` | ''} \\<nnn> ` }>(
@@ -234,8 +236,8 @@ getValue<{ $0: 'abc' | 'abbc' | 'ac' | 'a' | 'ab'; $1?: 'a' }>(
 );
 
 getValue<{ $0: 'WORD' }>(makeNamedRegExp(`/\\bWORD\\B/`).transform(arg));
-getValue<`${`${`a`}${string}` | ''}b${`a`}${string}`>(makeNamedRegExp(`/(?=(a+))a*b\\1/`).transform(arg).$0);
-getValue<`b`>(makeNamedRegExp(`/(?=a)?b/`).transform(arg).$0);
+getValue<{ $0: `${`${`a`}${string}` | ''}b${`a`}${string}` }>(makeNamedRegExp(`/(?=(a+))a*b\\1/`).transform(arg));
+getValue<{ $0: `b` }>(makeNamedRegExp(`/(?=a)?b/`).transform(arg));
 getValue<{ $0: ''; $1: string }>(makeNamedRegExp(`/(?<=([ab]+)([bc]+))$/`).transform(arg));
 getValue<{ $0: `${'-' | ''}${number}${`.${number}` | ''}` }>(
   makeNamedRegExp(`/(?<=\\$)(?<sign>-?)\\d+(?:\\.(\\d+))?/`).transform(arg),
