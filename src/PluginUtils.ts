@@ -2,6 +2,9 @@ import md5 from 'md5';
 import fs from 'node:fs';
 import { Options } from './types';
 
+const singleQuoteReg = /'/g;
+const fileExtReg = /\.(tsx?|jsx?)$/g;
+
 export class PluginUtils {
   dirName: string;
   generatesDir: string;
@@ -13,6 +16,9 @@ export class PluginUtils {
 
   constructor({ srcDirName = '/src' }: Options = {}) {
     this.dirName = process.cwd().replace(/\\/g, '/');
+
+    this.makeFileImportPath = (fileSrc: string) =>
+      `import('../${fileSrc.slice(srcDirName.length).replace(singleQuoteReg, "\\'").replace(fileExtReg, '')}')`;
 
     this.generatesDir = `${this.dirName}${srcDirName === '/' ? '' : srcDirName}/regexpert.gen` as const;
     this.knownFilesFilePath = `${this.generatesDir}/files.json` as const;
@@ -29,6 +35,8 @@ export class PluginUtils {
 
     this.knownFilesSet = new Set(knownFiles);
   }
+
+  makeFileImportPath = (fileSrc: string) => fileSrc;
 
   checkIsInvalidSrcToTransform = (src: string) =>
     !(src.endsWith('.tsx') || src.endsWith('.ts') || src.endsWith('.js') || src.endsWith('.jsx'));

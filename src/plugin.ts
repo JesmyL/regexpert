@@ -32,6 +32,7 @@ export const regExpertVitePlugin: typeof pluginMaker = pluginOptions => {
           importNameMatch,
           content,
           fileMD5: md5(fileSrc),
+          fileImportPath: pluginUtils.makeFileImportPath(fileSrc),
         });
 
         const result = ut.process();

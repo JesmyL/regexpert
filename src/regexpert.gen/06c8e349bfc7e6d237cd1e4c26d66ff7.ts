@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import('../test.maker')
 
 namespace N06c8e349bfc7e6d237cd1e4c26d66ff7_1 {
   type $0 = `${U1}${$1}${U2}${$a}${string}${U3}${$3}${U4}{}${$4}${$5}`;

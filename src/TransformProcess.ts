@@ -10,6 +10,7 @@ export class TransformProcess {
   makerInvokesContentSplitterRegExp: RegExp;
   content: string;
   fileMD5: string;
+  fileImportPath: string;
 
   quantifierRegStr = '[?+*]\\??|{,\\d+}|{\\d+,\\d*?}|{\\d+}' as const;
   sortGroupIndexes = (a: number, b: number) => a - b;
@@ -22,6 +23,7 @@ export class TransformProcess {
     union: StubSymbol.def,
     optional: StubSymbol.def,
     untemplated: StubSymbol.def,
+    freeUntemplated: StubSymbol.def,
     slash: StubSymbol.def,
     dollar: StubSymbol.def,
     escape: StubSymbol.def,
@@ -36,9 +38,10 @@ export class TransformProcess {
     private pluginOptions: PluginOptions = {
       collectClassCharactersMaxCount: 9,
     },
-    options: { importNameMatch: RegExpMatchArray; content: string; fileMD5: string },
+    options: { importNameMatch: RegExpMatchArray; content: string; fileMD5: string; fileImportPath: string },
   ) {
     this.fileMD5 = options.fileMD5;
+    this.fileImportPath = options.fileImportPath;
     this.content = options.content;
 
     this.makerInvokesContentSplitterRegExp = makeRegExp(
@@ -352,7 +355,7 @@ export class TransformProcess {
     if (!namespaces.length) return null;
 
     return {
-      types: `/* eslint-disable @typescript-eslint/no-namespace */\n\n${
+      types: `/* eslint-disable @typescript-eslint/no-namespace */\n${this.fileImportPath}\n\n${
         '' + namespaces.join('\n\n')
       }\n\ninterface _GlobalScopedNamedRegExpMakerGeneratedTypes\n  extends ${
         '' + namespaces.map(this.makeNamespaceDotITypeName).join(',\n    ')
@@ -383,7 +386,7 @@ export class TransformProcess {
         .replace(makeRegExp(`/${this.stubs.union}{3}/g`), '\\\\|')
         .replace(makeRegExp(`/${this.stubs.escape}{2}([bB])/g`), '\\\\$1')
         .replace(makeRegExp(`/[${this.stubs.slash}${this.stubs.escape}]/g`), '\\')
-        .replace(makeRegExp(`/${this.stubs.untemplated}/g`), '\\${')
+        .replace(makeRegExp(`/[${this.stubs.freeUntemplated}${this.stubs.untemplated}]/g`), '\\${')
         .replace(makeRegExp(`/${this.stubs.string}/g`), '${string}')
         .replace(makeRegExp(`/${this.stubs.dollar}/g`), '$')
         .replace(makeRegExp(`/${this.stubs.openParenthesis}{3}/g`), '\\\\(')
@@ -556,14 +559,15 @@ export class TransformProcess {
 
         return this.insertOptionalChar(quantifier, 'string', this.stubs.string);
       })
-      .replace(makeRegExp(`/${this.stubs.slash}/g`), '\\')
+      .replace(makeRegExp(`/([${this.stubs.slash}\\\\])\\1\\1\\1/g`), '\\\\')
+      .replace(makeRegExp(`/${this.stubs.slash}{2}/g`), '')
       .replace(makeRegExp(`/${this.stubs.escape}{2}([bB])/g`), '')
       .replace(makeRegExp(`/(\\\\{2,3})?${this.stubs.dollar}/g`), '$')
       .replace(makeRegExp(`/${this.stubs.escape}+/g`), '');
 
     content = content
       .replace(
-        makeRegExp(`/((?:\\\\\\\\)?(?:\\\\[$]|[^\\\\\`]))(${this.quantifierRegStr})/g`),
+        makeRegExp(`/((?:\\\\{2})?(?:\\\\[$]|[^\\\\\`]))(${this.quantifierRegStr})/g`),
         (all, char, quantifier) => {
           return this.insertOptionalChar(quantifier, `\`${char}\``, all);
         },
@@ -573,6 +577,7 @@ export class TransformProcess {
       )
       .replace(makeRegExp(`/[${this.stubs.slash}${this.stubs.escape}]/g`), '\\')
       .replace(makeRegExp(`/${this.stubs.untemplated}/g`), '\\${')
+      .replace(makeRegExp(`/${this.stubs.freeUntemplated}/g`), '{')
       .split('|')
       .join('` | `')
       .replace(makeRegExp(`/${this.stubs.union}{3}/g`), '|')
@@ -583,7 +588,8 @@ export class TransformProcess {
 
     content = `\`${content}\``
       .replace(makeRegExp('/\\`\\${([^}`]+)}\\`/g'), '$1')
-      .replace(makeRegExp('/\\${`([^}`]+)`}/g'), '$1')
+      .replace(makeRegExp('/[$]{`([^}`]+)`}/g'), '$1')
+      .replace(makeRegExp('/(?:(?<!\\\\)|(\\\\{2})+)\\\\[$](?!{)/g'), '$1$')
       .replace(makeRegExp(`/${this.stubs.optionalNumber}/g`), `\${number | ''}`)
       .replace(makeRegExp(`/${this.stubs.number}/g`), `\${number}`);
 
@@ -690,8 +696,8 @@ export class TransformProcess {
         : `${this.repeatWithoutNegatives(this.stubs.slash, slashes.length - 2)}${this.stubs.union.repeat(3)}`;
     });
 
-    regStr = regStr.replace(makeRegExp(`/(\\\\*?)(?:[$]\\\\){/g`), (all, slashes: string) => {
-      if (checkIs2xSlashes(slashes)) return `${slashes}\\$\{`;
+    regStr = regStr.replace(makeRegExp(`/(\\\\*?)[$]\\\\{/g`), (all, slashes: string) => {
+      if (checkIs2xSlashes(slashes) || !slashes) return `${slashes}\\$\{`;
       if (checkIs2xSlashes(slashes.slice(0, -1))) return `${slashes}$\{`;
 
       return all;
@@ -702,13 +708,20 @@ export class TransformProcess {
       return this.repeatWithoutNegatives(this.stubs.slash, slashes.length) + this.stubs.dollar + quantifier;
     });
 
-    regStr = regStr.replace(makeRegExp(`/(\\\\+?)([$]\\\\?{)/g`), (_all, slashes: string, chars: string) => {
-      if (checkIs2xSlashes(slashes)) {
-        if (chars === '${') return this.stubs.slash.repeat(slashes.length) + chars;
-        return this.stubs.slash.repeat(slashes.length) + this.stubs.untemplated;
+    regStr = regStr.replace(makeRegExp(`/(\\\\+?)[$]{/g`), (all, slashes: string) => {
+      if (!slashes || slashes.length === 1 || checkIs4xSlashes(slashes) || checkIs4xSlashes(slashes.slice(0, -1))) {
+        return this.repeatWithoutNegatives(this.stubs.slash, slashes.length - 1) + this.stubs.freeUntemplated;
       }
 
-      return this.repeatWithoutNegatives(this.stubs.slash, slashes.length - 1) + this.stubs.untemplated;
+      if (checkIs2xSlashes(slashes.slice(0, -1))) {
+        return (
+          this.repeatWithoutNegatives(this.stubs.slash, slashes.length - 3) +
+          this.repeatWithoutNegatives(this.stubs.escape, 2) +
+          this.stubs.untemplated
+        );
+      }
+
+      return all;
     });
 
     regStr = regStr

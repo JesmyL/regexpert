@@ -65,7 +65,7 @@ getValue<`t${string}`>(makeNamedRegExp(`/t{1,3}/`).transform(arg).$0);
 getValue<{ num?: `${number}`; bum: `aa` }>(makeNamedRegExp(`/(?<num>[1-3]+)?(?<bum>aa)/`).transform(arg));
 
 getValue<`5` | `${number}` | undefined>(makeNamedRegExp(`/(?<txt>5|\\d)?/`).transform(arg).txt);
-getValue<`a\\\\\\\\|b` | `c` | `${`d` | ``}`>(makeNamedRegExp(`/(?<txt>a\\\\\\\\\\|b|c|d?)/`).transform(arg).txt);
+getValue<`a\\\\|b` | `c` | `${`d` | ``}`>(makeNamedRegExp(`/(?<txt>a\\\\\\\\\\|b|c|d?)/`).transform(arg).txt);
 
 getValue<`a` | `s` | `f\\\\` | `b` | `c${number}` | `d` | string>(
   makeNamedRegExp(`/(?<txt>a|s|f\\\\\\\\|b|c\\d|d|[-adf ])/`).transform(arg).txt,
@@ -139,7 +139,7 @@ getKeys<`name` | `$2` | `name1` | `$4`>(
 
 getValue<{ $0: `^^` }>(makeNamedRegExp(`/(\\^)\\1/g`).transform(arg));
 getValue<{ $0: `$$` }>(makeNamedRegExp(`/(\\$)\\1/g`).transform(arg));
-getValue<{ $0: `\\\\\x02` }>(makeNamedRegExp(`/(\\\\$)\\2/g`).transform(arg));
+getValue<{ $0: `\\\x02` }>(makeNamedRegExp(`/(\\\\$)\\2/g`).transform(arg));
 
 getValue<{ $4: '888' }>(
   makeNamedRegExp(
@@ -162,44 +162,41 @@ getValue<` ${string}888=BBB {} `>(
   ).transform(arg).$0,
 );
 
+getValue<{ $0: '\\' }>(makeNamedRegExp(`/\\\\/`).transform(arg));
 getValue<{ $0: `${string}.a${string}a${string}.` }>(makeNamedRegExp(`/(\\W\\.)a...a\\1/g`).transform(arg));
-getValue<{ $0: `%\\\\% p` }>(makeNamedRegExp(`/(%)\\\\\\1 p/g`).transform(arg));
+getValue<{ $0: `%\\% p` }>(makeNamedRegExp(`/(%)\\\\\\1 p/g`).transform(arg));
 
 const abc = `abc`;
-getValue<{ $0: `\\${string}\\\\\\${string}` }>(makeNamedRegExp(`/(\\${'1'})\\\\\\1 k/g`).transform(arg));
-getValue<{ $0: `\\\\${string}[${string}\\\\\\${string}[${string}` }>(
+getValue<{ $0: `${string}\\${string}` }>(makeNamedRegExp(`/(\\${'1'})\\\\\\1 k/g`).transform(arg));
+getValue<{ $0: `\\${string}[${string}\\\\${string}[${string}` }>(
   makeNamedRegExp(`/(\\\\.[${'1'})\\\\\\1 b/g`).transform(arg),
 );
-getValue<{ $0: `\\\\${string}\\\\\\\\${string} d` }>(makeNamedRegExp(`/(\\\\${abc})\\\\\\1 d/g`).transform(arg));
-getValue<{ $0: `$$\\\\\$$` }>(makeNamedRegExp(`/(\\\${2})\\\\\\1/g`).transform(arg));
+getValue<{ $0: `\\${string}\\\\${string} d` }>(makeNamedRegExp(`/(\\\\${abc})\\\\\\1 d/g`).transform(arg));
+getValue<{ $0: `$$\\$$` }>(makeNamedRegExp(`/(\\\${2})\\\\\\1/g`).transform(arg));
 getValue<{ $0: `\\$$` }>(makeNamedRegExp(`/(\\\\\${2})/g`).transform(arg));
-getValue<{ $0: `\\\\$$` }>(makeNamedRegExp(`/(\\\\\\\${2})/g`).transform(arg));
+getValue<{ $0: `\\$$` }>(makeNamedRegExp(`/(\\\\\\\${2})/g`).transform(arg));
 
 // @ts-expect-error
 getValue<{ $0: `\${2}\\\\\${2}` }>(makeNamedRegExp(`/($\{2})\\\\\\1 be/g`).transform(arg).$0);
 
-getValue<{ $0: `$$\\\\${'$$' | ''}` }>(makeNamedRegExp(`/(\\\$\{2})\\\\\\1?/g`).transform(arg));
-getValue<{ $0: `\\\${n}\\\\${`\\\${n}` | ''} \\<nnn> ` }>(
+getValue<{ $0: `$$\\${'$$' | ''}` }>(makeNamedRegExp(`/(\\\$\{2})\\\\\\1?/g`).transform(arg));
+getValue<{ $0: `\${n}\\${`\${n}` | ''} \\<nnn> ` }>(
   makeNamedRegExp(`/(?<nnn>\\\$\{n})\\\\\\k<nnn>? \\<nnn> /g`).transform(arg),
 );
-getValue<{ $0: `$$\\\\\$$ to` }>(makeNamedRegExp(`/(\\$\{2})\\\\\\1 to/g`).transform(arg));
+getValue<{ $0: `$$\\$$ to` }>(makeNamedRegExp(`/(\\$\{2})\\\\\\1 to/g`).transform(arg));
 getValue<{ $0: `$$$$ yy` }>(makeNamedRegExp(`/(?<a>\\$\{2})\\k<a> yy/g`).transform(arg));
 getValue<{ $0: `$$$$ tt` }>(makeNamedRegExp(`/(?<a>\\\$\{2})\\k<a> tt/g`).transform(arg));
-getValue<{ $0: `\\${string}\\${string}` }>(makeNamedRegExp(`/(?<a>\\${'2'})\\k<a>nn/g`).transform(arg));
+getValue<{ $0: `${string}${string}` }>(makeNamedRegExp(`/(?<a>\\${'2'})\\k<a>nn/g`).transform(arg));
 
-getValue<{ $0: `\\\\${string}3}\\\\\\\\${string}3} da` }>(
-  makeNamedRegExp(`/(\\\\[\$\{]3})\\\\\\1 da/g`).transform(arg),
-);
+getValue<{ $0: `\\${string}3}\\\\${string}3} da` }>(makeNamedRegExp(`/(\\\\[\$\{]3})\\\\\\1 da/g`).transform(arg));
 getValue<{ $0: `AAA` }>(makeNamedRegExp(`/A{3}/g`).transform(arg));
 getValue<{ $0: `$$$` }>(makeNamedRegExp(`/\\\${3}/g`).transform(arg));
 getValue<{ $0: `^^^` }>(makeNamedRegExp(`/\\^{3}/g`).transform(arg));
 getValue<{ $0: string }>(makeNamedRegExp(`/\\s{3}/g`).transform(arg));
 
-getValue<{ $0: `[\\${`\\ ` | ``}${string}${string}\\${string}` }>(
-  makeNamedRegExp(`/(\\[\^\\\\\ \*)\\W\\\\\s\\S\\\\\S/g`).transform(arg),
-);
+getValue<{ $0: `[${`\\ ` | ``}${string}` }>(makeNamedRegExp(`/(\\[\^\\\\\ \*)\\W\\\\\s\\S\\\\\S/g`).transform(arg));
 
-getValue<{ $0: `${string}4}\\\\${string}4}` }>(makeNamedRegExp(`/([\\\${\\]]4})\\\\\\1/g`).transform(arg));
+getValue<{ $0: `${string}4}\\${string}4}` }>(makeNamedRegExp(`/([\\\${\\]]4})\\\\\\1/g`).transform(arg));
 
 getValue<{ $0: `${string}5}${string}5}` }>(
   // @ts-expect-error
@@ -255,19 +252,25 @@ getValue<{ $0: `1${string | ''}text between${string}${`named group` | ''}${' ' |
   makeNamedRegExp(`/(1)\\s?text between\\s(?<groupName>named group)?( )?/`).transform(arg),
 );
 
+getValue<{ $0: `\\\\&&` }>(makeNamedRegExp(`/\\\\\\\\&{2}/`).transform(arg));
+
 const avvas = `(NI)`;
 const justStr = `AI${avvas}N`;
 const sym = `R${justStr}`;
 const uniqueConstString = `(T${sym}G)`;
 
 getValue<{
-  $0: `text TRAINING \\\${with} inserts ${'3' | ''} TRAINING`;
+  $0: `text TRAINING \${with} \\\${with} {no} {no} \\{no} \\{no} inserts ${'3' | ''} TRAINING`;
   $1: 'TRAINING';
   $2: 'NI';
   $3?: '3';
   $4: 'TRAINING';
   $5: 'NI';
-}>(makeNamedRegExp(`/text ${uniqueConstString} \\\${with} inserts (3)? ${uniqueConstString}/`).transform(arg));
+}>(
+  makeNamedRegExp(
+    `/text ${uniqueConstString} \\\${with} \\\\\\\${with} \${no} $\{no} \\\\$\{no} \\\\\$\{no} inserts (3)? ${uniqueConstString}/`,
+  ).transform(arg),
+);
 
 // todo:
 // \P{Script_Extensions=Latin}
