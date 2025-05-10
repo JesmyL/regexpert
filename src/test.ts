@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { makeNamedRegExp } from '../types/model';
 
-const getValue = <Value>(_: Value) => {};
+const getValue = <Value extends object>(_: Value) => {};
 const getKeys = <ReqKeys extends string, OptKeys extends string = string>(
   _: Record<ReqKeys, unknown> & Partial<Record<OptKeys, unknown>>,
 ) => {};
