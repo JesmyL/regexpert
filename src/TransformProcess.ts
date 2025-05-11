@@ -15,6 +15,8 @@ export class TransformProcess {
   quantifierRegStr = '[?+*]\\??|{,\\d+}|{\\d+,\\d*?}|{\\d+}' as const;
   sortGroupIndexes = (a: number, b: number) => a - b;
 
+  toolsCommentSlashStub = StubSymbol.def;
+
   stubs = {
     string: StubSymbol.def,
     number: StubSymbol.def,
@@ -52,15 +54,13 @@ export class TransformProcess {
   }
 
   stubCharCode = 999;
-  makeStub = (regStr: string) => {
+  makeStub = (text: string) => {
     do this.stubCharCode += 5;
-    while (regStr.includes(String.fromCharCode(this.stubCharCode)));
+    while (text.includes(String.fromCharCode(this.stubCharCode)));
     return String.fromCharCode(this.stubCharCode) as StubSymbol;
   };
 
   setStubSymbols = (regStr: string) => {
-    this.stubCharCode = 9999;
-
     for (const name in this.stubs) {
       this.stubs[name as 'string'] = this.makeStub(regStr);
     }
@@ -79,6 +79,8 @@ export class TransformProcess {
   };
 
   process = () => {
+    this.stubCharCode = 9999;
+    this.toolsCommentSlashStub = this.makeStub(this.content);
     this.content = this.cutFileComments(this.content);
 
     const splits = this.content.split(this.makerInvokesContentSplitterRegExp);
@@ -86,12 +88,21 @@ export class TransformProcess {
     const registeredTypeKeysSet = new Set<string>();
 
     for (let userRegStri = 1; userRegStri < splits.length; userRegStri++) {
-      const leadRegQuote = splits[userRegStri][0];
+      const tools: Partial<Record<'stringify', string[]>> = {};
+      const userRegStr = splits[userRegStri]
+        .replace(makeRegExp(`/${this.toolsCommentSlashStub}(.+)/g`), (_all, toolStr: string) => {
+          const [toolName, ...params] = toolStr.split(makeRegExp('/\\s+/'));
 
+          tools[toolName as 'stringify'] = params;
+          return '';
+        })
+        .trim();
+
+      const leadRegQuote = userRegStr[0];
       const findFreeBracketReg = makeRegExp(`/(?<!\\\\)(?:\\\\{2})*\\\`/`);
       const findConcatenatesReg = makeRegExp('/(?<!(?:\\\\{2})*\\\\)`/');
-      const index = splits[userRegStri].slice(1).search(findFreeBracketReg);
-      const userWritedRegStr = splits[userRegStri]?.slice(1, index + 1);
+      const index = userRegStr.slice(1).search(findFreeBracketReg);
+      const userWritedRegStr = userRegStr?.slice(1, index + 1);
 
       const match = userWritedRegStr.match(findConcatenatesReg);
 
@@ -298,7 +309,7 @@ export class TransformProcess {
             const sameContentGroupName = this.makeGroupTypeName(groupTypeContentsToNameDict[groupInfo.content]);
 
             groupTypeParts.push(
-              `type ${typeName} = ${
+              `type ${typeName} = ${tools.stringify?.includes(typeName) ? 'string; // ' : ''}${
                 sameContentGroupName &&
                 sameContentGroupName !== typeName &&
                 sameContentGroupName.length < typeContent.length
@@ -307,8 +318,10 @@ export class TransformProcess {
               };`,
             );
           } else {
+            const typeName = this.makeUncountableGroupTypeName(groupInfo.name);
+
             uncountableGroupPartTypes.push(
-              `type ${this.makeUncountableGroupTypeName(groupInfo.name)} = ${
+              `type ${typeName} = ${tools.stringify?.includes(typeName) ? 'string; // ' : ''}${
                 //
                 groupInfo.key !== ':' ? "''; // " : ''
               }${groupInfo.isNever ? 'undefined & ' : ''}${
@@ -632,7 +645,16 @@ export class TransformProcess {
 
   checkIsGroupOptional = (groupStr: string) => !!groupStr.match(makeRegExp('/(?:[*?]|{(?:|0),\\d*})\\??$/'));
 
-  cutFileComments = (content: string) => content.replace(/(?:^|\n) *\/{2,}.*/g, '');
+  cutFileComments = (content: string) =>
+    content
+      .replace(makeRegExp('//{2,} *regexpert:\\s*(/{2,} *(?:stringify).+)/g'), (_all, toolsStr: string) => {
+        return toolsStr
+          .split(makeRegExp('/(^|\\r?\\n)\\s*/*\\s*/'))
+          .map(line => `${this.toolsCommentSlashStub}${line}`.trim())
+          .filter(line => line !== this.toolsCommentSlashStub)
+          .join('\n');
+      })
+      .replace(/(?:^|\n) *\/{2,}.*/g, '');
 
   replaceStringTemplateInserts = (regStr: string) => {
     return regStr.replace(makeRegExp(`/(?<!${this.stubs.escape})(?:\\$\\{[^{}[\\]]+?\\})/g`), this.stubs.string);

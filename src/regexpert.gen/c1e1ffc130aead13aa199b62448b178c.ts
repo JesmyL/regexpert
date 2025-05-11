@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import('../test')
+import('../test');
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_1 {
   type $0 = $str;
@@ -1687,6 +1687,101 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_116 {
   > { '': '' }
 }
 
+namespace Nc1e1ffc130aead13aa199b62448b178c_117 {
+  type $0 = string; // `${$group1}${$group2}`;
+  type $group1 = $2;
+  type $2 = `one${$3}${$4 | ''}${$7 | ''}${$8}`;
+  type $3 = `two`;
+  type $4 = `three${$5 | ''}${$6}`;
+  type $5 = `four`;
+  type $6 = `fiv${`e` | ''}`;
+  type $7 = `six`;
+  type $8 = `seven${$9}`;
+  type $9 = `eight` | `${$10}${$16}`;
+  type $10 = string; // `nine${$11}${$15}`;
+  type $11 = `ten${$12}`;
+  type $12 = `elev${`e` | ''}n${$13 | ''}`;
+  type $13 = `twelve${$14 | ''}`;
+  type $14 = `13th`;
+  type $15 = `14th` | `14` | `14${string}` | `abc` | `plus` | `minus`;
+  type $16 = `15th${$17}`;
+  type $17 = `16th${$18}`;
+  type $18 = `17th${$19 | ''}`;
+  type $19 = `18th${$20 | ''}`;
+  type $20 = `19th${$21}`;
+  type $21 = `20th`;
+  type $group2 = $23;
+  type $23 = `one${$24}${$25 | ''}${$28 | ''}${$29}`;
+  type $24 = $3;
+  type $25 = `three${$26 | ''}${$27}`;
+  type $26 = $5;
+  type $27 = $6;
+  type $28 = $7;
+  type $29 = `seven${$30}`;
+  type $30 = `eight` | `${$31}${$37}`;
+  type $31 = `nine${$32}${$36}`;
+  type $32 = `ten${$33}`;
+  type $33 = `elev${`e` | ''}n${$34 | ''}`;
+  type $34 = `twelve${$35 | ''}`;
+  type $35 = $14;
+  type $36 = $15;
+  type $37 = `15th${$38}`;
+  type $38 = `16th${$39}`;
+  type $39 = `17th${$40 | ''}`;
+  type $40 = `18th${$41 | ''}`;
+  type $41 = `19th${$42}`;
+  type $42 = $21;
+
+  export interface I extends Record<
+    `/(?<group1>(one(two)(three(four)?(five?))?(six)?(seven(eight|(nine(ten(eleve?n(twelve(13th)?)?))(14th|14|14\\+|abc|plus|minus))(15th(16th(17th(18th(19th(20th))?)?)))))))(?<group2>(one(two)(three(four)?(five?))?(six)?(seven(eight|(nine(ten(eleve?n(twelve(13th)?)?))(14th|14|14\\+|abc|plus|minus))(15th(16th(17th(18th(19th(20th))?)?)))))))/`,
+    {
+      $0: $0;
+      group1: $group1;
+      $2: $2;
+      $3: $3;
+      $4?: $4;
+      $5?: $5;
+      $6?: $6;
+      $7?: $7;
+      $8: $8;
+      $9: $9;
+      $10?: $10;
+      $11?: $11;
+      $12?: $12;
+      $13?: $13;
+      $14?: $14;
+      $15?: $15;
+      $16?: $16;
+      $17?: $17;
+      $18?: $18;
+      $19?: $19;
+      $20?: $20;
+      $21?: $21;
+      group2: $group2;
+      $23: $23;
+      $24: $24;
+      $25?: $25;
+      $26?: $26;
+      $27?: $27;
+      $28?: $28;
+      $29: $29;
+      $30: $30;
+      $31?: $31;
+      $32?: $32;
+      $33?: $33;
+      $34?: $34;
+      $35?: $35;
+      $36?: $36;
+      $37?: $37;
+      $38?: $38;
+      $39?: $39;
+      $40?: $40;
+      $41?: $41;
+      $42?: $42
+    }
+  > { '': '' }
+}
+
 interface _GlobalScopedNamedRegExpMakerGeneratedTypes
   extends Nc1e1ffc130aead13aa199b62448b178c_1.I,
     Nc1e1ffc130aead13aa199b62448b178c_2.I,
@@ -1803,6 +1898,7 @@ interface _GlobalScopedNamedRegExpMakerGeneratedTypes
     Nc1e1ffc130aead13aa199b62448b178c_113.I,
     Nc1e1ffc130aead13aa199b62448b178c_114.I,
     Nc1e1ffc130aead13aa199b62448b178c_115.I,
-    Nc1e1ffc130aead13aa199b62448b178c_116.I {
+    Nc1e1ffc130aead13aa199b62448b178c_116.I,
+    Nc1e1ffc130aead13aa199b62448b178c_117.I {
     '': ''
 }

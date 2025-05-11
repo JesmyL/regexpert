@@ -274,5 +274,17 @@ getValue<{
   ).transform(arg),
 );
 
+const manyGroups =
+  `(one(two)(three(four)?(five?))?(six)?(seven(eight|(nine(ten(eleve?n(twelve(13th)?)?))(14th|14|14\\+|abc|plus|minus))(15th(16th(17th(18th(19th(20th))?)?))))))` as const;
+
+// so large RegExp
+getValue(
+  makeNamedRegExp(
+    // regexpert:
+    // stringify $0 $10
+    `/(?<group1>${manyGroups})(?<group2>${manyGroups})/`,
+  ).transform(arg),
+);
+
 // todo:
 // \P{Script_Extensions=Latin}
