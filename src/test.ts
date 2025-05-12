@@ -288,3 +288,8 @@ getValue(
 
 getValue<{ $0: `<${string}${number}>` }>(makeNamedRegExp(`/<\\P{Script_Extensions=Latin}\\d>/u`).transform(arg));
 getValue<{ $0: `<P{ABC}${number}>` }>(makeNamedRegExp(`/<\\P{ABC}\\d>/`).transform(arg));
+getValue<{ $0: `<${string}${number}>` }>(makeNamedRegExp(`/<\\xA3\\d>/u`).transform(arg));
+getValue<{ $0: `<xA3${number}>` }>(makeNamedRegExp(`/<\\xA3\\d>/`).transform(arg));
+getValue<{ $0: `<${string} ${string} ${string} ${string} ${string} ${string} ${number}>` }>(
+  makeNamedRegExp(`/<\\xA3 \\cD \\uaBc \\u{a} \\u{abcdef} \\xFA6 \\d>/u`).transform(arg),
+);

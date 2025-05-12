@@ -592,7 +592,10 @@ export class TransformProcess {
       .replace(makeRegExp(`/${this.stubs.escape}{2}[bB]/g`), '');
 
     if (this.flags.u)
-      content = content.replace(makeRegExp(`/${this.stubs.escape}{2}[pP]{[\\w_]+(?:=[\\w_]+)?}/g`), this.stubs.string);
+      content = content.replace(
+        makeRegExp(`/${this.stubs.escape}{2}(?:[pP]{[\\w_]+(?:=[\\w_]+)?}|${this.stringifiableRegStrCharacter})/g`),
+        this.stubs.string,
+      );
 
     content = content
       .replace(makeRegExp(`/(\\\\{2,3})?${this.stubs.dollar}/g`), '$')
@@ -628,6 +631,9 @@ export class TransformProcess {
 
     return content;
   };
+
+  hexCharacter = '[abcdefABCDF\\d]';
+  stringifiableRegStrCharacter = `x${this.hexCharacter}{2}|u${this.hexCharacter}{4}|u{${this.hexCharacter}{1,6}}|c.|f|v|t`;
 
   replaceRecursively = (text: string, strReg: StrRegExp, replacer: (...args: [string, ...any]) => string) => {
     let isFound = true;
@@ -730,11 +736,14 @@ export class TransformProcess {
   };
 
   replaceEscapeds = (regStr: string) => {
-    regStr = regStr.replace(makeRegExp('/(\\\\+?)([bBpP])/g'), (all, slashes: string, text: string) => {
-      return checkIs4xSlashes(slashes)
-        ? all
-        : this.repeatWithoutNegatives('\\', slashes.length - 2) + this.stubs.escape.repeat(2) + text;
-    });
+    regStr = regStr.replace(
+      makeRegExp(`/(\\\\+?)([bBpP0]|${this.stringifiableRegStrCharacter})/g`),
+      (all, slashes: string, text: string) => {
+        return checkIs4xSlashes(slashes)
+          ? all
+          : this.repeatWithoutNegatives('\\', slashes.length - 2) + this.stubs.escape.repeat(2) + text;
+      },
+    );
 
     regStr = regStr.replace(makeRegExp('/(\\\\+?)[|]/g'), (all, slashes: string) => {
       return checkIs4xSlashes(slashes)
