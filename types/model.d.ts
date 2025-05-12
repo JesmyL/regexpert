@@ -12,6 +12,11 @@ declare global {
   type IgnoreCaseRecord<T extends object> = {
     [K in keyof T]: T[K] extends string ? Uppercase<T[K]> | Lowercase<T[K]> : T[K];
   };
+
+  type RepeatingString<S extends string> = `${S}${string}`; // `${S}` | `${S}${S}` | `${S}${S}${S}` etc
+  type OptRepeatingString<S extends string> = '' | `${S}${string}`; // '' | `${S}` | `${S}${S}` | `${S}${S}${S}` etc
+  type LookaheadAssertion<_S extends string> = '';
+  type LookbehindAssertion<_S extends string> = '';
 }
 
 type RegTypes = _GlobalScopedNamedRegExpMakerGeneratedTypes;

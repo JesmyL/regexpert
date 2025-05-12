@@ -19,10 +19,6 @@ export type GroupInfo = {
   isCountable: boolean;
 };
 
-export const enum StubSymbol {
-  def = '*******',
-}
-
 export const enum GroupStubSymbol {
   zero = '****',
 }

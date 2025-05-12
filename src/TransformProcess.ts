@@ -1,10 +1,12 @@
-import { PluginOptions, StrRegExpFlag } from '../types/model';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { PluginOptions, StrRegExp, StrRegExpFlag } from '../types/model';
 import { makeRegExp } from './makeRegExp';
 import { testMaker } from './test.maker';
-import { GroupInfo, GroupName, GroupStubSymbol, StubSymbol } from './types';
+import { GroupInfo, GroupName, GroupStubSymbol } from './types';
 import { checkIs2xSlashes, checkIs4xSlashes } from './utils';
 
 setTimeout(testMaker, 500);
+const defaultStubCharCode = 9999;
 
 export class TransformProcess {
   makerInvokesContentSplitterRegExp: RegExp;
@@ -15,25 +17,34 @@ export class TransformProcess {
   quantifierRegStr = '[?+*]\\??|{,\\d+}|{\\d+,\\d*?}|{\\d+}' as const;
   sortGroupIndexes = (a: number, b: number) => a - b;
 
-  toolsCommentSlashStub = StubSymbol.def;
+  toolsCommentSlashStub = '';
 
   stubs = {
-    string: StubSymbol.def,
-    number: StubSymbol.def,
-    optionalNumber: StubSymbol.def,
-    empty: StubSymbol.def,
-    union: StubSymbol.def,
-    optional: StubSymbol.def,
-    untemplated: StubSymbol.def,
-    freeUntemplated: StubSymbol.def,
-    slash: StubSymbol.def,
-    dollar: StubSymbol.def,
-    escape: StubSymbol.def,
-    openParenthesis: StubSymbol.def,
-    closeParenthesis: StubSymbol.def,
+    string: '',
+    number: '',
+    optionalNumber: '',
+    empty: '',
+    disjunction: '',
+    optional: '',
+    untemplated: '',
+    freeUntemplated: '',
+    slash: '',
+    dollar: '',
+    escape: '',
+    openParenthesis: '',
+    closeParenthesis: '',
   };
 
-  flags = {} as Record<StrRegExpFlag, boolean>;
+  flags: Record<StrRegExpFlag, boolean> = {
+    d: false,
+    g: false,
+    i: false,
+    m: false,
+    s: false,
+    u: false,
+    y: false,
+  };
+
   groupNameToSymbolDict = {} as Record<GroupName, GroupStubSymbol>;
 
   constructor(
@@ -53,11 +64,11 @@ export class TransformProcess {
     );
   }
 
-  stubCharCode = 999;
+  stubCharCode = defaultStubCharCode;
   makeStub = (text: string) => {
     do this.stubCharCode += 5;
     while (text.includes(String.fromCharCode(this.stubCharCode)));
-    return String.fromCharCode(this.stubCharCode) as StubSymbol;
+    return String.fromCharCode(this.stubCharCode);
   };
 
   setStubSymbols = (regStr: string) => {
@@ -69,7 +80,7 @@ export class TransformProcess {
   setGroupStubSymbols = (regStr: string) => {
     const groupStubSymbols: GroupStubSymbol[] = [];
 
-    regStr.replace(/\(/g, (all, slashes) => {
+    regStr.replace(makeRegExp('/\\(/g'), (all, slashes) => {
       if (checkIs4xSlashes(slashes)) return all;
       groupStubSymbols.push(this.makeStub(regStr) as never);
       return all;
@@ -79,7 +90,7 @@ export class TransformProcess {
   };
 
   process = () => {
-    this.stubCharCode = 9999;
+    this.stubCharCode = defaultStubCharCode;
     this.toolsCommentSlashStub = this.makeStub(this.content);
     this.content = this.cutFileComments(this.content);
 
@@ -296,6 +307,16 @@ export class TransformProcess {
           groupTypeContentsToNameDict[groupInfo.content] = groupInfo;
         });
 
+        const makeTypeText = (typeName: string, sameContentGroupName: string, typeContent: string) => {
+          return `type ${typeName} = ${tools.stringify?.includes(typeName) ? 'string; // ' : ''}${
+            sameContentGroupName &&
+            sameContentGroupName !== typeName &&
+            sameContentGroupName.length < typeContent.length
+              ? sameContentGroupName
+              : typeContent
+          };`;
+        };
+
         Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
           if (groupInfo.isCountable) {
             const typeName = this.makeGroupTypeName(groupInfo);
@@ -308,27 +329,21 @@ export class TransformProcess {
             const typeContent = groupTypeContentsDict[groupInfo.name];
             const sameContentGroupName = this.makeGroupTypeName(groupTypeContentsToNameDict[groupInfo.content]);
 
-            groupTypeParts.push(
-              `type ${typeName} = ${tools.stringify?.includes(typeName) ? 'string; // ' : ''}${
-                sameContentGroupName &&
-                sameContentGroupName !== typeName &&
-                sameContentGroupName.length < typeContent.length
-                  ? sameContentGroupName
-                  : typeContent
-              };`,
-            );
+            groupTypeParts.push(makeTypeText(typeName, sameContentGroupName, typeContent));
           } else {
             const typeName = this.makeUncountableGroupTypeName(groupInfo.name);
 
-            uncountableGroupPartTypes.push(
-              `type ${typeName} = ${tools.stringify?.includes(typeName) ? 'string; // ' : ''}${
-                //
-                groupInfo.key !== ':' ? "''; // " : ''
-              }${groupInfo.isNever ? 'undefined & ' : ''}${
-                //
-                groupTypeContentsDict[groupInfo.name]
-              };`,
-            );
+            const sameContentGroupName = groupTypeContentsToNameDict[groupInfo.content].isCountable
+              ? this.makeGroupTypeName(groupTypeContentsToNameDict[groupInfo.content])
+              : this.makeUncountableGroupTypeName(groupTypeContentsToNameDict[groupInfo.content].name);
+
+            const typeContent = groupInfo.key.endsWith(':')
+              ? groupTypeContentsDict[groupInfo.name]
+              : groupInfo.key.includes('<')
+              ? `LookbehindAssertion<${groupTypeContentsDict[groupInfo.name]}>`
+              : `LookaheadAssertion<${groupTypeContentsDict[groupInfo.name]}>`;
+
+            uncountableGroupPartTypes.push(makeTypeText(typeName, sameContentGroupName, typeContent));
           }
         });
 
@@ -396,8 +411,8 @@ export class TransformProcess {
   makeRegTypeKey = (keyRegStr: string, regFlags: string) => {
     return `\`/${
       keyRegStr
-        .replace(makeRegExp(`/${this.stubs.union}{3}/g`), '\\\\|')
-        .replace(makeRegExp(`/${this.stubs.escape}{2}([bB])/g`), '\\\\$1')
+        .replace(makeRegExp(`/${this.stubs.disjunction}{3}/g`), '\\\\|')
+        .replace(makeRegExp(`/${this.stubs.escape}{2}([bBpP])/g`), '\\\\$1')
         .replace(makeRegExp(`/[${this.stubs.slash}${this.stubs.escape}]/g`), '\\')
         .replace(makeRegExp(`/[${this.stubs.freeUntemplated}${this.stubs.untemplated}]/g`), '\\${')
         .replace(makeRegExp(`/${this.stubs.string}/g`), '${string}')
@@ -428,7 +443,7 @@ export class TransformProcess {
   replaceEnumsWithStringTemplatePrefix = (regStr: string) => {
     return regStr.replace(
       makeRegExp(
-        `/(?<!${this.stubs.escape})\\[(?:${this.stubs.escape}{2}]|.)*?\\$\\\\?{(?:${this.stubs.escape}{2}]|.)*?(?<!${this.stubs.escape})]/g`,
+        `/(?<!${this.stubs.escape})\\[(?:${this.stubs.escape}{2}]|.)*?[$]\\\\?{(?:${this.stubs.escape}{2}]|.)*?(?<!${this.stubs.escape})]/g`,
       ),
       this.stubs.string,
     );
@@ -501,7 +516,7 @@ export class TransformProcess {
   }) => {
     if (!groupInfo.content) return '``';
 
-    let content = groupInfo.content.replace(makeRegExp(`/(?<!${this.stubs.escape})(?:[$^])/g`), '');
+    let content = `\`${groupInfo.content.replace(makeRegExp(`/(?<!${this.stubs.escape})(?:[$^])/g`), '')}\``;
 
     content = content.replace(
       makeRegExp(`/\\\\{2}(?:(\\d+)|k<([\\w$_]+)>)(${this.quantifierRegStr}|)/g`),
@@ -574,7 +589,12 @@ export class TransformProcess {
       })
       .replace(makeRegExp(`/([${this.stubs.slash}\\\\])\\1\\1\\1/g`), '\\\\')
       .replace(makeRegExp(`/${this.stubs.slash}{2}/g`), '')
-      .replace(makeRegExp(`/${this.stubs.escape}{2}([bB])/g`), '')
+      .replace(makeRegExp(`/${this.stubs.escape}{2}[bB]/g`), '');
+
+    if (this.flags.u)
+      content = content.replace(makeRegExp(`/${this.stubs.escape}{2}[pP]{[\\w_]+(?:=[\\w_]+)?}/g`), this.stubs.string);
+
+    content = content
       .replace(makeRegExp(`/(\\\\{2,3})?${this.stubs.dollar}/g`), '$')
       .replace(makeRegExp(`/${this.stubs.escape}+/g`), '');
 
@@ -593,20 +613,35 @@ export class TransformProcess {
       .replace(makeRegExp(`/${this.stubs.freeUntemplated}/g`), '{')
       .split('|')
       .join('` | `')
-      .replace(makeRegExp(`/${this.stubs.union}{3}/g`), '|')
+      .replace(makeRegExp(`/${this.stubs.disjunction}{3}/g`), '|')
       .replace(makeRegExp(`/${this.stubs.optional}/g`), " | ''")
-      .replace(makeRegExp(`/${this.stubs.escape}{2}[bB]/g`), '')
       .replace(makeRegExp(`/(\\\\{2,3})?${this.stubs.dollar}/g`), '$')
       .replace(makeRegExp(`/${this.stubs.string}+/g`), '${string}');
 
-    content = `\`${content}\``
-      .replace(makeRegExp('/\\`\\${([^}`]+)}\\`/g'), '$1')
-      .replace(makeRegExp('/[$]{`([^}`]+)`}/g'), '$1')
+    content = this.replaceRecursively(content, '/`[$]{([^}`]+)}`/g', (_, $1) => $1);
+    content = this.replaceRecursively(content, '/[$]{`([^}`]+)`}/g', (_, $1) => $1);
+
+    content = content
       .replace(makeRegExp('/(?:(?<!\\\\)|(\\\\{2})+)\\\\[$](?!{)/g'), '$1$')
-      .replace(makeRegExp(`/${this.stubs.optionalNumber}/g`), `\${number | ''}`)
-      .replace(makeRegExp(`/${this.stubs.number}/g`), `\${number}`);
+      .replace(makeRegExp(`/${this.stubs.optionalNumber}/g`), "${number | ''}")
+      .replace(makeRegExp(`/${this.stubs.number}/g`), '${number}');
 
     return content;
+  };
+
+  replaceRecursively = (text: string, strReg: StrRegExp, replacer: (...args: [string, ...any]) => string) => {
+    let isFound = true;
+
+    while (isFound) {
+      isFound = false;
+
+      text = text.replace(makeRegExp(strReg), (...args) => {
+        isFound = true;
+        return replacer(...args);
+      });
+    }
+
+    return text;
   };
 
   checkIsOptionalQuantifier = (quantifier: string | undefined) => {
@@ -621,24 +656,22 @@ export class TransformProcess {
   };
 
   insertOptionalChar = (quantifier: string | undefined, char: string, orRequired?: string, inTextInserted = true) => {
+    if (quantifier === '{0}') return '';
+
     const text = inTextInserted ? `\${${char}}` : char;
 
-    if (!quantifier || quantifier === '{1}') {
-      return orRequired ?? text;
-    }
+    if (!quantifier || quantifier === '{1}') return orRequired ?? text;
 
     if (quantifier === '{2}') return orRequired ?? text.repeat(2);
     if (quantifier === '{3}') return orRequired ?? text.repeat(3);
 
-    if (quantifier.startsWith('+')) return `${text}\${string}`;
+    if (quantifier.startsWith('+')) return inTextInserted ? `\${RepeatingString<${char}>}` : `RepeatingString<${char}>`;
     if (quantifier.endsWith('?'))
       return inTextInserted ? `\${${char}${this.stubs.optional}}` : `${char}${this.stubs.optional}`;
 
     if (quantifier.endsWith('*') || quantifier.startsWith('{0,') || quantifier.startsWith('{,')) {
-      return `\${''${this.stubs.union.repeat(3)}\`${text}${this.stubs.string}\`}`;
+      return inTextInserted ? `\${OptRepeatingString<${char}>}` : `OptRepeatingString<${char}>`;
     }
-
-    if (quantifier === '{0}') return '';
 
     return orRequired ?? `${text}${this.stubs.string}`;
   };
@@ -654,10 +687,10 @@ export class TransformProcess {
           .filter(line => line !== this.toolsCommentSlashStub)
           .join('\n');
       })
-      .replace(/(?:^|\n) *\/{2,}.*/g, '');
+      .replace(makeRegExp('/(?:^|\\n) */{2,}.*/g'), '');
 
   replaceStringTemplateInserts = (regStr: string) => {
-    return regStr.replace(makeRegExp(`/(?<!${this.stubs.escape})(?:\\$\\{[^{}[\\]]+?\\})/g`), this.stubs.string);
+    return regStr.replace(makeRegExp(`/(?<!${this.stubs.escape})(?:[$]\\{[^{}[\\]]+?\\})/g`), this.stubs.string);
   };
 
   someOfGroupParents = (groupInfo: GroupInfo, someCb: (groupInfo: GroupInfo) => boolean) => {
@@ -676,37 +709,28 @@ export class TransformProcess {
   };
 
   replaceFileConstants = (regStr: string) => {
-    let isConstantsFound = true;
     const foundConstants: Record<string, string> = {};
 
-    while (isConstantsFound) {
-      isConstantsFound = false;
+    return this.replaceRecursively(
+      regStr,
+      '/((?<!\\\\)(?:(?:\\\\{2})*|))[$]{([\\w$_]+|\\d+)}/g',
+      (_all, before, constantName) => {
+        if (foundConstants[constantName] !== undefined) return `${before}${foundConstants[constantName]}`;
 
-      regStr = regStr.replace(
-        makeRegExp('/((?<!\\\\)(?:(?:\\\\{2})*|))\\${([\\w$_]+|\\d+)}/g'),
-        (_all, before, constantName) => {
-          if (foundConstants[constantName] !== undefined) return `${before}${foundConstants[constantName]}`;
+        if (makeRegExp('/^\\d+$/').test(constantName)) return `${before}${this.stubs.string}`;
 
-          if (makeRegExp('/^\\d+$/').test(constantName)) return `${before}${this.stubs.string}`;
-          isConstantsFound = true;
+        const matches = Array.from(this.content.matchAll(makeRegExp(`/const ${constantName}\\s*=\\s*\`([^\`]*)\`/g`)));
 
-          const matches = Array.from(
-            this.content.matchAll(makeRegExp(`/const ${constantName}\\s*=\\s*\`([^\`]*)\`/g`)),
-          );
+        if (matches.length > 1 || matches.length < 1) return `${before}${this.stubs.string}`;
+        foundConstants[constantName] = matches[0][1];
 
-          if (matches.length > 1 || matches.length < 1) return `${before}${this.stubs.string}`;
-          foundConstants[constantName] = matches[0][1];
-
-          return `${before}${foundConstants[constantName]}`;
-        },
-      );
-    }
-
-    return regStr;
+        return `${before}${foundConstants[constantName]}`;
+      },
+    );
   };
 
   replaceEscapeds = (regStr: string) => {
-    regStr = regStr.replace(makeRegExp('/(\\\\+?)([bB])/g'), (all, slashes: string, text: string) => {
+    regStr = regStr.replace(makeRegExp('/(\\\\+?)([bBpP])/g'), (all, slashes: string, text: string) => {
       return checkIs4xSlashes(slashes)
         ? all
         : this.repeatWithoutNegatives('\\', slashes.length - 2) + this.stubs.escape.repeat(2) + text;
@@ -715,7 +739,7 @@ export class TransformProcess {
     regStr = regStr.replace(makeRegExp('/(\\\\+?)[|]/g'), (all, slashes: string) => {
       return checkIs4xSlashes(slashes)
         ? all
-        : `${this.repeatWithoutNegatives(this.stubs.slash, slashes.length - 2)}${this.stubs.union.repeat(3)}`;
+        : `${this.repeatWithoutNegatives(this.stubs.slash, slashes.length - 2)}${this.stubs.disjunction.repeat(3)}`;
     });
 
     regStr = regStr.replace(makeRegExp(`/(\\\\*?)[$]\\\\{/g`), (all, slashes: string) => {
@@ -824,32 +848,23 @@ export class TransformProcess {
     countableGroupSymbolsDict: Record<number, GroupStubSymbol>;
     symbolGroupsDict: Record<GroupStubSymbol, number>;
   }) => {
-    let isNeedReplace = true;
     let otherStubSymboli = 0;
 
-    while (isNeedReplace) {
-      isNeedReplace = false;
+    return this.replaceRecursively(
+      regStr,
+      `/(?<!${this.stubs.escape})\\((\\?(?:!|<!|.))?(?:${this.stubs.escape}[()]|[^()])*?\\)(?:${this.quantifierRegStr}|)/g`,
 
-      regStr = regStr.replace(
-        makeRegExp(
-          `/(?<!${this.stubs.escape})\\((\\?(?:!|<!|.))?(?:${this.stubs.escape}[()]|[^()])*?\\)(?:${this.quantifierRegStr}|)/g`,
-        ),
-        (all, groupKey: string | undefined, index) => {
-          isNeedReplace = true;
+      (all, groupKey: string | undefined, index) => {
+        groups[index] = all;
+        groupSymbolsDict[index] = groupStubSymbols[otherStubSymboli++] as GroupStubSymbol;
+        symbolGroupsDict[groupSymbolsDict[index]] = index;
 
-          groups[index] = all;
-          groupSymbolsDict[index] = groupStubSymbols[otherStubSymboli++] as GroupStubSymbol;
-          symbolGroupsDict[groupSymbolsDict[index]] = index;
+        if (groupKey === undefined || groupKey === '?<') {
+          countableGroupSymbolsDict[index] = groupSymbolsDict[index];
+        }
 
-          if (groupKey === undefined || groupKey === '?<') {
-            countableGroupSymbolsDict[index] = groupSymbolsDict[index];
-          }
-
-          return groupSymbolsDict[index].repeat(all.length);
-        },
-      );
-    }
-
-    return regStr;
+        return groupSymbolsDict[index].repeat(all.length);
+      },
+    );
   };
 }

@@ -9,10 +9,10 @@ namespace N06c8e349bfc7e6d237cd1e4c26d66ff7_1 {
   type $4 = $a;
   type $5 = $a | '';
   
-  type U1 = ''; // undefined & `&&`;
-  type U2 = ''; // undefined & ` %%%`;
+  type U1 = LookaheadAssertion<`&&`>;
+  type U2 = LookbehindAssertion<` %%%`>;
   type U3 = ``;
-  type U4 = ` `;
+  type U4 = $a;
 
   export interface I extends Record<
     `/(?!&&)()(?<! %%%)(?<a> )[|](?:)(888)(?: ){}(\\2)(\\k<a>?)/`,

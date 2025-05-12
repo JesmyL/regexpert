@@ -275,7 +275,7 @@ getValue<{
 );
 
 const manyGroups =
-  `(one(two)(three(four)?(five?))?(six)?(seven(eight|(nine(ten(eleve?n(twelve(13th)?)?))(14th|14|14\\+|abc|plus|minus))(15th(16th(17th(18th(19th(20th))?)?))))))` as const;
+  `(one(two)(three(four)?(five?))?(six)?(seven(eight|(nine(ten(eleve?n(twelve(13th)?)?))(14th|14|14\\+|abc|plus|minus)(?:\\15))(15th(16th(17th(18th(19th(20th))?)?))))))` as const;
 
 // so large RegExp
 getValue(
@@ -286,5 +286,5 @@ getValue(
   ).transform(arg),
 );
 
-// todo:
-// \P{Script_Extensions=Latin}
+getValue<{ $0: `<${string}${number}>` }>(makeNamedRegExp(`/<\\P{Script_Extensions=Latin}\\d>/u`).transform(arg));
+getValue<{ $0: `<P{ABC}${number}>` }>(makeNamedRegExp(`/<\\P{ABC}\\d>/`).transform(arg));
