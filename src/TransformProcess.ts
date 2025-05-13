@@ -411,7 +411,7 @@ export class TransformProcess {
             typeKey
           },\n    \`${
             //
-            `${error}`.slice(1).replace(makeRegExp('/`/g'), '\\`')
+            `${error}`.slice(localErrorPrefix.length).replace(makeRegExp('/`/g'), '\\`')
           }\`> { '': '' }\n}`,
         );
       }
