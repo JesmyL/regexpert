@@ -304,3 +304,15 @@ getValue<{ $0: `<xA3${number}>` }>(makeNamedRegExp(`/<\\xA3\\d>/`).transform(arg
 getValue<{ $0: `<${string} ${string} ${string} ${string} ${string} ${string} ${number}>` }>(
   makeNamedRegExp(`/<\\xA3 \\cD \\uaBc \\u{a} \\u{abcdef} \\xFA6 \\d>/u`).transform(arg),
 );
+
+const chordLikeStr =
+  `(?<simpleChord>[ACDFG]#?|[EH])(\\+|11|((m|min|7?sus|maj|dim|add)?(\\d{1,2}(/\\d{1,2})?)?))(?<hardModificators>[#b](?:5|7|9|11|13))*` as const;
+getValue(
+  makeNamedRegExp(
+    // regexpert:
+    // stringify $0
+    `/^\\.*-?${chordLikeStr}(?<bassChord>/${escapeRegExpNames(
+      chordLikeStr,
+    )})?((?<dotSeparations>\\.+|-|\\.+-)${escapeRegExpNames(chordLikeStr)}(/${escapeRegExpNames(chordLikeStr)})?)*$/`,
+  ),
+);

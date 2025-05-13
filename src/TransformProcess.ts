@@ -9,7 +9,7 @@ import { checkIs2xSlashes, checkIs4xSlashes } from './utils';
 setTimeout(testMaker, 500);
 
 let resetStubCharCode = 9999;
-const nameEscaperFuncName = 'escapeRegExpNames';
+const nameDisablerFuncName = 'escapeRegExpNames';
 const localErrorPrefix = '###LOCAL##ERROR###';
 
 export class TransformProcess {
@@ -403,12 +403,16 @@ export class TransformProcess {
         console.error(`${error}`.slice(localErrorPrefix.length));
 
         namespaces.push(
-          `namespace ${this.makeNamespaceTypeName(
-            '',
-            namespaces.length,
-          )} {\n  export interface I extends Record<\n    ${typeKey},\n    \`${`${error}`
-            .slice(1)
-            .replace(makeRegExp('/`/g'), '\\`')}\`> { '': '' }\n}`,
+          `namespace ${
+            //
+            this.makeNamespaceTypeName('', namespaces.length)
+          } {\n  export interface I extends Record<\n    ${
+            //
+            typeKey
+          },\n    \`${
+            //
+            `${error}`.slice(1).replace(makeRegExp('/`/g'), '\\`')
+          }\`> { '': '' }\n}`,
         );
       }
     }
@@ -416,10 +420,14 @@ export class TransformProcess {
     if (!namespaces.length) return null;
 
     return {
-      types: `/* eslint-disable @typescript-eslint/no-namespace */\n${this.fileImportPath}\n\n${
-        '' + namespaces.join('\n\n')
+      types: `/* eslint-disable @typescript-eslint/no-unused-vars */\n/* eslint-disable @typescript-eslint/no-namespace */\n${
+        this.fileImportPath
+      }\n\n${
+        //
+        namespaces.join('\n\n')
       }\n\ninterface _GlobalScopedNamedRegExpMakerGeneratedTypes\n  extends ${
-        '' + namespaces.map(this.makeNamespaceDotITypeName).join(',\n    ')
+        //
+        namespaces.map(this.makeNamespaceDotITypeName).join(',\n    ')
       } {\n    '': ''\n}`,
     };
   };
@@ -550,7 +558,7 @@ export class TransformProcess {
   }) => {
     if (!groupInfo.content) return '``';
 
-    let content = `\`${groupInfo.content.replace(makeRegExp(`/(?<!${this.stubs.escape})(?:[$^])/g`), '')}\``;
+    let content = groupInfo.content.replace(makeRegExp(`/(?<!${this.stubs.escape})(?:[$^])/g`), '');
 
     content = content.replace(
       makeRegExp(`/\\\\{2}(?:(\\d+)|k<([\\w$_]+)>)(${this.quantifierRegStr}|)/g`),
@@ -644,7 +652,11 @@ export class TransformProcess {
       )
       .replace(makeRegExp(`/([^\\\\])(${this.quantifierRegStr})/g`), (_all, char, quantifier) =>
         this.insertOptionalChar(quantifier, `\`${char}\``),
-      )
+      );
+
+    content = `\`${content}\``;
+
+    content = content
       .replace(makeRegExp(`/[${this.stubs.slash}${this.stubs.escape}]/g`), '\\')
       .replace(makeRegExp(`/${this.stubs.untemplated}/g`), '\\${')
       .replace(makeRegExp(`/${this.stubs.freeUntemplated}/g`), '{')
@@ -754,12 +766,12 @@ export class TransformProcess {
 
     return this.replaceRecursively(
       regStr,
-      `/((?<!\\\\)(?:(?:\\\\{2})*|))[$]{\\s*(${nameEscaperFuncName}\\(\\s*[\\w$_]+\\s*\\)|[\\w$_]+|\\d+)\\s*}/g`,
-      (_all, before, constantName) => {
-        const isNameEscaped = constantName.startsWith(`${nameEscaperFuncName}(`);
+      `/((?<!\\\\)(?:(?:\\\\{2})*|))[$]{\\s*(${nameDisablerFuncName}\\(\\s*([\\w$_]+),?\\s*\\)|[\\w$_]+|\\d+)\\s*}/g`,
+      (_all, before, constantName, constantDisabledName: string | undefined) => {
+        const isNameEscaped = !!constantDisabledName;
         const constantsStore = isNameEscaped ? foundDisabledConstants : foundConstants;
 
-        if (isNameEscaped) constantName = constantName.slice(nameEscaperFuncName.length + 1, -1);
+        if (isNameEscaped) constantName = constantDisabledName;
 
         if (constantsStore[constantName] !== undefined) return `${before}${constantsStore[constantName]}`;
 

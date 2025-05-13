@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-namespace */
 import('../test');
 
@@ -1872,6 +1873,86 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_124 {
   > { '': '' }
 }
 
+namespace Nc1e1ffc130aead13aa199b62448b178c_125 {
+  type $0 = string; // `${OptRepeatingString<`.`>}${`-` | ''}${$simpleChord}${$2}${$hardModificators | ''}${$bassChord | ''}${$16 | ''}`;
+  type $simpleChord = `${string}${`#` | ''}` | string;
+  type $2 = `+` | `11` | $3;
+  type $3 = `${$4 | ''}${$5 | ''}`;
+  type $4 = `m` | `min` | `${`7` | ''}sus` | `maj` | `dim` | `add`;
+  type $5 = `${number}${$6 | ''}`;
+  type $6 = `/${number}`;
+  type $hardModificators = `${string}${U1}`;
+  type $bassChord = `/${$9}${$10}${$15 | ''}`;
+  type $9 = $simpleChord;
+  type $10 = `+` | `11` | $11;
+  type $11 = `${$12 | ''}${$13 | ''}`;
+  type $12 = $4;
+  type $13 = `${number}${$14 | ''}`;
+  type $14 = $6;
+  type $15 = $hardModificators;
+  type $16 = `${$dotSeparations}${$18}${$19}${$24 | ''}${$25 | ''}`;
+  type $dotSeparations = `${RepeatingString<`.`>}` | `-` | `${RepeatingString<`.`>}-`;
+  type $18 = $simpleChord;
+  type $19 = `+` | `11` | $20;
+  type $20 = `${$21 | ''}${$22 | ''}`;
+  type $21 = $4;
+  type $22 = `${number}${$23 | ''}`;
+  type $23 = $6;
+  type $24 = $hardModificators;
+  type $25 = `/${$26}${$27}${$32 | ''}`;
+  type $26 = $simpleChord;
+  type $27 = `+` | `11` | $28;
+  type $28 = `${$29 | ''}${$30 | ''}`;
+  type $29 = $4;
+  type $30 = `${number}${$31 | ''}`;
+  type $31 = $6;
+  type $32 = $hardModificators;
+  
+  type U1 = `5` | `7` | `9` | `11` | `13`;
+  type U2 = U1;
+  type U3 = U1;
+  type U4 = U1;
+
+  export interface I extends Record<
+    `/^\\.*-?(?<simpleChord>[ACDFG]#?|[EH])(\\+|11|((m|min|7?sus|maj|dim|add)?(\\d{1,2}(/\\d{1,2})?)?))(?<hardModificators>[#b](?:5|7|9|11|13))*(?<bassChord>/(?<simpleChord>[ACDFG]#?|[EH])(\\+|11|((m|min|7?sus|maj|dim|add)?(\\d{1,2}(/\\d{1,2})?)?))(?<hardModificators>[#b](?:5|7|9|11|13))*)?((?<dotSeparations>\\.+|-|\\.+-)(?<simpleChord>[ACDFG]#?|[EH])(\\+|11|((m|min|7?sus|maj|dim|add)?(\\d{1,2}(/\\d{1,2})?)?))(?<hardModificators>[#b](?:5|7|9|11|13))*(/(?<simpleChord>[ACDFG]#?|[EH])(\\+|11|((m|min|7?sus|maj|dim|add)?(\\d{1,2}(/\\d{1,2})?)?))(?<hardModificators>[#b](?:5|7|9|11|13))*)?)*$/`,
+    {
+      $0: $0;
+      simpleChord: $simpleChord;
+      $2: $2;
+      $3?: $3;
+      $4?: $4;
+      $5?: $5;
+      $6?: $6;
+      hardModificators?: $hardModificators;
+      bassChord?: $bassChord;
+      $9?: $9;
+      $10?: $10;
+      $11?: $11;
+      $12?: $12;
+      $13?: $13;
+      $14?: $14;
+      $15?: $15;
+      $16?: $16;
+      dotSeparations?: $dotSeparations;
+      $18?: $18;
+      $19?: $19;
+      $20?: $20;
+      $21?: $21;
+      $22?: $22;
+      $23?: $23;
+      $24?: $24;
+      $25?: $25;
+      $26?: $26;
+      $27?: $27;
+      $28?: $28;
+      $29?: $29;
+      $30?: $30;
+      $31?: $31;
+      $32?: $32
+    }
+  > { '': '' }
+}
+
 interface _GlobalScopedNamedRegExpMakerGeneratedTypes
   extends Nc1e1ffc130aead13aa199b62448b178c_1.I,
     Nc1e1ffc130aead13aa199b62448b178c_2.I,
@@ -1996,6 +2077,7 @@ interface _GlobalScopedNamedRegExpMakerGeneratedTypes
     Nc1e1ffc130aead13aa199b62448b178c_121.I,
     Nc1e1ffc130aead13aa199b62448b178c_122.I,
     Nc1e1ffc130aead13aa199b62448b178c_123.I,
-    Nc1e1ffc130aead13aa199b62448b178c_124.I {
+    Nc1e1ffc130aead13aa199b62448b178c_124.I,
+    Nc1e1ffc130aead13aa199b62448b178c_125.I {
     '': ''
 }
