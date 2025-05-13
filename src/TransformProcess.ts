@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PluginOptions, StrRegExp, StrRegExpFlag } from '../types/model';
+import { escapeRegExpNamesMaker } from './escapeRegExpNames.maker';
 import { makeRegExp } from './makeRegExp';
 import { testMaker } from './test.maker';
 import { GroupInfo, GroupName, GroupStubSymbol } from './types';
 import { checkIs2xSlashes, checkIs4xSlashes } from './utils';
 
 setTimeout(testMaker, 500);
-const defaultStubCharCode = 9999;
+
+let resetStubCharCode = 9999;
+const nameEscaperFuncName = 'escapeRegExpNames';
+const localErrorPrefix = '###LOCAL##ERROR###';
 
 export class TransformProcess {
   makerInvokesContentSplitterRegExp: RegExp;
@@ -15,7 +19,14 @@ export class TransformProcess {
   fileImportPath: string;
 
   quantifierRegStr = '[?+*]\\??|{,\\d+}|{\\d+,\\d*?}|{\\d+}' as const;
+  stringQuotedContentRegStr = '`((?:(?:\\\\{2})+\\\\`|(?<!\\\\)\\\\`|[^`])*?)`' as const;
   sortGroupIndexes = (a: number, b: number) => a - b;
+
+  escapeRegExpNames = escapeRegExpNamesMaker(
+    checkIs4xSlashes,
+    2,
+    groupName => `(?<${this.stubs.disabledGroupName}${groupName}>`,
+  );
 
   toolsCommentSlashStub = '';
 
@@ -33,6 +44,7 @@ export class TransformProcess {
     escape: '',
     openParenthesis: '',
     closeParenthesis: '',
+    disabledGroupName: '',
   };
 
   flags: Record<StrRegExpFlag, boolean> = {
@@ -64,7 +76,7 @@ export class TransformProcess {
     );
   }
 
-  stubCharCode = defaultStubCharCode;
+  stubCharCode = resetStubCharCode;
   makeStub = (text: string) => {
     do this.stubCharCode += 5;
     while (text.includes(String.fromCharCode(this.stubCharCode)));
@@ -90,8 +102,10 @@ export class TransformProcess {
   };
 
   process = () => {
-    this.stubCharCode = defaultStubCharCode;
+    this.stubCharCode = resetStubCharCode;
     this.toolsCommentSlashStub = this.makeStub(this.content);
+    resetStubCharCode = this.stubCharCode;
+
     this.content = this.cutFileComments(this.content);
 
     const splits = this.content.split(this.makerInvokesContentSplitterRegExp);
@@ -99,6 +113,8 @@ export class TransformProcess {
     const registeredTypeKeysSet = new Set<string>();
 
     for (let userRegStri = 1; userRegStri < splits.length; userRegStri++) {
+      this.stubCharCode = resetStubCharCode;
+
       const tools: Partial<Record<'stringify', string[]>> = {};
       const userRegStr = splits[userRegStri]
         .replace(makeRegExp(`/${this.toolsCommentSlashStub}(.+)/g`), (_all, toolStr: string) => {
@@ -191,6 +207,7 @@ export class TransformProcess {
             parent: null,
             isNever: false,
             isNumName: true,
+            topName: null,
           },
         };
 
@@ -198,14 +215,15 @@ export class TransformProcess {
           const groupStr = groups[groupIndex];
           const groupNameMatch = groupStr.match(makeRegExp('/\\((\\?(?:<[!=]|<([^>]*?)>|))?/'));
 
-          if (groupNameMatch === null) throw '#Incorrect RegExp group';
+          if (groupNameMatch === null) throw `${localErrorPrefix}Incorrect RegExp group`;
           const matchedGroupName = groupNameMatch[2] as GroupName | undefined;
           const isNoname = matchedGroupName === undefined;
+          const isGroupNameDisabled = matchedGroupName?.startsWith(this.stubs.disabledGroupName);
 
           if (!isNoname) {
-            if (matchedGroupName === GroupName.empty) throw '#Group name can not be empty - <>';
-            if (matchedGroupName.match(makeRegExp('/^\\d|[^$_\\w]/')))
-              throw `#Incorrect group name - <${matchedGroupName}>`;
+            if (matchedGroupName === GroupName.empty) throw `${localErrorPrefix}Group name can not be empty - <>`;
+            if (matchedGroupName.match(makeRegExp(`/^\\d|[^${this.stubs.disabledGroupName}$_\\w]/`)))
+              throw `${localErrorPrefix}Incorrect group name - <${matchedGroupName}>`;
           }
 
           const groupSymbol = groupSymbolsDict[groupIndex];
@@ -239,6 +257,7 @@ export class TransformProcess {
               parent: null,
               isNever: false,
               isNumName: false,
+              topName: null,
             };
 
             continue;
@@ -247,8 +266,9 @@ export class TransformProcess {
           const groupContent = groupStr.slice(isNoname ? 1 : matchedGroupName.length + 4, groupStr.lastIndexOf(')'));
           const isOptChildren = isEachGroupIsOptional || groupContent.includes('|');
 
-          countableGroupi++;
-          const groupName = matchedGroupName ?? (`$${countableGroupi}` as GroupName);
+          const numName = `$${++countableGroupi}` as GroupName;
+          const isNumName = isGroupNameDisabled || matchedGroupName == null;
+          const groupName = isNumName ? numName : matchedGroupName;
           this.groupNameToSymbolDict[groupName] = groupSymbol;
 
           groupSymbolToInfoDict[groupSymbol] = {
@@ -259,7 +279,10 @@ export class TransformProcess {
             groupStr,
             groupSymbol,
             name: groupName,
-            isNumName: matchedGroupName == null,
+            topName: isGroupNameDisabled
+              ? (matchedGroupName?.replace(makeRegExp('/[^\\w_$]+/g'), '') as never) ?? null
+              : null,
+            isNumName,
             content: groupContent,
             key: '',
             isHasSubTypes: this.checkIsHasSubTypes(groupStr, groupSymbols),
@@ -293,7 +316,9 @@ export class TransformProcess {
         });
 
         Object.values(wholeGroupSymbolToInfoDict).forEach(groupInfo => {
-          if (groupTypeContentsDict[groupInfo.name] !== undefined) throw `#Inclusive group name - <${groupInfo.name}>`;
+          if (groupTypeContentsDict[groupInfo.name] !== undefined)
+            throw `${localErrorPrefix}Inclusive group name - <${groupInfo.name}>`;
+
           groupTypeContentsDict[groupInfo.name] = this.makeGroupTypeFromGroupContent({
             wholeGroupSymbolToInfoDict,
             groupStubSymbols,
@@ -307,11 +332,18 @@ export class TransformProcess {
           groupTypeContentsToNameDict[groupInfo.content] = groupInfo;
         });
 
-        const makeTypeText = (typeName: string, sameContentGroupName: string, typeContent: string) => {
+        const makeTypeText = (
+          typeName: string,
+          sameContentGroupName: string,
+          typeContent: string,
+          groupInfo: GroupInfo,
+        ) => {
           return `type ${typeName} = ${tools.stringify?.includes(typeName) ? 'string; // ' : ''}${
-            sameContentGroupName &&
-            sameContentGroupName !== typeName &&
-            sameContentGroupName.length < typeContent.length
+            groupInfo.topName
+              ? this.makeGroupTypeName(groupInfo, 'topName')
+              : sameContentGroupName &&
+                sameContentGroupName !== typeName &&
+                sameContentGroupName.length < typeContent.length
               ? sameContentGroupName
               : typeContent
           };`;
@@ -329,7 +361,7 @@ export class TransformProcess {
             const typeContent = groupTypeContentsDict[groupInfo.name];
             const sameContentGroupName = this.makeGroupTypeName(groupTypeContentsToNameDict[groupInfo.content]);
 
-            groupTypeParts.push(makeTypeText(typeName, sameContentGroupName, typeContent));
+            groupTypeParts.push(makeTypeText(typeName, sameContentGroupName, typeContent, groupInfo));
           } else {
             const typeName = this.makeUncountableGroupTypeName(groupInfo.name);
 
@@ -343,7 +375,7 @@ export class TransformProcess {
               ? `LookbehindAssertion<${groupTypeContentsDict[groupInfo.name]}>`
               : `LookaheadAssertion<${groupTypeContentsDict[groupInfo.name]}>`;
 
-            uncountableGroupPartTypes.push(makeTypeText(typeName, sameContentGroupName, typeContent));
+            uncountableGroupPartTypes.push(makeTypeText(typeName, sameContentGroupName, typeContent, groupInfo));
           }
         });
 
@@ -367,7 +399,8 @@ export class TransformProcess {
         );
       } catch (error) {
         const typeKey = this.makeRegTypeKey(regStrForTypeKey, regFlags);
-        if (!`${error}`.startsWith('#')) throw error;
+        if (!`${error}`.startsWith(localErrorPrefix)) throw error;
+        console.error(`${error}`.slice(localErrorPrefix.length));
 
         namespaces.push(
           `namespace ${this.makeNamespaceTypeName(
@@ -391,13 +424,13 @@ export class TransformProcess {
     };
   };
 
-  makeGroupTypeName = (groupInfo?: GroupInfo) => {
+  makeGroupTypeName = (groupInfo?: GroupInfo, nameField: 'name' | 'topName' = 'name') => {
     if (!groupInfo) return '';
 
-    return groupInfo.isNumName ||
-      (groupInfo.name.startsWith('$') && !(groupInfo.name.slice(1) in this.groupNameToSymbolDict))
-      ? groupInfo.name
-      : `$${groupInfo.name}`;
+    return (groupInfo.isNumName && groupInfo.topName === null) ||
+      (groupInfo[nameField]?.startsWith('$') && !(groupInfo[nameField].slice(1) in this.groupNameToSymbolDict))
+      ? groupInfo[nameField] ?? ''
+      : `$${groupInfo[nameField]}`;
   };
   makeUncountableGroupTypeName = (groupName: GroupName) => `U${groupName}`;
 
@@ -411,6 +444,7 @@ export class TransformProcess {
   makeRegTypeKey = (keyRegStr: string, regFlags: string) => {
     return `\`/${
       keyRegStr
+        .replace(makeRegExp(`/${this.stubs.disabledGroupName}/g`), '')
         .replace(makeRegExp(`/${this.stubs.disjunction}{3}/g`), '\\\\|')
         .replace(makeRegExp(`/${this.stubs.escape}{2}([bBpP])/g`), '\\\\$1')
         .replace(makeRegExp(`/[${this.stubs.slash}${this.stubs.escape}]/g`), '\\')
@@ -716,28 +750,40 @@ export class TransformProcess {
 
   replaceFileConstants = (regStr: string) => {
     const foundConstants: Record<string, string> = {};
+    const foundDisabledConstants: Record<string, string> = {};
 
     return this.replaceRecursively(
       regStr,
-      '/((?<!\\\\)(?:(?:\\\\{2})*|))[$]{([\\w$_]+|\\d+)}/g',
+      `/((?<!\\\\)(?:(?:\\\\{2})*|))[$]{\\s*(${nameEscaperFuncName}\\(\\s*[\\w$_]+\\s*\\)|[\\w$_]+|\\d+)\\s*}/g`,
       (_all, before, constantName) => {
-        if (foundConstants[constantName] !== undefined) return `${before}${foundConstants[constantName]}`;
+        const isNameEscaped = constantName.startsWith(`${nameEscaperFuncName}(`);
+        const constantsStore = isNameEscaped ? foundDisabledConstants : foundConstants;
+
+        if (isNameEscaped) constantName = constantName.slice(nameEscaperFuncName.length + 1, -1);
+
+        if (constantsStore[constantName] !== undefined) return `${before}${constantsStore[constantName]}`;
 
         if (makeRegExp('/^\\d+$/').test(constantName)) return `${before}${this.stubs.string}`;
 
-        const matches = Array.from(this.content.matchAll(makeRegExp(`/const ${constantName}\\s*=\\s*\`([^\`]*)\`/g`)));
+        const matches = Array.from(
+          this.content.matchAll(makeRegExp(`/const ${constantName}\\s*=\\s*${this.stringQuotedContentRegStr}/g`)),
+        );
 
-        if (matches.length > 1 || matches.length < 1) return `${before}${this.stubs.string}`;
-        foundConstants[constantName] = matches[0][1];
+        if (matches.length !== 1) return `${before}${this.stubs.string}`;
 
-        return `${before}${foundConstants[constantName]}`;
+        constantsStore[constantName] = matches[0][1].replace(makeRegExp(`/\\\\+$/`), all =>
+          this.stubs.slash.repeat(all.length),
+        );
+        if (isNameEscaped) constantsStore[constantName] = this.escapeRegExpNames(constantsStore[constantName]);
+
+        return `${before}${constantsStore[constantName]}`;
       },
     );
   };
 
   replaceEscapeds = (regStr: string) => {
     regStr = regStr.replace(
-      makeRegExp(`/(\\\\+?)([bBpP0]|${this.stringifiableRegStrCharacter})/g`),
+      makeRegExp(`/(\\\\+?)(${this.stringifiableRegStrCharacter}|[bBpP0])/g`),
       (all, slashes: string, text: string) => {
         return checkIs4xSlashes(slashes)
           ? all

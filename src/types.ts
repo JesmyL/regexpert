@@ -12,6 +12,7 @@ export type GroupInfo = {
   content: string;
   key: string;
   name: GroupName;
+  topName: GroupName | null;
   isNumName: boolean;
   parent: GroupInfo | null;
   isNever: boolean;

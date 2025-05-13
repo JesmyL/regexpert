@@ -718,11 +718,11 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
   type $str = `${RepeatingString<string>}{`;
   type $2 = `\\ ${number}${string}`;
   type $3 = $4 | $5;
-  type $4 = `${number}{3,{txt}\x123`;
-  type $5 = `\${txt}\\{txt1}\\\${txt2}\\\\{txt3}123` | string;
+  type $4 = `${number}{3,{txt}\x1234567890`;
+  type $5 = `\${txt}\\{txt1}\\\${txt2}\\\\{txt3}1234567890` | string;
 
   export interface I extends Record<
-    `/\\\\(?<str>\\w+\${)(\\\\ \\d[1,2])?((\\d{3,\${txt}\\123)|(\\\${txt}\\\\\${txt1}\\\\\\\${txt2}\\\\\\\\\${txt3}123|${string}))/`,
+    `/\\\\(?<str>\\w+\${)(\\\\ \\d[1,2])?((\\d{3,\${txt}\\1234567890)|(\\\${txt}\\\\\${txt1}\\\\\\\${txt2}\\\\\\\\\${txt3}1234567890|${string}))/`,
     {
       $0: $0;
       str: $str;
@@ -735,18 +735,18 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
-  type $0 = `${`(` | ''}<!>${RepeatingString<string>}{)${$1 | ''}123${$2}${$name1}str`;
-  type $1 = `${string} ${number}${string}`;
+  type $0 = `${`(` | ''}<!>${RepeatingString<string>}{)${$1 | ''}1234567890${$2}${$name1}VerY_BIG_StR`;
+  type $1 = `VerY_BIG_StR ${number}${string}`;
   type $2 = $3 | $4;
-  type $3 = `${number}{3,{txt}\x123`;
-  type $4 = `{str}` | string | `${$name}${number}`;
+  type $3 = `${number}{3,{txt}\x1234567890<<<`;
+  type $4 = `{Disabled_Str}` | string | `${$name}${number}`;
   type $name = ``;
   type $name1 = $opt1 | $opt2 | ``;
   type $opt1 = ` (  `;
   type $opt2 = ` `;
 
   export interface I extends Record<
-    `/\\(?<!>\\w+\${)(${string} \\d[1,2])?123((\\d{3,\${txt}\\123)|(\${str}|${string}|(?<name>)[1479]))(?<name1>(?<opt1> \\\\\\(  )|(?<opt2> )|)str/`,
+    `/\\(?<!>\\w+\${)(VerY_BIG_StR \\d[1,2])?1234567890((\\d{3,\${txt}\\1234567890<<<)|(\${Disabled_Str}|${string}|(?<name>)[1479]))(?<name1>(?<opt1> \\\\\\(  )|(?<opt2> )|)VerY_BIG_StR/`,
     {
       $0: $0;
       $1?: $1;
@@ -762,7 +762,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_57 {
-  type $0 = `${$0th} 123in zero`;
+  type $0 = `${$0th} 1234567890in zero`;
   type $0th = `${$1th}${$4}${$3th}\\\\\\|\${ ${`(` | ''}<4>${$5th})`;
   type $1th = $2nd | '';
   type $2nd = ``;
@@ -776,7 +776,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_57 {
   type $11 = ``;
 
   export interface I extends Record<
-    `/(?<$0th>(?<$1th>(?<$2nd>){,3})(nonamϭϰe| )+(?<$3th>\\d{2,3}){2,3}\\\\\\\\\\\\\\|\\\${ \\(?<$4>(?<$5th> {3,5}(?<$6th>(?<$7th>(?<$8th>))(){[234]?}(){,})Ϩ)\\)) 123in zero/gim`,
+    `/(?<$0th>(?<$1th>(?<$2nd>){,3})(nonamϭϰe| )+(?<$3th>\\d{2,3}){2,3}\\\\\\\\\\\\\\|\\\${ \\(?<$4>(?<$5th> {3,5}(?<$6th>(?<$7th>(?<$8th>))(){[234]?}(){,})Ϩ)\\)) 1234567890in zero/gim`,
     IgnoreCaseRecord<{
       $0: $0;
       $0th: $0th;
@@ -814,7 +814,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
   type $before = `` | `\n`;
   type $beforeSpaces = `${OptRepeatingString<` `>}`;
   type $hashes = `#${string}`;
-  type $blockHashPosition = string;
+  type $blockHashPosition = `1234567890`;
   type $associations = `${`_` | ''}${$secretWidStr}${$modificators}`;
   type $secretWidStr = OptRepeatingString<string>;
   type $modificators = `${`!` | ''}`;
@@ -826,7 +826,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
   type U1 = LookaheadAssertion<`\n${OptRepeatingString<` `>}#` | ``>;
 
   export interface I extends Record<
-    `/(?<before>^|\\n)(?<beforeSpaces> *)(?<hashes>#{1,2})(?<blockHashPosition>${string})(?<associations>_?(?<secretWidStr>[${string}]*)(?<modificators>!?))? *(?<info>\\[(?<blockHeader>.+?)\\])?(?<beforeCommentSpaces> *)(?<comment>[\\w\\W]+?)(?=\\n *#|$)/g`,
+    `/(?<before>^|\\n)(?<beforeSpaces> *)(?<hashes>#{1,2})(?<blockHashPosition>1234567890)(?<associations>_?(?<secretWidStr>[${string}]*)(?<modificators>!?))? *(?<info>\\[(?<blockHeader>.+?)\\])?(?<beforeCommentSpaces> *)(?<comment>[\\w\\W]+?)(?=\\n *#|$)/g`,
     {
       $0: $0;
       before: $before;
@@ -1786,21 +1786,31 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_117 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_118 {
-  type $0 = `<${string}${number}>`;
+  type $0 = $group1;
+  type $group1 = `PLU${$firstG}${`(` | ''}<not_group>2)${$3}PLU${$4}${`(` | ''}<not_group>2)${$5}`;
+  type $firstG = `ConTenT`;
+  type $3 = `3`;
+  type $4 = $firstG;
+  type $5 = $3;
 
   export interface I extends Record<
-    `/<\\P{Script_Extensions=Latin}\\d>/u`,
+    `/(?<group1>PLU(?<firstG>ConTenT)\\(?<not_group>2\\)(3)\\PLU(?<firstG>ConTenT)\\(?<not_group>2\\)(3)\\)/`,
     {
-      $0: $0
+      $0: $0;
+      group1: $group1;
+      firstG: $firstG;
+      $3: $3;
+      $4: $4;
+      $5: $5
     }
   > { '': '' }
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_119 {
-  type $0 = `<P{ABC}${number}>`;
+  type $0 = `✙ ✞ ✣ ✨`;
 
   export interface I extends Record<
-    `/<\\P{ABC}\\d>/`,
+    `/✙ ✞ ✣ ✨/`,
     {
       $0: $0
     }
@@ -1811,7 +1821,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_120 {
   type $0 = `<${string}${number}>`;
 
   export interface I extends Record<
-    `/<\\xA3\\d>/u`,
+    `/<\\P{Script_Extensions=Latin}\\d>/u`,
     {
       $0: $0
     }
@@ -1819,6 +1829,28 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_120 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_121 {
+  type $0 = `<P{ABC}${number}>`;
+
+  export interface I extends Record<
+    `/<\\P{ABC}\\d>/`,
+    {
+      $0: $0
+    }
+  > { '': '' }
+}
+
+namespace Nc1e1ffc130aead13aa199b62448b178c_122 {
+  type $0 = `<${string}${number}>`;
+
+  export interface I extends Record<
+    `/<\\xA3\\d>/u`,
+    {
+      $0: $0
+    }
+  > { '': '' }
+}
+
+namespace Nc1e1ffc130aead13aa199b62448b178c_123 {
   type $0 = `<xA3${number}>`;
 
   export interface I extends Record<
@@ -1829,7 +1861,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_121 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_122 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_124 {
   type $0 = `<${string} ${string} ${string}aBc ${string} ${string} ${string}6 ${number}>`;
 
   export interface I extends Record<
@@ -1962,6 +1994,8 @@ interface _GlobalScopedNamedRegExpMakerGeneratedTypes
     Nc1e1ffc130aead13aa199b62448b178c_119.I,
     Nc1e1ffc130aead13aa199b62448b178c_120.I,
     Nc1e1ffc130aead13aa199b62448b178c_121.I,
-    Nc1e1ffc130aead13aa199b62448b178c_122.I {
+    Nc1e1ffc130aead13aa199b62448b178c_122.I,
+    Nc1e1ffc130aead13aa199b62448b178c_123.I,
+    Nc1e1ffc130aead13aa199b62448b178c_124.I {
     '': ''
 }

@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { makeNamedRegExp } from '../types/model';
+import { escapeRegExpNames } from './escapeRegExpNames';
 
 const getValue = <Value extends object>(_: Value) => {};
 const getKeys = <ReqKeys extends string, OptKeys extends string = string>(
@@ -80,7 +81,7 @@ getValue<{ num?: `${number}` }>(makeNamedRegExp(`/(?<num>[1-3]+)?/`).transform(a
 getValue<{ num?: `${number}` }>(makeNamedRegExp(`/(?<num>1|2)?/`).transform(arg));
 getValue<{ opt?: ``; opt1?: ``; r: `12` | `` }>(makeNamedRegExp(`/(?<r>12(?<opt>)|(?<opt1>))/`).transform(arg));
 
-const str = `123`;
+const str = `1234567890`;
 const a = { b: `` };
 
 getKeys<`str` | `$3` | `$0`, `$2` | `$4` | `$5`>(
@@ -89,7 +90,7 @@ getKeys<`str` | `$3` | `$0`, `$2` | `$4` | `$5`>(
   ).transform(arg),
 );
 
-const veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString = `str`;
+const veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString = `VerY_BIG_StR`;
 
 getValue(
   makeNamedRegExp(
@@ -98,7 +99,7 @@ getValue(
       veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString
       //
       //
-    } \\d[1,2])?${str}((\\d{3,\${txt}\\${str})|(\${str}|${
+    } \\d[1,2])?${str}((\\d{3,\${txt}\\${str}<<<)|(\${Disabled_Str}|${
       a.b
     }|(?<name>)[1479]))(?<name1>(?<opt1> \\\\\\(  )|(?<opt2> )|)${veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString}/`,
   ).transform(arg),
@@ -285,6 +286,16 @@ getValue(
     `/(?<group1>${manyGroups})(?<group2>${manyGroups})/`,
   ).transform(arg),
 );
+
+const groupContent = `ConTenT`;
+const regStrPartWithNamedGroups = `PLU(?<firstG>${groupContent})\\(?<not_group>2\\)(3)\\`;
+getValue<{ firstG: typeof groupContent; $4: typeof groupContent }>(
+  makeNamedRegExp(`/(?<group1>${regStrPartWithNamedGroups}${escapeRegExpNames(regStrPartWithNamedGroups)})/`).transform(
+    arg,
+  ),
+);
+
+getValue(makeNamedRegExp(`/✙ ✞ ✣ ✨/`).transform(arg));
 
 getValue<{ $0: `<${string}${number}>` }>(makeNamedRegExp(`/<\\P{Script_Extensions=Latin}\\d>/u`).transform(arg));
 getValue<{ $0: `<P{ABC}${number}>` }>(makeNamedRegExp(`/<\\P{ABC}\\d>/`).transform(arg));

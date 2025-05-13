@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-condition */
+import { escapeRegExpNames } from './escapeRegExpNames';
 import { makeNamedRegExp } from './makeNamedRegExp';
 
 const printMatch = (
@@ -52,6 +53,10 @@ export const testMaker = () => {
 
     printMatch(regs, '1text between named group ');
   }
+
+  console.info(
+    escapeRegExpNames('/one(?<group>two)(?<$3_group>3rd\\(?<not_group1>NG\\\\(?<_group1>GG)(\\?<not_group>Ng))/'),
+  );
 
   console.info(`
     //////////////////////////////////////////////////////
