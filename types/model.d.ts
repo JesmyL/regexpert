@@ -30,7 +30,7 @@ declare function makeNamedRegExp<R extends StrRegExp, Reg extends R extends keyo
   setLastIndexTo?: number,
 ): NamedRegExpRegulars<RegTypes[Reg]>;
 
-declare function escapeRegExpNames<T extends string>(regStrPart: T): T;
+declare function escapeRegExpNames<T extends string>(regStrPart: T, namePostfix?: `_${string}`): T;
 declare function makeRegExp(reg: StrRegExp, setLastIndexTo?: number): RegExp;
 
 export type PluginOptions = {

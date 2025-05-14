@@ -90,7 +90,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_6 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_7 {
   type $0 = $val;
-  type $val = `text ${number | ''}`;
+  type $val = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<val>text \\d*)/`,
@@ -103,7 +103,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_7 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_8 {
   type $0 = $val;
-  type $val = `text ${number | ''}`;
+  type $val = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<val>text \\d?)/`,
@@ -194,7 +194,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_14 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_15 {
   type $0 = $num;
-  type $num = `${number | ''}`;
+  type $num = `${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>\\d{,3})/`,
@@ -207,7 +207,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_15 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_16 {
   type $0 = $num;
-  type $num = `${number | ''}`;
+  type $num = `${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>\\d{0,3})/`,
@@ -220,7 +220,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_16 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_17 {
   type $0 = $num;
-  type $num = `${number | ''}`;
+  type $num = `${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>\\d{0,})/`,
@@ -233,7 +233,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_17 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_18 {
   type $0 = $num;
-  type $num = `${number | ''}`;
+  type $num = `${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>\\d*)/`,
@@ -246,7 +246,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_18 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_19 {
   type $0 = $num;
-  type $num = `${number | ''}`;
+  type $num = `${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>\\d?)/`,
@@ -298,7 +298,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_22 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_23 {
   type $0 = `${$numStr}${string}${OptRepeatingString<`\n`>}`;
-  type $numStr = `${number | ''}${RepeatingString<string>}`;
+  type $numStr = `${number | ``}${RepeatingString<string>}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d{0,3}[amn]+)\\s\\n*/`,
@@ -311,7 +311,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_23 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_24 {
   type $0 = `${$numStr}${string}${OptRepeatingString<`\n`>}`;
-  type $numStr = `${number | ''}${RepeatingString<string>}`;
+  type $numStr = `${number | ``}${RepeatingString<string>}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d{,3}[amn]+)\\s\\n*/`,
@@ -324,7 +324,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_24 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_25 {
   type $0 = `${$numStr}${string}${OptRepeatingString<`\n`>}`;
-  type $numStr = `${number | ''}${RepeatingString<string>}`;
+  type $numStr = `${number | ``}${RepeatingString<string>}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d?[amn]+)\\s\\n*/`,
@@ -337,7 +337,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_25 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_26 {
   type $0 = `${$numStr}${string}${OptRepeatingString<`\n`>}`;
-  type $numStr = `${number | ''}${RepeatingString<string>}`;
+  type $numStr = `${number | ``}${RepeatingString<string>}`;
 
   export interface I extends Record<
     `/(?<numStr>\\d*[amn]+)\\s\\n*/`,
@@ -402,7 +402,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_30 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_31 {
   type $0 = $num;
-  type $num = `text ${number | ''}`;
+  type $num = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{0,3})/`,
@@ -415,7 +415,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_31 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_32 {
   type $0 = $num;
-  type $num = `text ${number | ''}`;
+  type $num = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{0,})/`,
@@ -428,7 +428,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_32 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_33 {
   type $0 = $num;
-  type $num = `text ${number | ''}`;
+  type $num = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{0})/`,
@@ -441,7 +441,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_33 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_34 {
   type $0 = $num;
-  type $num = `text ${number | ''}`;
+  type $num = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>text \\d{,3})/`,
@@ -506,7 +506,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_38 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_39 {
   type $0 = $num;
-  type $num = `text ${number | ''}`;
+  type $num = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>text [1-3]{0,3})/`,
@@ -519,7 +519,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_39 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_40 {
   type $0 = $num;
-  type $num = `text ${number | ''}`;
+  type $num = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<num>text [1-3]{,3})/`,
@@ -532,7 +532,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_40 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_41 {
   type $0 = $conNum;
-  type $conNum = `text ${number | ''}`;
+  type $conNum = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<conNum>text [1-3]?)/`,
@@ -545,7 +545,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_41 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_42 {
   type $0 = $conNum;
-  type $conNum = `text ${number | ''}`;
+  type $conNum = `text ${number | ``}`;
 
   export interface I extends Record<
     `/(?<conNum>text [1-3]*)/`,
@@ -743,7 +743,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
   type $4 = `{Disabled_Str}` | string | `${$name}${number}`;
   type $name = ``;
   type $name1 = $opt1 | $opt2 | ``;
-  type $opt1 = ` (  `;
+  type $opt1 = ` \\(  `;
   type $opt2 = ` `;
 
   export interface I extends Record<
@@ -770,7 +770,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_57 {
   type $4 = `nonamϭϰe` | ` `;
   type $3th = `${number}`;
   type $5th = ` ${string}${$6th}Ϩ`;
-  type $6th = `${$7th}${$10}{${number | ''}}${$11}{,}`;
+  type $6th = `${$7th}${$10}{${number | ``}}${$11}{,}`;
   type $7th = $8th;
   type $8th = ``;
   type $10 = ``;
@@ -847,7 +847,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_60 {
   type $0 = `${$bookn}${OptRepeatingString<string>}${$4 | ''}`;
-  type $bookn = `${number | ''}${U1}`;
+  type $bookn = `${number | ``}${U1}`;
   type $2 = `${OptRepeatingString<string>}${$3}`;
   type $3 = RepeatingString<string>;
   type $4 = `${$chapterStr}${$6 | ''}`;
@@ -1316,7 +1316,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_90 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_91 {
   type $0 = `${$1}${string}`;
-  type $1 = `[${OptRepeatingString<`\\ `>}`;
+  type $1 = `[\\${OptRepeatingString<` `>}`;
 
   export interface I extends Record<
     `/(\\[^\\\\ *)\\W\\\\s\\S\\\\S/g`,
@@ -1704,7 +1704,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_117 {
   type $12 = `elev${`e` | ''}n${$13 | ''}`;
   type $13 = `twelve${$14 | ''}`;
   type $14 = `13th`;
-  type $15 = `14th` | `14` | `1${RepeatingString<`4`>}` | `abc` | `plus` | `minus`;
+  type $15 = `14th` | `14` | `14+` | `abc` | `plus` | `minus`;
   type $16 = `15th${$17}`;
   type $17 = `16th${$18}`;
   type $18 = `17th${$19 | ''}`;
@@ -1874,6 +1874,17 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_124 {
 }
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_125 {
+  type $0 = `<\\+*${`+` | ''}${`*` | ''}*${string}${OptRepeatingString<`{`>}${RepeatingString<`\\`>}>`;
+
+  export interface I extends Record<
+    `/<\\\\\\+\\*\\+?\\*?\\*{2,3}\\{{,5}\\\\+>/`,
+    {
+      $0: $0
+    }
+  > { '': '' }
+}
+
+namespace Nc1e1ffc130aead13aa199b62448b178c_126 {
   type $0 = string; // `${OptRepeatingString<`.`>}${`-` | ''}${$simpleChord}${$2}${$hardModificators | ''}${$bassChord | ''}${$16 | ''}`;
   type $simpleChord = `${string}${`#` | ''}` | string;
   type $2 = `+` | `11` | $3;
@@ -1882,14 +1893,14 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_125 {
   type $5 = `${number}${$6 | ''}`;
   type $6 = `/${number}`;
   type $hardModificators = `${string}${U1}`;
-  type $bassChord = `/${$9}${$10}${$15 | ''}`;
-  type $9 = $simpleChord;
+  type $bassChord = `/${$simpleChord_bassChord}${$10}${$hardModificators_bassChord | ''}`;
+  type $simpleChord_bassChord = $simpleChord;
   type $10 = `+` | `11` | $11;
   type $11 = `${$12 | ''}${$13 | ''}`;
   type $12 = $4;
   type $13 = `${number}${$14 | ''}`;
   type $14 = $6;
-  type $15 = $hardModificators;
+  type $hardModificators_bassChord = `${string}${U2}`;
   type $16 = `${$dotSeparations}${$18}${$19}${$24 | ''}${$25 | ''}`;
   type $dotSeparations = `${RepeatingString<`.`>}` | `-` | `${RepeatingString<`.`>}-`;
   type $18 = $simpleChord;
@@ -1925,13 +1936,13 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_125 {
       $6?: $6;
       hardModificators?: $hardModificators;
       bassChord?: $bassChord;
-      $9?: $9;
+      simpleChord_bassChord?: $simpleChord_bassChord;
       $10?: $10;
       $11?: $11;
       $12?: $12;
       $13?: $13;
       $14?: $14;
-      $15?: $15;
+      hardModificators_bassChord?: $hardModificators_bassChord;
       $16?: $16;
       dotSeparations?: $dotSeparations;
       $18?: $18;
@@ -1949,6 +1960,35 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_125 {
       $30?: $30;
       $31?: $31;
       $32?: $32
+    }
+  > { '': '' }
+}
+
+namespace Nc1e1ffc130aead13aa199b62448b178c_127 {
+  type $0 = `${$1 | ''}${$2}${$4}${$6}`;
+  type $1 = ``;
+  type $2 = $3 | '';
+  type $3 = ``;
+  type $4 = `` | $5;
+  type $5 = ``;
+  type $6 = `${$7}${$8 | ''}`;
+  type $7 = ``;
+  type $8 = $9;
+  type $9 = ``;
+
+  export interface I extends Record<
+    `/(){,1000}((){,1888})(|())(()(())?){2,3}?/`,
+    {
+      $0: $0;
+      $1?: $1;
+      $2: $2;
+      $3?: $3;
+      $4: $4;
+      $5?: $5;
+      $6: $6;
+      $7: $7;
+      $8?: $8;
+      $9?: $9
     }
   > { '': '' }
 }
@@ -2078,6 +2118,8 @@ interface _GlobalScopedNamedRegExpMakerGeneratedTypes
     Nc1e1ffc130aead13aa199b62448b178c_122.I,
     Nc1e1ffc130aead13aa199b62448b178c_123.I,
     Nc1e1ffc130aead13aa199b62448b178c_124.I,
-    Nc1e1ffc130aead13aa199b62448b178c_125.I {
+    Nc1e1ffc130aead13aa199b62448b178c_125.I,
+    Nc1e1ffc130aead13aa199b62448b178c_126.I,
+    Nc1e1ffc130aead13aa199b62448b178c_127.I {
     '': ''
 }

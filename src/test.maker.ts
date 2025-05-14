@@ -8,7 +8,7 @@ const printMatch = (
   text: string,
 ) => {
   const match = text.match(regExp);
-  console.info({ text, regExp, matchDict: match && [transform(match).$0, transform(match)], match });
+  console.info({ text, regExp, matchDict: match && transform(match), match });
 };
 
 export const testMaker = () => {
@@ -54,6 +54,14 @@ export const testMaker = () => {
     printMatch(regs, '1text between named group ');
   }
 
+  if (1) {
+    const groups = `1(?<Gr>2|b)(\\d)`;
+    const regs = makeNamedRegExp(
+      `/${groups}\\+\\+\\+${escapeRegExpNames(groups, '_GRO')}${escapeRegExpNames(groups)}/i`,
+    );
+
+    printMatch(regs, '123+++1B01b5');
+  }
   console.info(
     escapeRegExpNames('/one(?<group>two)(?<$3_group>3rd\\(?<not_group1>NG\\\\(?<_group1>GG)(\\?<not_group>Ng))/'),
   );

@@ -1,7 +1,6 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { makeNamedRegExp } from '../types/model';
-import { escapeRegExpNames } from './escapeRegExpNames';
+import { escapeRegExpNames, makeNamedRegExp } from '../types/model';
 
 const getValue = <Value extends object>(_: Value) => {};
 const getKeys = <ReqKeys extends string, OptKeys extends string = string>(
@@ -305,14 +304,23 @@ getValue<{ $0: `<${string} ${string} ${string} ${string} ${string} ${string} ${n
   makeNamedRegExp(`/<\\xA3 \\cD \\uaBc \\u{a} \\u{abcdef} \\xFA6 \\d>/u`).transform(arg),
 );
 
+getValue<{ $0: `<\\+*${'+' | ''}*${string}${`{${string}` | ''}\\${string}>` }>(
+  makeNamedRegExp(`/<\\\\\\+\\*\\+?\\*?\\*{2,3}\\{{,5}\\\\+>/`).transform(arg),
+);
+
 const chordLikeStr =
   `(?<simpleChord>[ACDFG]#?|[EH])(\\+|11|((m|min|7?sus|maj|dim|add)?(\\d{1,2}(/\\d{1,2})?)?))(?<hardModificators>[#b](?:5|7|9|11|13))*` as const;
-getValue(
+getValue<{ simpleChord_bassChord?: string }>(
   makeNamedRegExp(
     // regexpert:
     // stringify $0
     `/^\\.*-?${chordLikeStr}(?<bassChord>/${escapeRegExpNames(
       chordLikeStr,
+      `_bassChord`,
     )})?((?<dotSeparations>\\.+|-|\\.+-)${escapeRegExpNames(chordLikeStr)}(/${escapeRegExpNames(chordLikeStr)})?)*$/`,
-  ),
+  ).transform(arg),
+);
+
+getKeys<'$0' | '$2' | '$4' | '$6' | '$7', '$1' | '$3' | '$5' | '$8' | '$9'>(
+  makeNamedRegExp(`/(){,1000}((){,1888})(|())(()(())?){2,3}?/`).transform(arg),
 );
