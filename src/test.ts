@@ -308,16 +308,24 @@ getValue<{ $0: `<\\+*${'+' | ''}*${string}${`{${string}` | ''}\\${string}>` }>(
   makeNamedRegExp(`/<\\\\\\+\\*\\+?\\*?\\*{2,3}\\{{,5}\\\\+>/`).transform(arg),
 );
 
-const chordLikeStr =
-  `(?<simpleChord>[ACDFG]#?|[EH])(\\+|11|((m|min|7?sus|maj|dim|add)?(\\d{1,2}(/\\d{1,2})?)?))(?<hardModificators>[#b](?:5|7|9|11|13))*` as const;
-getValue<{ simpleChord_bassChord?: string }>(
+const hardModificators = `(?<hardModificators>(?:(?:[#b]5)?(?:[#b]7)?(?:[#b]9)?(?:[#b]11)?(?:[#b]13)?))` as const;
+const lightModificators = `(?<lightModificators>\\+|(?:(?:min|7?sus|maj|dim|add)?(?:\\d{1,2}(?:/\\d{1,2})?)?))`;
+const chordLikeStr = `(?<simpleChord>(?:[ACDFG]#?|[EH])m?)${lightModificators}${hardModificators}?` as const;
+
+getValue<{ simpleChord_bass?: string }>(
   makeNamedRegExp(
     // regexpert:
-    // stringify $0
-    `/^\\.*-?${chordLikeStr}(?<bassChord>/${escapeRegExpNames(
-      chordLikeStr,
-      `_bassChord`,
-    )})?((?<dotSeparations>\\.+|-|\\.+-)${escapeRegExpNames(chordLikeStr)}(/${escapeRegExpNames(chordLikeStr)})?)*$/`,
+    // stringify $0 U23
+    `/^\\.*-?${chordLikeStr}(?<bassChord>/${
+      //
+      escapeRegExpNames(chordLikeStr, '_bass')
+    })?(?<repeats>(?:(?:\\.+|-|\\.+-)${
+      //
+      escapeRegExpNames(chordLikeStr, '_lastRepeat')
+    }(?:/${
+      //
+      escapeRegExpNames(chordLikeStr, `_lastRepeatBass`)
+    })?)*)$/`,
   ).transform(arg),
 );
 

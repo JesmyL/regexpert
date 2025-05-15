@@ -775,37 +775,46 @@ export class TransformProcess {
   replaceFileConstants = (regStr: string) => {
     const foundConstants: Record<string, string> = {};
     const foundDisabledConstants: Record<string, string> = {};
-
-    return this.replaceRecursively(
-      regStr,
+    const reg = makeRegExp(
       `/((?<!\\\\)(?:(?:\\\\{2})*|))[$]{\\s*(${nameDisablerFuncName}[(]\\s*([\\w$_]+)(?:(?:,"(_[\\w_$]*)")|,)?\\s*[)]|[\\w$_]+|\\d+)\\s*}/g`,
-
-      (_all, before, constantName, constantDisabledName: string | undefined, groupNamePostfix = '') => {
-        const isNameEscaped = !!constantDisabledName;
-        const constantsStore = isNameEscaped ? foundDisabledConstants : foundConstants;
-        const storeKey = `${constantName}${groupNamePostfix}`;
-
-        if (isNameEscaped) constantName = constantDisabledName;
-
-        if (constantsStore[storeKey] !== undefined) return `${before}${constantsStore[storeKey]}`;
-
-        if (makeRegExp('/^\\d+$/').test(constantName)) return `${before}${this.stubs.string}`;
-
-        const matches = Array.from(
-          this.content.matchAll(makeRegExp(`/const ${constantName}\\s*=\\s*${this.stringQuotedContentRegStr}/g`)),
-        );
-
-        if (matches.length !== 1) return `${before}${this.stubs.string}`;
-
-        constantsStore[storeKey] = matches[0][1].replace(makeRegExp(`/\\\\+$/`), all =>
-          this.stubs.slash.repeat(all.length),
-        );
-        if (isNameEscaped)
-          constantsStore[storeKey] = this.escapeRegExpNames(constantsStore[storeKey], groupNamePostfix);
-
-        return `${before}${constantsStore[storeKey]}`;
-      },
     );
+
+    const replaceConstants = (text: string, i: number): string => {
+      return text.replace(
+        reg,
+        (_all, before, constantName, constantDisabledName: string | undefined, groupNamePostfix = '') => {
+          const isNameEscaped = !!constantDisabledName;
+          const constantsStore = isNameEscaped ? foundDisabledConstants : foundConstants;
+          const storeKey = `${constantName}`;
+
+          if (isNameEscaped) constantName = constantDisabledName;
+
+          if (constantsStore[storeKey] !== undefined)
+            return replaceConstants(`${before}${constantsStore[storeKey]}`, i + 1);
+
+          if (makeRegExp('/^\\d+$/').test(constantName)) return `${before}${this.stubs.string}`;
+
+          const matches = Array.from(
+            this.content.matchAll(makeRegExp(`/const ${constantName}\\s*=\\s*${this.stringQuotedContentRegStr}/g`)),
+          );
+
+          if (matches.length !== 1) return `${before}${this.stubs.string}`;
+
+          constantsStore[storeKey] = matches[0][1].replace(makeRegExp(`/\\\\+$/`), all =>
+            this.stubs.slash.repeat(all.length),
+          );
+
+          constantsStore[storeKey] = replaceConstants(constantsStore[storeKey], i + 1);
+
+          if (isNameEscaped)
+            constantsStore[storeKey] = this.escapeRegExpNames(constantsStore[storeKey], groupNamePostfix);
+
+          return `${before}${constantsStore[storeKey]}`;
+        },
+      );
+    };
+
+    return replaceConstants(regStr, 0);
   };
 
   replaceEscapeds = (regStr: string) => {
