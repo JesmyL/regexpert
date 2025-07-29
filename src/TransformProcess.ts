@@ -688,7 +688,7 @@ export class TransformProcess {
     return content;
   };
 
-  hexCharacter = '[abcdefABCDF\\d]';
+  hexCharacter = '[abcdefABCDEF\\d]';
   stringifiableRegStrCharacter = `x${this.hexCharacter}{2}|u${this.hexCharacter}{4}|u{${this.hexCharacter}{1,6}}|c.|f|v|t`;
 
   replaceRecursively = (text: string, strReg: StrRegExp, replacer: (...args: [string, ...any]) => string) => {

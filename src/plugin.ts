@@ -44,6 +44,9 @@ export const regExpertVitePlugin: typeof pluginMaker = pluginOptions => {
 
         pluginUtils.saveKnownFile(fileSrc);
         pluginUtils.writeFileContent(modelFilePath, result.types);
+
+        if (!pluginOptions || pluginOptions.logOnGenerate !== false)
+          console.info('✅ Generated RegExpert Types', modelFilePath);
       } catch (error) {
         console.error(error);
       }

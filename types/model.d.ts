@@ -37,6 +37,7 @@ declare function makeRegExp(reg: StrRegExp, setLastIndexTo?: number): RegExp;
 export type PluginOptions = {
   srcDirName?: `/${string}`;
   collectClassCharactersMaxCount?: 'unlimited' | number;
+  logOnGenerate?: boolean;
 };
 
 declare function regExpertVitePlugin(options?: PluginOptions): {
