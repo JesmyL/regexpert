@@ -643,6 +643,19 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_49 {
 
 namespace Nc1e1ffc130aead13aa199b62448b178c_50 {
   type $0 = $txt;
+  type $txt = `${OptRepeatingString<`|`>}${`|` | ''}${OptRepeatingString<`|`>}`;
+
+  export interface I extends Record<
+    `/(?<txt>\\|*\\|?\\|{0,2})/`,
+    {
+      $0: $0;
+      txt: $txt
+    }
+  > { '': '' }
+}
+
+namespace Nc1e1ffc130aead13aa199b62448b178c_51 {
+  type $0 = $txt;
   type $txt = `a` | `s` | `f\\\\` | `b` | `c${number}` | `d` | string;
 
   export interface I extends Record<
@@ -654,7 +667,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_50 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_51 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_52 {
   type $0 = $optional1 | `${$optional2}${$req}`;
   type $optional1 = `opt1` | `opt`;
   type $optional2 = `opt2`;
@@ -671,7 +684,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_51 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_52 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_53 {
   type $0 = $num | '';
   type $num = `${number}`;
 
@@ -684,7 +697,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_52 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_53 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_54 {
   type $0 = $num | '';
   type $num = `1` | `2`;
 
@@ -697,7 +710,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_53 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_54 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
   type $0 = $r;
   type $r = `12${$opt}` | $opt1;
   type $opt = ``;
@@ -714,7 +727,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_54 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
   type $0 = `\\${$str}${$2 | ''}${$3}`;
   type $str = `${RepeatingString<string>}{`;
   type $2 = `\\ ${number}${string}`;
@@ -735,7 +748,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_55 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_57 {
   type $0 = `${`(` | ''}<!>${RepeatingString<string>}{)${$1 | ''}1234567890${$2}${$name1}VerY_BIG_StR`;
   type $1 = `VerY_BIG_StR ${number}${string}`;
   type $2 = $3 | $4;
@@ -762,7 +775,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_56 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_57 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_58 {
   type $0 = `${$0th} 1234567890in zero`;
   type $0th = `${$1th}${$4}${$3th}\\\\\\|\${ ${`(` | ''}<4>${$5th})`;
   type $1th = $2nd | '';
@@ -795,7 +808,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_57 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_58 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
   type $0 = `${$0th}${$2}`;
   type $0th = ` ` | `sds `;
   type $2 = `noname` | ``;
@@ -810,7 +823,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_58 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_60 {
   type $0 = `${$before}${$beforeSpaces}${$hashes}${$blockHashPosition}${$associations | ''}${OptRepeatingString<` `>}${$info | ''}${$beforeCommentSpaces}${$comment}${U1}`;
   type $before = `` | `\n`;
   type $beforeSpaces = `${OptRepeatingString<` `>}`;
@@ -845,7 +858,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_59 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_60 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_61 {
   type $0 = `${$bookn}${OptRepeatingString<string>}${$4 | ''}`;
   type $bookn = `${number | ``}${U1}`;
   type $2 = `${OptRepeatingString<string>}${$3}`;
@@ -880,7 +893,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_60 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_61 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_62 {
   type $0 = `${U1}${$3} `;
   type $1 = `${U2} `;
   type $2 = `abab${RepeatingString<`a`>}`;
@@ -900,7 +913,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_61 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_62 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_63 {
   type $0 = `${U1}${string}${$3} `;
   type $1 = `${U2} `;
   type $2 = `abab${RepeatingString<`a`>}`;
@@ -920,7 +933,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_62 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_63 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_64 {
   type $0 = `${$name}${U1}${$2}${U2 | ''}${$name1}${U3}${$4}${U4}`;
   type $name = `n`;
   type $2 = `2`;
@@ -944,7 +957,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_63 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_64 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_65 {
   type $0 = `${$1}${$1}`;
   type $1 = `^`;
 
@@ -957,7 +970,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_64 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_65 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_66 {
   type $0 = `${$1}${$1}`;
   type $1 = `$`;
 
@@ -970,7 +983,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_65 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_66 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_67 {
   type $0 = `${$1}\x02`;
   type $1 = `\\`;
 
@@ -983,7 +996,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_66 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_67 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_68 {
   type $0 = `${U1}${$1th}${U2}${$a}${string}${U3}${$3}${U4}{}${$4}`;
   type $1th = `first`;
   type $a = ` `;
@@ -1007,7 +1020,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_67 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_68 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_69 {
   type $0 = `${U1}${$1}${$avva}${string}${U2} {}${$avvva}`;
   type $1 = `FF`;
   type $avva = ` JJJ`;
@@ -1027,7 +1040,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_68 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_69 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_70 {
   type $0 = `${U1}${$1}${U2}${$a}${string}${U3}${$3}${U4}{}${$4}`;
   type $1 = ``;
   type $a = ` `;
@@ -1051,7 +1064,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_69 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_70 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_71 {
   type $0 = `\\`;
 
   export interface I extends Record<
@@ -1062,7 +1075,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_70 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_71 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_72 {
   type $0 = `${$1}a${string}a${$1}`;
   type $1 = `${string}.`;
 
@@ -1075,7 +1088,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_71 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_72 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_73 {
   type $0 = `${$1}\\${$1} p`;
   type $1 = `%`;
 
@@ -1088,7 +1101,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_72 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_73 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_74 {
   type $0 = `${$1}\\${$1} k`;
   type $1 = '1';
 
@@ -1101,7 +1114,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_73 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_74 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_75 {
   type $0 = `${$1}\\${$1} b`;
   type $1 = `\\${string}[${string}`;
 
@@ -1114,7 +1127,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_74 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_75 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_76 {
   type $0 = `${$1}\\${$1} d`;
   type $1 = `\\abc`;
 
@@ -1127,7 +1140,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_75 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_76 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_77 {
   type $0 = `${$1}\\${$1}`;
   type $1 = `$$`;
 
@@ -1140,7 +1153,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_76 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_77 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_78 {
   type $0 = $1;
   type $1 = `\\$$`;
 
@@ -1153,7 +1166,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_77 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_78 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_79 {
   type $0 = $1;
   type $1 = `\\$$`;
 
@@ -1166,7 +1179,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_78 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_79 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_80 {
   type $0 = `${$1}\\${$1} be`;
   type $1 = `$$`;
 
@@ -1179,7 +1192,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_79 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_80 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_81 {
   type $0 = `${$1}\\${$1 | ''}`;
   type $1 = `$$`;
 
@@ -1192,7 +1205,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_80 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_81 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_82 {
   type $0 = `${$nnn}\\${$nnn | ''} \\<nnn> `;
   type $nnn = `\${n}`;
 
@@ -1205,7 +1218,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_81 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_82 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_83 {
   type $0 = `${$1}\\${$1} to`;
   type $1 = `$$`;
 
@@ -1218,7 +1231,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_82 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_83 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_84 {
   type $0 = `${$a}${$a} yy`;
   type $a = `$$`;
 
@@ -1231,7 +1244,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_83 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_84 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_85 {
   type $0 = `${$a}${$a} tt`;
   type $a = `$$`;
 
@@ -1244,7 +1257,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_84 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_85 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_86 {
   type $0 = `${$a}${$a}nn`;
   type $a = '2';
 
@@ -1257,7 +1270,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_85 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_86 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_87 {
   type $0 = `${$1}\\${$1} da`;
   type $1 = `\\${string}3}`;
 
@@ -1270,7 +1283,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_86 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_87 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_88 {
   type $0 = `AAA`;
 
   export interface I extends Record<
@@ -1281,7 +1294,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_87 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_88 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_89 {
   type $0 = `$$$`;
 
   export interface I extends Record<
@@ -1292,7 +1305,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_88 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_89 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_90 {
   type $0 = `^^^`;
 
   export interface I extends Record<
@@ -1303,7 +1316,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_89 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_90 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_91 {
   type $0 = string;
 
   export interface I extends Record<
@@ -1314,7 +1327,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_90 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_91 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_92 {
   type $0 = `${$1}${string}`;
   type $1 = `[\\${OptRepeatingString<` `>}`;
 
@@ -1327,7 +1340,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_91 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_92 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_93 {
   type $0 = `${$1}\\${$1}`;
   type $1 = `${string}4}`;
 
@@ -1340,7 +1353,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_92 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_93 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_94 {
   type $0 = ``;
 
   export interface I extends Record<
@@ -1351,7 +1364,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_93 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_94 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_95 {
   type $0 = `${$1}${$1}`;
   type $1 = `${string}6}`;
 
@@ -1364,7 +1377,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_94 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_95 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_96 {
   type $0 = `\n`;
 
   export interface I extends Record<
@@ -1375,7 +1388,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_95 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_96 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_97 {
   type $0 = `_\` ${$1}`;
   type $1 = ``;
 
@@ -1388,7 +1401,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_96 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_97 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_98 {
   type $0 = string;
 
   export interface I extends Record<
@@ -1399,7 +1412,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_97 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_98 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_99 {
   type $0 = `${U1}${$1 | ''}c${$2}`;
   type $1 = `b`;
   type $2 = ``;
@@ -1416,7 +1429,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_98 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_99 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_100 {
   type $0 = `${$1}${$1}`;
   type $1 = `a`;
 
@@ -1429,7 +1442,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_99 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_100 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_101 {
   type $0 = `${$self}${$self}`;
   type $self = `s`;
 
@@ -1442,7 +1455,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_100 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_101 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_102 {
   type $0 = $self;
   type $self = ``;
 
@@ -1455,7 +1468,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_101 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_102 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_103 {
   type $0 = `${U1}c`;
   type $1 = `a`;
   type $2 = `b`;
@@ -1472,7 +1485,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_102 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_103 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_104 {
   type $0 = `${U1}c`;
   type $1 = string;
   
@@ -1487,7 +1500,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_103 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_104 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_105 {
   type $0 = `c${U1}`;
   type $1 = `ab`;
   
@@ -1502,7 +1515,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_104 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_105 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_106 {
   type $0 = `${U1}${U2}`;
   type $1 = `a`;
   type $2 = `ab`;
@@ -1524,7 +1537,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_105 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_106 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_107 {
   type $0 = `WORD`;
 
   export interface I extends Record<
@@ -1535,7 +1548,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_106 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_107 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_108 {
   type $0 = `${U1}${OptRepeatingString<`a`>}b${$1}`;
   type $1 = `${RepeatingString<`a`>}`;
   
@@ -1550,7 +1563,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_107 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_108 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_109 {
   type $0 = `${U1 | ''}b`;
   
   type U1 = LookaheadAssertion<`a`>;
@@ -1563,7 +1576,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_108 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_109 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_110 {
   type $0 = U1;
   type $1 = RepeatingString<string>;
   type $2 = $1;
@@ -1580,7 +1593,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_109 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_110 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_111 {
   type $0 = `${U1}${$sign}${number}${U2 | ''}`;
   type $sign = `${`-` | ''}`;
   type $2 = `${number}`;
@@ -1598,7 +1611,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_110 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_111 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_112 {
   type $0 = `.${U1}`;
   
   type U1 = `png` | `jp${`e` | ''}g` | `gif`;
@@ -1611,7 +1624,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_111 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_112 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_113 {
   type $0 = `${U1}=${$1}${$2}${$1}`;
   type $1 = string;
   type $2 = string | '';
@@ -1628,7 +1641,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_112 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_113 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_114 {
   type $0 = `${string} ${string} ${string} ${string}  `;
 
   export interface I extends Record<
@@ -1639,7 +1652,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_113 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_114 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_115 {
   type $0 = `${$1}${string | ''}text between${string}${$groupName | ''}${$3 | ''}`;
   type $1 = `1`;
   type $groupName = `named group`;
@@ -1656,7 +1669,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_114 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_115 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_116 {
   type $0 = `\\\\&&`;
 
   export interface I extends Record<
@@ -1667,7 +1680,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_115 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_116 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_117 {
   type $0 = `text ${$1} \${with} \\\${with} {no} {no} \\{no} \\{no} inserts ${$3 | ''} ${$4}`;
   type $1 = `TRAI${$2}NG`;
   type $2 = `NI`;
@@ -1688,7 +1701,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_116 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_117 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_118 {
   type $0 = string; // `${$group1}${$group2}`;
   type $group1 = $2;
   type $2 = `one${$3}${$4 | ''}${$7 | ''}${$8}`;
@@ -1786,7 +1799,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_117 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_118 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_119 {
   type $0 = $group1;
   type $group1 = `PLU${$firstG}${`(` | ''}<not_group>2)${$3}PLU${$4}${`(` | ''}<not_group>2)${$5}`;
   type $firstG = `ConTenT`;
@@ -1807,7 +1820,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_118 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_119 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_120 {
   type $0 = `✙ ✞ ✣ ✨`;
 
   export interface I extends Record<
@@ -1818,7 +1831,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_119 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_120 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_121 {
   type $0 = `<${string}${number}>`;
 
   export interface I extends Record<
@@ -1829,7 +1842,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_120 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_121 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_122 {
   type $0 = `<P{ABC}${number}>`;
 
   export interface I extends Record<
@@ -1840,7 +1853,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_121 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_122 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_123 {
   type $0 = `<${string}${number}>`;
 
   export interface I extends Record<
@@ -1851,7 +1864,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_122 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_123 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_124 {
   type $0 = `<xA3${number}>`;
 
   export interface I extends Record<
@@ -1862,7 +1875,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_123 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_124 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_125 {
   type $0 = `<${string} ${string} ${string}aBc ${string} ${string} ${string}6 ${number}>`;
 
   export interface I extends Record<
@@ -1873,7 +1886,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_124 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_125 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_126 {
   type $0 = `<\\+*${`+` | ''}${`*` | ''}*${string}${OptRepeatingString<`{`>}${RepeatingString<`\\`>}>`;
 
   export interface I extends Record<
@@ -1884,7 +1897,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_125 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_126 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_127 {
   type $0 = string; // `${OptRepeatingString<`.`>}${`-` | ''}${$simpleChord}${$lightModificators}${$hardModificators | ''}${$bassChord | ''}${$repeats}`;
   type $simpleChord = `${U1}${`m` | ''}`;
   type $lightModificators = `+` | U2;
@@ -1971,7 +1984,7 @@ namespace Nc1e1ffc130aead13aa199b62448b178c_126 {
   > { '': '' }
 }
 
-namespace Nc1e1ffc130aead13aa199b62448b178c_127 {
+namespace Nc1e1ffc130aead13aa199b62448b178c_128 {
   type $0 = `${$1 | ''}${$2}${$4}${$6}`;
   type $1 = ``;
   type $2 = $3 | '';
@@ -2127,6 +2140,7 @@ interface _GlobalScopedNamedRegExpMakerGeneratedTypes
     Nc1e1ffc130aead13aa199b62448b178c_124.I,
     Nc1e1ffc130aead13aa199b62448b178c_125.I,
     Nc1e1ffc130aead13aa199b62448b178c_126.I,
-    Nc1e1ffc130aead13aa199b62448b178c_127.I {
+    Nc1e1ffc130aead13aa199b62448b178c_127.I,
+    Nc1e1ffc130aead13aa199b62448b178c_128.I {
     '': ''
 }

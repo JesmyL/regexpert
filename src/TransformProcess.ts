@@ -145,7 +145,7 @@ export class TransformProcess {
 
       if (leadRegQuote !== '`') {
         console.info(userWritedRegStr);
-        throw `StringRegExp must be template string - makeNamesRegExp(\`/ /g\`)`;
+        throw `StringRegExp must be template string - like makeNamesRegExp(\`/ /g\`)`;
       }
 
       let countableGroupi = 0;
@@ -647,10 +647,10 @@ export class TransformProcess {
         return this.insertOptionalChar(quantifier, `\`${char}\``, all);
       })
       .replace(
-        makeRegExp(`/([^\\\\${this.stubs.escape}]|${this.stubs.slash}{4})(${this.quantifierRegStr})/g`),
-        (_all, char, quantifier) => {
-          return this.insertOptionalChar(quantifier, `\`${char}\``);
-        },
+        makeRegExp(
+          `/([^\\\\${this.stubs.escape}]|${this.stubs.slash}{4}|${this.stubs.disjunction}{3})(${this.quantifierRegStr})/g`,
+        ),
+        (_all, char, quantifier) => this.insertOptionalChar(quantifier, `\`${char}\``),
       );
 
     if (this.flags.u)

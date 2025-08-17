@@ -68,6 +68,9 @@ getValue<{ num?: `${number}`; bum: `aa` }>(makeNamedRegExp(`/(?<num>[1-3]+)?(?<b
 
 getValue<{ txt?: `5` | `${number}` }>(makeNamedRegExp(`/(?<txt>5|\\d)?/`).transform(arg));
 getValue<{ txt: `a\\\\|b` | `c` | `${`d` | ``}` }>(makeNamedRegExp(`/(?<txt>a\\\\\\\\\\|b|c|d?)/`).transform(arg));
+getValue<{ txt: `${'|' | ''}${string}${'|' | ''}${'|' | ''}${string}` }>(
+  makeNamedRegExp(`/(?<txt>\\|*\\|?\\|{0,2})/`).transform(arg),
+);
 
 getValue<{ txt: `a` | `s` | `f\\\\` | `b` | `c${number}` | `d` | string }>(
   makeNamedRegExp(`/(?<txt>a|s|f\\\\\\\\|b|c\\d|d|[-adf ])/`).transform(arg),
