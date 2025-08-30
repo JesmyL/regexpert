@@ -1,4 +1,4 @@
-type F<F extends string> = F | '';
+type F<F extends StrRegExpFlag> = F | '';
 
 export type StrRegExpFlag = 'd' | 'g' | 'i' | 'm' | 's' | 'u' | 'y';
 export type StrRegExpFlags = `${F<'d'>}${F<'g'>}${F<'i'>}${F<'m'>}${F<'s'>}${F<'u'>}${F<'y'>}`;
@@ -10,12 +10,16 @@ declare global {
   }
 
   type IgnoreCaseRecord<T extends object> = {
-    [K in keyof T]: T[K] extends string ? Uppercase<T[K]> | Lowercase<T[K]> : T[K];
+    [K in keyof T]: T[K] extends string ? Uppercase<T[K]> | Lowercase<T[K]> | T[K] : T[K];
   };
 
-  type RepeatingString<S extends string> = `${S}${string}`; // `${S}` | `${S}${S}` | `${S}${S}${S}` etc
-  type OptRepeatingString<S extends string> = '' | `${S}${string}`; // '' | `${S}` | `${S}${S}` | `${S}${S}${S}` etc
+  /** as \`${S}\` | \`${S}${S}\` | \`${S}${S}${S}\` etc */
+  type RepeatingString<S extends string> = `${S}${string}`;
+  /** as '' | \`${S}\` | \`${S}${S}\` | \`${S}${S}${S}\` etc */
+  type OptRepeatingString<S extends string> = '' | `${S}${string}`;
+  /** no chars */
   type LookaheadAssertion<_S extends string> = '';
+  /** no chars */
   type LookbehindAssertion<_S extends string> = '';
 }
 
