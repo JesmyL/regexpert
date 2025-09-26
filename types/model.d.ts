@@ -1,7 +1,7 @@
 type F<F extends StrRegExpFlag> = F | '';
 
-export type StrRegExpFlag = 'd' | 'g' | 'i' | 'm' | 's' | 'u' | 'y';
-export type StrRegExpFlags = `${F<'d'>}${F<'g'>}${F<'i'>}${F<'m'>}${F<'s'>}${F<'u'>}${F<'y'>}`;
+export type StrRegExpFlag = 'd' | 'g' | 'i' | 'm' | 's' | 'u' | 'y' | 'v';
+export type StrRegExpFlags = `${F<'d'>}${F<'g'>}${F<'i'>}${F<'m'>}${F<'s'>}${F<'u'>}${F<'v'>}${F<'y'>}`;
 export type StrRegExp = `/${string}${string}/${StrRegExpFlags}`;
 
 declare global {
@@ -37,6 +37,17 @@ declare function makeNamedRegExp<R extends StrRegExp, Reg extends R extends keyo
 declare function escapeRegExpNames<T extends string>(regStrPart: T, namePostfix?: `_${string}`): T;
 declare function escapeRegExpSymbols(str: string): string;
 declare function makeRegExp(reg: StrRegExp, setLastIndexTo?: number): RegExp;
+declare function makeSearchRegExpMatcher(
+  term: string,
+  splitPartsReg?: RegExp,
+): {
+  regExp: RegExp;
+  errors: Partial<{
+    isError: boolean;
+    unknownFlags: string;
+    regExpError: unknown;
+  }>;
+};
 
 export type PluginOptions = {
   srcDirName?: `/${string}`;

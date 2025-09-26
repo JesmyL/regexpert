@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PluginOptions, StrRegExp, StrRegExpFlag } from '../types/model';
+import { PluginOptions, StrRegExp } from '../types/model';
 import { escapeRegExpNamesMaker } from './escapeRegExpNames.maker';
 import { makeRegExp } from './makeRegExp';
 import { testMaker } from './test.maker';
 import { GroupInfo, GroupName, GroupStubSymbol } from './types';
-import { checkIs2xSlashes, checkIs4xSlashes } from './utils';
+import { checkIs2xSlashes, checkIs4xSlashes, flags } from './utils';
 
 setTimeout(testMaker, 500);
 
@@ -48,15 +48,7 @@ export class TransformProcess {
     disabledGroupName: '',
   };
 
-  flags: Record<StrRegExpFlag, boolean> = {
-    d: false,
-    g: false,
-    i: false,
-    m: false,
-    s: false,
-    u: false,
-    y: false,
-  };
+  flags = { ...flags };
 
   groupNameToSymbolDict = {} as Record<GroupName, GroupStubSymbol>;
 

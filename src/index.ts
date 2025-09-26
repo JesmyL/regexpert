@@ -3,6 +3,15 @@ import { escapeRegExpNames } from './escapeRegExpNames';
 import { escapeRegExpSymbols } from './escapeRegExpSymbols';
 import { makeNamedRegExp } from './makeNamedRegExp';
 import { makeRegExp } from './makeRegExp';
+import { makeSearchRegExpMatcher } from './makeSearchRegExpMatcher';
 import { regExpertVitePlugin } from './plugin';
 
-export { escapeRegExpNames, escapeRegExpSymbols, makeNamedRegExp, makeRegExp, regExpertVitePlugin, type StrRegExp };
+export {
+  escapeRegExpNames,
+  escapeRegExpSymbols,
+  makeNamedRegExp,
+  makeRegExp,
+  makeSearchRegExpMatcher,
+  regExpertVitePlugin,
+  type StrRegExp,
+};
